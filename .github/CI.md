@@ -1,0 +1,1 @@
+GitHub yml configurations for pre-build actions to verify on merge request the continuous integration of a new feature.
