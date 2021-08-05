@@ -21,7 +21,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: ./frontend/feast-orders-fe
 
     steps:
       - uses: actions/checkout@v2
