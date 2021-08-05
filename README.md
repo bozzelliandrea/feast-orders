@@ -1,7 +1,14 @@
-# feast-orders
+# Feast-orders
 Cloud microservices oriented application for the management of kitchen and dining room of restaurants.
 
-#Contributors
+# Contributors
 
-Senior Cloud Architect: https://github.com/rizzaccio87
-Developer: https://github.com/bozzaccio
+* Rizzi Alberto: https://github.com/rizzaccio87
+* Bozzelli Andrea: https://github.com/bozzaccio
+
+# Build Status
+
+Service Name | Status
+------------ | -------------
+Frontend | [![Frontend Service CI](https://github.com/bozzaccio/feast-orders/actions/workflows/frontend-angular-ci.yml/badge.svg)](https://github.com/bozzaccio/feast-orders/actions/workflows/frontend-angular-ci.yml)
+Backend | [![Spring Boot Backend CI](https://github.com/bozzaccio/feast-orders/actions/workflows/backend-spring-ci.yml/badge.svg)](https://github.com/bozzaccio/feast-orders/actions/workflows/backend-spring-ci.yml)
