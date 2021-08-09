@@ -12,3 +12,7 @@ Service Name | Status
 ------------ | -------------
 Frontend | [![Frontend Service CI](https://github.com/bozzaccio/feast-orders/actions/workflows/frontend-angular-ci.yml/badge.svg)](https://github.com/bozzaccio/feast-orders/actions/workflows/frontend-angular-ci.yml)
 Backend | [![Spring Boot Backend CI](https://github.com/bozzaccio/feast-orders/actions/workflows/backend-spring-ci.yml/badge.svg)](https://github.com/bozzaccio/feast-orders/actions/workflows/backend-spring-ci.yml)
+
+# API Swagger
+
+http://localhost:8081/api/swagger-ui.html
