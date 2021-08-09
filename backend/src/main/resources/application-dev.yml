@@ -1,0 +1,38 @@
+logging:
+  level:
+    root: INFO
+
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: dev
+    password: ''
+    url: jdbc:h2:mem:devdb
+    h2:
+      console:
+        enabled: true
+        path: /h2
+    jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.H2Dialect
+      show-sql: true
+
+### POSTGRES DEV CONNECTION
+
+#  datasource:
+#    hikari:
+#      connection-timeout: 20000
+#      maximum-pool-size: 5
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: password
+#    jpa:
+#      hibernate:
+#        ddl-auto: update
+#      properties:
+#        hibernate:
+#          dialect: org.hibernate.dialect.PostgreSQLDialect
