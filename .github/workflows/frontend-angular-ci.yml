@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./frontend/feast-orders-fe
+        working-directory: ./frontend
 
     steps:
       - name: Checkout
