@@ -2,42 +2,45 @@ package be.feastorders.core.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Data
-@NoArgsConstructor
 @MappedSuperclass
-@Entity
 public class BaseEntity {
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
 
     @NotNull
-    @Column(name = "NAME", nullable = false)
-    private String name;
-
-    @NotNull
-    @Column(name = "CREATION-TIMESTAMP", nullable = false)
+    @Column(name = "CREATION_TIMESTAMP", nullable = false)
+    @CreatedDate
     private ZonedDateTime creationTimestamp;
 
     @NotNull
-    @Column(name = "CREATION-USER", nullable = false)
+    @Column(name = "CREATION_USER", nullable = false)
+    @CreatedBy
     private String creationUser;
 
     @NotNull
-    @Column(name = "UPDATE-TIMESTAMP", nullable = false)
+    @Column(name = "UPDATE_TIMESTAMP", nullable = false)
+    @LastModifiedDate
     private ZonedDateTime updateTimestamp;
 
     @NotNull
-    @Column(name = "UPDATE-USER", nullable = false)
+    @Column(name = "UPDATE_USER", nullable = false)
+    @LastModifiedBy
     private String updateUser;
 
     @NotNull
     @Column(name = "VERSION", nullable = false)
+    @Version
     private Long version;
 }
