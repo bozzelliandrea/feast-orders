@@ -1,45 +1,22 @@
 package be.feastorders.core.entity;
 
-import com.sun.istack.NotNull;
-import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 
-@Data
+@Getter
+@Setter
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity extends Auditable<String> {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
 
-    @NotNull
-    @Column(name = "CREATION_TIMESTAMP", nullable = false)
-    @CreatedDate
-    private ZonedDateTime creationTimestamp;
-
-    @NotNull
-    @Column(name = "CREATION_USER", nullable = false)
-    @CreatedBy
-    private String creationUser;
-
-    @NotNull
-    @Column(name = "UPDATE_TIMESTAMP", nullable = false)
-    @LastModifiedDate
-    private ZonedDateTime updateTimestamp;
-
-    @NotNull
-    @Column(name = "UPDATE_USER", nullable = false)
-    @LastModifiedBy
-    private String updateUser;
-
-    @NotNull
+    @NonNull
     @Column(name = "VERSION", nullable = false)
     @Version
     private Long version;
