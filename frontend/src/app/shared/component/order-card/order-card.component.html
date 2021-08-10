@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{title}}</h5>
+    <p class="card-text">{{content}}</p>
+    <div class="row justify-content-between">
+      <div class="col-4">
+        <a *ngIf="orderStatus && orderStatus != 'DELETED'" class="btn btn-primary"
+          (click)="startNextStep()">{{stepLabel}}</a>
+      </div>
+      <div class="col-4">
+        <ng-container [ngSwitch]="orderStatus">
+          <span *ngSwitchCase="'TODO'" class="material-icons-outlined fs-1">play_arrow</span>
+          <span *ngSwitchCase="'PROGRESS'" class="material-icons-outlined fs-1">autorenew</span>
+          <span *ngSwitchCase="'DONE'" class="material-icons-outlined fs-1">done_all</span>
+          <span *ngSwitchCase="'DELETED'" class="material-icons-outlined fs-1">clear</span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
