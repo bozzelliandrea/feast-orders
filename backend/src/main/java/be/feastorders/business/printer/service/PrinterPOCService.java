@@ -11,6 +11,7 @@ import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,22 +58,13 @@ public class PrinterPOCService {
             }
         });
 
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(filePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-        Doc doc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
-        // Doc doc=new SimpleDoc(fis, DocFlavor.INPUT_STREAM.JPEG, null);
-        PrintRequestAttributeSet attrib = new HashPrintRequestAttributeSet();
-//        attrib.add(new Copies(1));
-        try {
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+            Doc doc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
+            PrintRequestAttributeSet attrib = new HashPrintRequestAttributeSet();
+            attrib.add(new Copies(1));
             job.print(doc, attrib);
-        } catch (PrintException e) {
+        } catch (IOException | PrintException e) {
             e.printStackTrace();
-            return false;
         }
 
         return true;
