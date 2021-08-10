@@ -2,17 +2,18 @@ package be.feastorders.business.category.entity;
 
 import be.feastorders.core.entity.BaseEntity;
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name = "CATEGORY")
 public class Category extends BaseEntity {
