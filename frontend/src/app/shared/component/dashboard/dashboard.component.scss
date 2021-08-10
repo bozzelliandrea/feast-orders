@@ -1,0 +1,8 @@
+.dashboard-container {
+    height: calc(100vh - 57px);
+    background: rgb(230,230,230);
+    background: linear-gradient(90deg, rgba(230,230,230,1) 23%, rgba(203,203,203,1) 61%, rgba(131,182,236,1) 100%);
+}
+#order-panel {
+    border-right: 2px solid black;
+}
