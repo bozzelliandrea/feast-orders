@@ -3,27 +3,26 @@ package be.feastorders.core.dto;
 import be.feastorders.core.entity.BaseEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode
 public abstract class AbstractDTO implements Serializable {
 
+    private static final long serialVersionUID = 1666141927066453744L;
+
     private Long ID;
-    private String name;
-    private ZonedDateTime creationTimestamp;
+    private Date creationTimestamp;
     private String creationUser;
-    private ZonedDateTime updateTimestamp;
+    private Date updateTimestamp;
     private String updateUser;
     private Long version;
-
-    private AbstractDTO() {
-        throw new IllegalCallerException("Cannot instance empty abstract dto");
-    }
 
     public AbstractDTO(BaseEntity entity) {
         this.ID = entity.getID();
