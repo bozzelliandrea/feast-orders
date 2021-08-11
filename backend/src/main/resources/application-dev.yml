@@ -20,19 +20,3 @@ spring:
         hibernate:
           dialect: org.hibernate.dialect.H2Dialect
       show-sql: true
-
-### POSTGRES DEV CONNECTION
-
-#  datasource:
-#    hikari:
-#      connection-timeout: 20000
-#      maximum-pool-size: 5
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: password
-#    jpa:
-#      hibernate:
-#        ddl-auto: update
-#      properties:
-#        hibernate:
-#          dialect: org.hibernate.dialect.PostgreSQLDialect

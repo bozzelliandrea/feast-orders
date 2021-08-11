@@ -14,5 +14,5 @@ public interface IBaseCRUD<E extends BaseEntity, ID> {
 
     boolean delete(ID ID);
 
-    List<E> find();
+    List<E> findAll();
 }

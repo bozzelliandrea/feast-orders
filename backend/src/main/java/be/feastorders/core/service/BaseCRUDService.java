@@ -1,8 +1,8 @@
 package be.feastorders.core.service;
 
 import be.feastorders.core.entity.BaseEntity;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
+@Primary
 public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, ID> {
 
     private final JpaRepository<E, ID> repository;
@@ -23,6 +23,8 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public E create(E entity) {
+
+        Objects.requireNonNull(entity, "Entity cannot be null!");
 
         return repository.saveAndFlush(entity);
     }
@@ -46,6 +48,8 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public E read(ID ID) {
 
+        Objects.requireNonNull(ID, "Entity ID cannot be null!");
+
         Optional<E> entity = repository.findById(ID);
 
         if (entity.isPresent()) {
@@ -59,6 +63,8 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean delete(ID ID) {
 
+        Objects.requireNonNull(ID, "Entity ID cannot be null!");
+
         try {
             repository.deleteById(ID);
             return true;
@@ -69,7 +75,7 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<E> find() {
+    public List<E> findAll() {
         return repository.findAll();
     }
 }
