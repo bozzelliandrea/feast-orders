@@ -16,3 +16,11 @@ Backend | [![Spring Boot Backend CI](https://github.com/bozzaccio/feast-orders/a
 # API Swagger
 
 http://localhost:8081/api/swagger-ui/
+
+# H2 Database
+
+http://localhost:8081/api/h2
+
+* URL: jdbc:h2:mem:devdb
+* user: dev
+* password: 
