@@ -24,7 +24,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaRepositories
 @EnableJpaAuditing
 @EnableSwagger2
-@ComponentScan(basePackages = {"be.feastorders.business"})
 @Configuration
 public class FeastOrdersApplication {
 
