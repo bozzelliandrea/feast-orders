@@ -15,4 +15,4 @@ Backend | [![Spring Boot Backend CI](https://github.com/bozzaccio/feast-orders/a
 
 # API Swagger
 
-http://localhost:8081/api/swagger-ui.html
+http://localhost:8081/api/swagger-ui/
