@@ -1,7 +1,7 @@
 # Feast-orders
-Cloud microservices oriented application for the management of kitchen and dining room of restaurants.
+Cloud microservices oriented application for the kitchen and dining room management of restaurants.
 
-# Contributors
+# Devs
 
 * Rizzi Alberto: https://github.com/rizzaccio87
 * Bozzelli Andrea: https://github.com/bozzaccio
