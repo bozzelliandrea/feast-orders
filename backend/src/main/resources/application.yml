@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: prod
+    active: dev
 
 printerpoc:
   filepath: /home/rizzaccio/Documents/ferie_permessi.txt

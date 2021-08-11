@@ -1,6 +1,6 @@
 package be.feastorders.business.site.entity;
 
-import be.feastorders.core.entity.BaseEntity;
+import be.feastorders.business.core.entity.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

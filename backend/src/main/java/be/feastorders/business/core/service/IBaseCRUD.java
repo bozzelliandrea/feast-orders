@@ -1,6 +1,6 @@
-package be.feastorders.core.service;
+package be.feastorders.business.core.service;
 
-import be.feastorders.core.entity.BaseEntity;
+import be.feastorders.business.core.entity.BaseEntity;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface IBaseCRUD<E extends BaseEntity, ID> {
 
     boolean delete(ID ID);
 
-    List<E> find();
+    List<E> findAll();
 }

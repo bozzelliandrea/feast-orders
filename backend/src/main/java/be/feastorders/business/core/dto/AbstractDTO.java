@@ -1,6 +1,6 @@
-package be.feastorders.core.dto;
+package be.feastorders.business.core.dto;
 
-import be.feastorders.core.entity.BaseEntity;
+import be.feastorders.business.core.entity.BaseEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

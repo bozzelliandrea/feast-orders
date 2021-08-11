@@ -1,7 +1,7 @@
 package be.feastorders.business.user.dto;
 
 import be.feastorders.business.user.entity.User;
-import be.feastorders.core.dto.AbstractDTO;
+import be.feastorders.business.core.dto.AbstractDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

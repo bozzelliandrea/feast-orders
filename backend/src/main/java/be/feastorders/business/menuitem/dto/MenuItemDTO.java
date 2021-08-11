@@ -1,7 +1,7 @@
 package be.feastorders.business.menuitem.dto;
 
 import be.feastorders.business.menuitem.entity.MenuItem;
-import be.feastorders.core.dto.AbstractDTO;
+import be.feastorders.business.core.dto.AbstractDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

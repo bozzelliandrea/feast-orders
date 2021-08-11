@@ -24,7 +24,7 @@ public class CategoryController {
     @ApiResponse(code = 200, message = "categories found", response = List.class)
     @GetMapping
     public List<CategoryDTO> getCategories() {
-        List<CategoryDTO> categories = service.find().stream().map(CategoryDTO::new).collect(Collectors.toList());
+        List<CategoryDTO> categories = service.findAll().stream().map(CategoryDTO::new).collect(Collectors.toList());
         return categories;
     }
 

@@ -1,7 +1,7 @@
 package be.feastorders.business.category.dto;
 
 import be.feastorders.business.category.entity.Category;
-import be.feastorders.core.dto.AbstractDTO;
+import be.feastorders.business.core.dto.AbstractDTO;
 import lombok.*;
 
 @Getter

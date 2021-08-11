@@ -1,4 +1,4 @@
-package be.feastorders.core.entity;
+package be.feastorders.business.core.entity;
 
 import lombok.Getter;
 import lombok.NonNull;

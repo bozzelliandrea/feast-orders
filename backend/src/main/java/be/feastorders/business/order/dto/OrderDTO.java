@@ -1,17 +1,20 @@
 package be.feastorders.business.order.dto;
 
 import be.feastorders.business.order.entity.Order;
-import be.feastorders.core.dto.AbstractDTO;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import be.feastorders.business.core.dto.AbstractDTO;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderDTO extends AbstractDTO {
+
+    private static final long serialVersionUID = 211770738996679270L;
 
     private String client;
     private Long tableNumber;
