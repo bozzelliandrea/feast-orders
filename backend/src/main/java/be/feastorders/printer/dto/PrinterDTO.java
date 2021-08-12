@@ -2,14 +2,17 @@ package be.feastorders.printer.dto;
 
 import be.feastorders.printer.entity.Printer;
 import be.feastorders.core.dto.AbstractDTO;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PrinterDTO extends AbstractDTO {
+
+    private static final long serialVersionUID = 3209792370649310652L;
 
     private String name;
     private String description;

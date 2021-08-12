@@ -2,14 +2,17 @@ package be.feastorders.menuitem.dto;
 
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.core.dto.AbstractDTO;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MenuItemDTO extends AbstractDTO {
+
+    private static final long serialVersionUID = -2173740007398550320L;
 
     private String name;
     private String description;
