@@ -1,24 +1,22 @@
 package be.feastorders.printer.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.*;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PrinterPOCService {
-
-    @Value("${printerpoc.filepath}")
-    private String filePath;
 
     // List names of all PrintServices that can support the attributes
     public List<PrintService> getPrinterServices(DocFlavor docFlavor, PrintRequestAttributeSet attributes) {
@@ -44,46 +42,134 @@ public class PrinterPOCService {
         return services;
     }
 
-    public boolean print() {
-        PrintService ps = PrintServiceLookup.lookupDefaultPrintService();
+    public boolean print(String printerName, Map<String, String> params) {
+        String filename = params.get("filename");
+        if (filename == null || filename.isEmpty()) {
+            // TODO lanciare eccezione
+            return false;
+        }
+
+        PrintRequestAttributeSet attrs = getAttributes(params);
+        PrintService ps = getPrinterService(printerName, attrs).orElseThrow(IllegalArgumentException::new);
+        // Figure out what type of file we're printing
+        DocFlavor flavor = getFlavorFromFilename(filename);
+        // Create a print job from the service
         DocPrintJob job = ps.createPrintJob();
+
+        // Monitor the print job with a listener
         job.addPrintJobListener(new PrintJobAdapter() {
-            public void printDataTransferCompleted(PrintJobEvent event) {
-                System.out.println("data transfer complete");
+            public void printJobCompleted(PrintJobEvent e) {
+                System.out.println("Print job complete");
             }
 
-            public void printJobNoMoreEvents(PrintJobEvent event) {
-                System.out.println("received no more events");
+            public void printDataTransferCompleted(PrintJobEvent e) {
+                System.out.println("Document transferred to printer");
+            }
+
+            public void printJobRequiresAttention(PrintJobEvent e) {
+                System.out.println("Print job requires attention");
+                System.out.println("Check printer: out of paper?");
+            }
+
+            public void printJobFailed(PrintJobEvent e) {
+                System.out.println("Print job failed");
             }
         });
 
-        try (FileInputStream fis = new FileInputStream(filePath)) {
-            Doc doc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
-            PrintRequestAttributeSet attrib = new HashPrintRequestAttributeSet();
-            attrib.add(new Copies(1));
-            job.print(doc, attrib);
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            // Create a Doc object to print from the file and flavor.
+            Doc doc = new SimpleDoc(fis, flavor, null);
+            job.print(doc, attrs);
         } catch (IOException | PrintException e) {
+            //TODO non catturare l'eccezione ma propagarla e gestirla nel controller
             e.printStackTrace();
         }
 
         return true;
     }
 
-    // A utility method to look up printers that can support the specified
-    // attributes and return the one that matches the specified name.
-    public static PrintService getNamedPrinter(String name, PrintRequestAttributeSet attrs) {
-        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, attrs);
-        if (services.length > 0) {
-            if (name == null)
-                return services[0];
-            else {
-                for (int i = 0; i < services.length; i++) {
-                    if (services[i].getName().equals(name))
-                        return services[i];
-                }
+    private static PrintRequestAttributeSet getAttributes(Map<String, String> params) {
+        PrintRequestAttributeSet attrs = new HashPrintRequestAttributeSet();
+        for (String key : params.keySet()) {
+            switch (key) {
+                case "copies":
+                    int copies = Integer.parseInt(params.get("copies"));
+                    attrs.add(new Copies(copies));
+                    break;
+                case "mediaSize":
+                    String mediaSize = params.get("mediaSize");
+                    if (mediaSize.equalsIgnoreCase("A4")) {
+                        attrs.add(MediaSizeName.ISO_A4);
+                    } else if (mediaSize.equalsIgnoreCase("A5")) {
+                        attrs.add(MediaSizeName.ISO_A5);
+                    } else {
+                        // TODO: gestire gli altri tipi, default A4
+                        attrs.add(MediaSizeName.ISO_A4);
+                    }
+                    break;
+                case "orientation":
+                    String orientation = params.get("orientation");
+                    if (orientation.equalsIgnoreCase("portrait")) {
+                        attrs.add(OrientationRequested.PORTRAIT);
+                    } else if (orientation.equalsIgnoreCase("landscape")) {
+                        attrs.add(OrientationRequested.LANDSCAPE);
+                    } else {
+                        // TODO: gestire gli altri tipi, default portrait
+                        attrs.add(OrientationRequested.PORTRAIT);
+                    }
+                    break;
+                case "sides":
+                    String sides = params.get("sides");
+                    if (sides.equalsIgnoreCase("one-side")) {
+                        attrs.add(Sides.ONE_SIDED);
+                    } else if (sides.equalsIgnoreCase("duplex")) {
+                        attrs.add(Sides.DUPLEX);
+                    } else {
+                        // TODO: gestire gli altri tipi, default one-side
+                        attrs.add(Sides.ONE_SIDED);
+                    }
+                    break;
+                case "color":
+                    boolean color = Boolean.parseBoolean(params.get("color"));
+                    if (color) {
+                        attrs.add(Chromaticity.COLOR);
+                    }
+                    break;
             }
         }
-        return null;
+        return attrs;
     }
 
+    // A utility method to look up printers that can support the specified
+    // attributes and return the one that matches the specified name.
+    private static Optional<PrintService> getPrinterService(String name, PrintRequestAttributeSet attrs) {
+        Optional<PrintService> service = Arrays.stream(PrintServiceLookup.lookupPrintServices(null, attrs))
+                .filter(printService -> {
+                    return printService.getName().equalsIgnoreCase(name);
+                }).findFirst();
+        return service;
+    }
+
+    // A utility method to return a DocFlavor object matching the
+    // extension of the filename.
+    private static DocFlavor getFlavorFromFilename(String filename) {
+        String extension = filename.substring(filename.lastIndexOf('.') + 1);
+        extension = extension.toLowerCase();
+        switch (extension) {
+            case "gif":
+                return DocFlavor.INPUT_STREAM.GIF;
+            case "jpeg":
+            case "jpg":
+                return DocFlavor.INPUT_STREAM.JPEG;
+            case "png":
+                return DocFlavor.INPUT_STREAM.PNG;
+            case "ps":
+                return DocFlavor.INPUT_STREAM.POSTSCRIPT;
+            case "txt":
+                return DocFlavor.INPUT_STREAM.TEXT_PLAIN_HOST;
+            // Fallback: try to determine flavor from file content
+            default:
+                return DocFlavor.INPUT_STREAM.AUTOSENSE;
+        }
+    }
 }
