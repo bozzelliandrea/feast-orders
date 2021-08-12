@@ -52,5 +52,5 @@ public class Order extends BaseEntity {
             joinColumns = @JoinColumn(name = "APP_ORDER_ID"),
             inverseJoinColumns = @JoinColumn(name = "MENU_ITEM_ID")
     )
-    private List<MenuItem> menuItems = new ArrayList<>();
+    private List<MenuItem> menuItems;
 }
