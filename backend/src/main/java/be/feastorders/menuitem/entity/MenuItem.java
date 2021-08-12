@@ -1,14 +1,14 @@
 package be.feastorders.menuitem.entity;
 
-import be.feastorders.order.entity.Order;
+import be.feastorders.category.entity.Category;
 import be.feastorders.core.entity.BaseEntity;
+import be.feastorders.order.entity.Order;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -31,6 +31,12 @@ public class MenuItem extends BaseEntity {
     @Column(name = "COLOR")
     private String color;
 
-    @ManyToMany(mappedBy = "menuItems",  fetch = FetchType.LAZY)
-    private List<Order> orders = new ArrayList<>();
+    @ManyToMany(mappedBy = "menuItems", fetch = FetchType.LAZY)
+    private List<Order> orders;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "category_id",
+            nullable = false)
+    private Category category;
 }

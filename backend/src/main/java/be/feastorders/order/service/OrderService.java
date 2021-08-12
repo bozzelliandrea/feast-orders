@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-@org.springframework.core.annotation.Order(1)
 public class OrderService extends BaseCRUDService<Order, Long> {
 
     public OrderService(OrderRepository repository) {

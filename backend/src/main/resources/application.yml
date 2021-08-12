@@ -7,5 +7,6 @@ spring:
   profiles:
     active: dev
 
+# TODO: REMOVE AFTER RC1!!!
 printerpoc:
   filepath: /home/rizzaccio/Documents/ferie_permessi.txt
