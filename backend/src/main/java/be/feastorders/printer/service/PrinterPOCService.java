@@ -10,10 +10,7 @@ import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PrinterPOCService {
@@ -59,6 +56,7 @@ public class PrinterPOCService {
         // Monitor the print job with a listener
         job.addPrintJobListener(new PrintJobAdapter() {
             public void printJobCompleted(PrintJobEvent e) {
+                // TODO: sistemare usando logger slf4j
                 System.out.println("Print job complete");
             }
 
@@ -90,51 +88,53 @@ public class PrinterPOCService {
 
     private static PrintRequestAttributeSet getAttributes(Map<String, String> params) {
         PrintRequestAttributeSet attrs = new HashPrintRequestAttributeSet();
-        for (String key : params.keySet()) {
-            switch (key) {
-                case "copies":
-                    int copies = Integer.parseInt(params.get("copies"));
-                    attrs.add(new Copies(copies));
-                    break;
-                case "mediaSize":
-                    String mediaSize = params.get("mediaSize");
-                    if (mediaSize.equalsIgnoreCase("A4")) {
-                        attrs.add(MediaSizeName.ISO_A4);
-                    } else if (mediaSize.equalsIgnoreCase("A5")) {
-                        attrs.add(MediaSizeName.ISO_A5);
-                    } else {
-                        // TODO: gestire gli altri tipi, default A4
-                        attrs.add(MediaSizeName.ISO_A4);
-                    }
-                    break;
-                case "orientation":
-                    String orientation = params.get("orientation");
-                    if (orientation.equalsIgnoreCase("portrait")) {
-                        attrs.add(OrientationRequested.PORTRAIT);
-                    } else if (orientation.equalsIgnoreCase("landscape")) {
-                        attrs.add(OrientationRequested.LANDSCAPE);
-                    } else {
-                        // TODO: gestire gli altri tipi, default portrait
-                        attrs.add(OrientationRequested.PORTRAIT);
-                    }
-                    break;
-                case "sides":
-                    String sides = params.get("sides");
-                    if (sides.equalsIgnoreCase("one-side")) {
-                        attrs.add(Sides.ONE_SIDED);
-                    } else if (sides.equalsIgnoreCase("duplex")) {
-                        attrs.add(Sides.DUPLEX);
-                    } else {
-                        // TODO: gestire gli altri tipi, default one-side
-                        attrs.add(Sides.ONE_SIDED);
-                    }
-                    break;
-                case "color":
-                    boolean color = Boolean.parseBoolean(params.get("color"));
-                    if (color) {
-                        attrs.add(Chromaticity.COLOR);
-                    }
-                    break;
+        if (params != null && !params.isEmpty()) {
+            for (String key : params.keySet()) {
+                switch (key) {
+                    case "copies":
+                        int copies = Integer.parseInt(params.get("copies"));
+                        attrs.add(new Copies(copies));
+                        break;
+                    case "mediaSize":
+                        String mediaSize = params.get("mediaSize");
+                        if (mediaSize.equalsIgnoreCase("A4")) {
+                            attrs.add(MediaSizeName.ISO_A4);
+                        } else if (mediaSize.equalsIgnoreCase("A5")) {
+                            attrs.add(MediaSizeName.ISO_A5);
+                        } else {
+                            // TODO: gestire gli altri tipi, default A4
+                            attrs.add(MediaSizeName.ISO_A4);
+                        }
+                        break;
+                    case "orientation":
+                        String orientation = params.get("orientation");
+                        if (orientation.equalsIgnoreCase("portrait")) {
+                            attrs.add(OrientationRequested.PORTRAIT);
+                        } else if (orientation.equalsIgnoreCase("landscape")) {
+                            attrs.add(OrientationRequested.LANDSCAPE);
+                        } else {
+                            // TODO: gestire gli altri tipi, default portrait
+                            attrs.add(OrientationRequested.PORTRAIT);
+                        }
+                        break;
+                    case "sides":
+                        String sides = params.get("sides");
+                        if (sides.equalsIgnoreCase("one-side")) {
+                            attrs.add(Sides.ONE_SIDED);
+                        } else if (sides.equalsIgnoreCase("duplex")) {
+                            attrs.add(Sides.DUPLEX);
+                        } else {
+                            // TODO: gestire gli altri tipi, default one-side
+                            attrs.add(Sides.ONE_SIDED);
+                        }
+                        break;
+                    case "color":
+                        boolean color = Boolean.parseBoolean(params.get("color"));
+                        if (color) {
+                            attrs.add(Chromaticity.COLOR);
+                        }
+                        break;
+                }
             }
         }
         return attrs;
@@ -153,6 +153,8 @@ public class PrinterPOCService {
     // A utility method to return a DocFlavor object matching the
     // extension of the filename.
     private static DocFlavor getFlavorFromFilename(String filename) {
+        Objects.requireNonNull(filename);
+
         String extension = filename.substring(filename.lastIndexOf('.') + 1);
         extension = extension.toLowerCase();
         switch (extension) {
