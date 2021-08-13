@@ -9,6 +9,7 @@ import javax.print.attribute.standard.*;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -39,6 +40,7 @@ public class PrinterPOCService {
         return services;
     }
 
+    // print to a real printer
     public boolean print(String printerName, Map<String, String> params) {
         String filename = params.get("filename");
         if (filename == null || filename.isEmpty()) {
@@ -48,6 +50,50 @@ public class PrinterPOCService {
 
         PrintRequestAttributeSet attrs = getAttributes(params);
         PrintService ps = getPrinterService(printerName, attrs).orElseThrow(IllegalArgumentException::new);
+        return printToService(filename, attrs, ps);
+    }
+
+    // Print to an output file instead of a printer
+    public boolean printToFile(Map<String, String> params) {
+        String inputFileName = params.get("inputFileName");
+        String outputFileName = params.get("outputFileName");
+        String outputMimeType = params.get("outputMimeType");
+
+        Objects.nonNull(inputFileName);
+        Objects.nonNull(outputFileName);
+
+        // Figure out what type of file we're printing
+        DocFlavor inputFlavor = getFlavorFromFilename(inputFileName); //DocFlavor.INPUT_STREAM.AUTOSENSE;
+        PrintRequestAttributeSet attrs = getAttributes(params);
+
+        if (outputMimeType == null) {
+            // TODO sistemare
+            outputMimeType = "application/pdf";
+        }
+        StreamPrintServiceFactory[] factories = StreamPrintServiceFactory.lookupStreamPrintServiceFactories(inputFlavor, outputMimeType);
+
+        // Error message if we can't print to the specified output type
+        if (factories.length == 0) {
+            System.out.println("Unable to print files of type: " + outputMimeType);
+            return false;
+        }
+
+        // Open the output file
+        try (FileOutputStream out = new FileOutputStream(outputFileName)) {
+            // Get a PrintService object to print to that file
+            StreamPrintService service = factories[0].getPrintService(out);
+            // Print using the method below
+            printToService(inputFileName, attrs, service);
+            // And remember to close the output file
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    private static boolean printToService(String filename, PrintRequestAttributeSet attrs, PrintService ps) {
         // Figure out what type of file we're printing
         DocFlavor flavor = getFlavorFromFilename(filename);
         // Create a print job from the service
@@ -78,12 +124,12 @@ public class PrinterPOCService {
             // Create a Doc object to print from the file and flavor.
             Doc doc = new SimpleDoc(fis, flavor, null);
             job.print(doc, attrs);
+            return true;
         } catch (IOException | PrintException e) {
             //TODO non catturare l'eccezione ma propagarla e gestirla nel controller
             e.printStackTrace();
+            return false;
         }
-
-        return true;
     }
 
     private static PrintRequestAttributeSet getAttributes(Map<String, String> params) {
@@ -169,6 +215,8 @@ public class PrinterPOCService {
                 return DocFlavor.INPUT_STREAM.POSTSCRIPT;
             case "txt":
                 return DocFlavor.INPUT_STREAM.TEXT_PLAIN_HOST;
+            case "pdf":
+                return DocFlavor.INPUT_STREAM.PDF;
             // Fallback: try to determine flavor from file content
             default:
                 return DocFlavor.INPUT_STREAM.AUTOSENSE;
