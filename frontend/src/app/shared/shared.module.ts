@@ -4,14 +4,19 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from './../app-routing.module';
+import { AppRoutingModule } from '../app-routing.module';
+import {DeleteDirective, DoneDirective, ProgressDirective, TodoDirective} from './directive/button.directive';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     DashboardComponent,
     OrderPanelComponent,
-    OrderCardComponent
+    OrderCardComponent,
+    TodoDirective,
+    ProgressDirective,
+    DoneDirective,
+    DeleteDirective
   ],
   imports: [
     CommonModule,
