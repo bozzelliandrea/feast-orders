@@ -16,6 +16,8 @@ import java.util.*;
 @Service
 public class PrinterPOCService {
 
+    // TODO: aggiungere metodo per convertire ordine in immagine (png)
+
     // List names of all PrintServices that can support the attributes
     public List<PrintService> getPrinterServices(DocFlavor docFlavor, PrintRequestAttributeSet attributes) {
         // Find all services that can support the specified docFlavor and attributes
