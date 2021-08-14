@@ -29,7 +29,7 @@ public class PrinterController {
         return printers;
     }
 
-    @ApiOperation("print")
+    @ApiOperation("print to a real printer")
     @ApiResponse(code = 200, message = "print done", response = Boolean.class)
     @GetMapping("/print/{printerName}")
 //    @RequestParam(value = "copies", required = false)  Integer copies,
@@ -39,6 +39,13 @@ public class PrinterController {
 //    @RequestParam(value = "color", required = false) Boolean color
     public Boolean print(@PathVariable String printerName, @RequestParam Map<String,String> allParams) {
         return pocService.print(printerName, allParams);
+    }
+
+    @ApiOperation("print to a file")
+    @ApiResponse(code = 200, message = "print done", response = Boolean.class)
+    @GetMapping("/printToFile")
+    public Boolean printToFile(@RequestParam Map<String,String> allParams) {
+        return pocService.printToFile(allParams);
     }
 
 }
