@@ -1,5 +1,7 @@
 package be.feastorders.printer.service;
 
+import be.feastorders.menuitem.entity.MenuItem;
+import be.feastorders.order.entity.Order;
 import com.lowagie.text.DocumentException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -12,6 +14,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReportService {
@@ -24,8 +32,25 @@ public class ReportService {
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 
+        Order order = new Order();
+        order.setOrderTime(ZonedDateTime.now());
+        order.setClient("Rizzaccio");
+        order.setTableNumber(1L);
+        order.setProgressNumber(100L);
+        order.setPlaceSettingNumber(6L);
+        order.setTotal(55.30f);
+        MenuItem menuItem = new MenuItem();
+        menuItem.setName("Birra media bionda");
+        menuItem.setPrice(5f);
+        List<MenuItem> menuItemList = new ArrayList<>();
+        menuItemList.add(menuItem);
+        order.setMenuItems(menuItemList);
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("order", order);
+
         Context context = new Context();
-        context.setVariable("to", "Baeldung");
+        context.setVariables(variables);
 
         return templateEngine.process("templates/thymeleaf_template", context);
     }

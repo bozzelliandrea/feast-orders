@@ -1,7 +1,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<body>
-<h3 style="text-align: center; color: green">
-    <span th:text="'Welcome to ' + ${to} + '!'"></span>
-</h3>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thymeleaf template for orders</title>
+    <link href="@{../static/styles/main.css}" th:href="@{../static/styles/main.css}" rel="stylesheet" />
+</head>
+<body style="font-family: 'Helvetica'">
+    <!-- header -->
+    <h3 style="text-align: center" th:text="'Festa della birra Mellaredo 2021'"></h3>
+
+    <div>
+        <span th:text="'Ordine ' + ${order.progressNumber}"></span>
+    </div>
+
+    <div></div>
+
+    <!-- order details -->
+    <div>
+        <span th:text="'Tavolo ' + ${order.tableNumber}"></span>
+        <span th:text="'Coperti ' + ${order.placeSettingNumber}"></span>
+        <span th:text="'Cliente ' + ${order.client}"></span>
+    </div>
+
+    <div></div>
+
+    <!-- order items details -->
+    <tr th:each="item: ${order.menuItems}">
+        <td th:text="${item.name}"/>
+        <td th:text="${item.price}"/>
+    </tr>
+
+    <!-- order notes -->
+    <div>
+        <span>Note: urgente band - attenzione utente ceilaco</span>
+    </div>
+
+    <div>
+        <strong><span th:text="'Totale: ' + ${order.total}"></span></strong>
+    </div>
+
+    <div></div>
+
+    <div>
+        <span><strong>Cassiere Bozzz</strong></span>
+        <span th:text="${order.orderTime}"></span>
+        <span>Copia cliente</span>
+    </div>
+
+    <!-- footer -->
 </body>
 </html>
