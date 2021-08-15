@@ -1,18 +1,24 @@
 package be.feastorders.order.service;
 
 import be.feastorders.core.service.BaseCRUDService;
+import be.feastorders.menuitem.dto.MenuItemDTO;
+import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.entity.Order;
 import be.feastorders.order.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Objects;
 
 @Service
 public class OrderService extends BaseCRUDService<Order, Long> {
 
+    private final OrderRepository repository;
+
     public OrderService(OrderRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     public OrderDTO updateEntityValues(OrderDTO dto) {

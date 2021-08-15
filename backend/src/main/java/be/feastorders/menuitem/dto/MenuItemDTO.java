@@ -1,5 +1,6 @@
 package be.feastorders.menuitem.dto;
 
+import be.feastorders.category.dto.CategoryDTO;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.core.dto.AbstractDTO;
 import lombok.*;
@@ -18,6 +19,8 @@ public class MenuItemDTO extends AbstractDTO {
     private String description;
     private String color;
     private Float price;
+    private CategoryDTO category;
+    private Long categoryId;
 
     public MenuItemDTO(MenuItem entity) {
         super(entity);
