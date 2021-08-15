@@ -1,5 +1,7 @@
 package be.feastorders.printer.service;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.springframework.stereotype.Service;
 
 import javax.print.*;
@@ -8,15 +10,13 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.*;
 import java.util.*;
 
 @Service
 public class PrinterPOCService {
-
-    // TODO: aggiungere metodo per convertire ordine in immagine (png)
 
     // List names of all PrintServices that can support the attributes
     public List<PrintService> getPrinterServices(DocFlavor docFlavor, PrintRequestAttributeSet attributes) {
@@ -45,10 +45,7 @@ public class PrinterPOCService {
     // print to a real printer
     public boolean print(String printerName, Map<String, String> params) {
         String filename = params.get("filename");
-        if (filename == null || filename.isEmpty()) {
-            // TODO lanciare eccezione
-            return false;
-        }
+        Objects.nonNull(filename);
 
         PrintRequestAttributeSet attrs = getAttributes(params);
         PrintService ps = getPrinterService(printerName, attrs).orElseThrow(IllegalArgumentException::new);
@@ -92,7 +89,29 @@ public class PrinterPOCService {
             e.printStackTrace();
             return false;
         }
+    }
 
+    public boolean printPdf(String printerName, Map<String, String> params) {
+        String filename = params.get("filename");
+        Objects.nonNull(filename);
+
+        PrintService service = getPrinterServiceAwt(printerName).orElseThrow(IllegalArgumentException::new);
+
+        PrinterJob job = PrinterJob.getPrinterJob();
+
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            PDDocument document = PDDocument.load(fis);
+            job.setPageable(new PDFPageable(document));
+            PrintRequestAttributeSet attrs = getAttributes(params);
+
+            job.setPrintService(service);
+            job.print(attrs);
+            return true;
+        } catch (PrinterException | IOException e) {
+            e.printStackTrace();
+            // todo gestire
+            return false;
+        }
     }
 
     private static boolean printToService(String filename, PrintRequestAttributeSet attrs, PrintService ps) {
@@ -190,10 +209,18 @@ public class PrinterPOCService {
 
     // A utility method to look up printers that can support the specified
     // attributes and return the one that matches the specified name.
-    private static Optional<PrintService> getPrinterService(String name, PrintRequestAttributeSet attrs) {
+    private static Optional<PrintService> getPrinterService(String printerName, PrintRequestAttributeSet attrs) {
         Optional<PrintService> service = Arrays.stream(PrintServiceLookup.lookupPrintServices(null, attrs))
                 .filter(printService -> {
-                    return printService.getName().equalsIgnoreCase(name);
+                    return printService.getName().equalsIgnoreCase(printerName);
+                }).findFirst();
+        return service;
+    }
+
+    private static Optional<PrintService> getPrinterServiceAwt(String printerName) {
+        Optional<PrintService> service = Arrays.stream(PrinterJob.lookupPrintServices())
+                .filter(printService -> {
+                    return printService.getName().equalsIgnoreCase(printerName);
                 }).findFirst();
         return service;
     }
