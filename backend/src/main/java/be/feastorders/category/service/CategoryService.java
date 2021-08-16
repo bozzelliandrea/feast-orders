@@ -1,5 +1,6 @@
 package be.feastorders.category.service;
 
+import be.feastorders.category.dto.CategoryDTO;
 import be.feastorders.category.entity.Category;
 import be.feastorders.category.repository.CategoryRepository;
 import be.feastorders.core.service.BaseCRUDService;
@@ -16,32 +17,14 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
         super(repository);
     }
 
-    static public MenuItem menuItemDTO2Entity(MenuItemDTO dto) {
+    static public Category categoryDTO2Category(CategoryDTO dto) {
 
-        MenuItem entity = new MenuItem();
+        Category entity = new Category();
         entity.setName(dto.getName());
-        entity.setPrice(dto.getPrice());
         entity.setDescription(dto.getDescription());
         entity.setColor(dto.getColor());
+
         return entity;
-    }
-
-    static public void updateMenuItemEntityProperties(MenuItem o, MenuItem n) {
-
-        Objects.requireNonNull(o, "Old entity is required.");
-        Objects.requireNonNull(o, "New entity is required.");
-
-        if (Objects.nonNull(n.getPrice()))
-            o.setPrice(n.getPrice());
-
-        if (Objects.nonNull(n.getName()))
-            o.setName(n.getName());
-
-        if (Objects.nonNull(n.getDescription()))
-            o.setDescription(n.getDescription());
-
-        if (Objects.nonNull(n.getColor()))
-            o.setColor(n.getColor());
     }
 
 }

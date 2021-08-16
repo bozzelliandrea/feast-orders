@@ -5,19 +5,16 @@ import be.feastorders.category.entity.Category;
 import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.entity.MenuItem;
+import be.feastorders.menuitem.service.MenuItemService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -27,13 +24,16 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CategoryController {
 
     @Autowired
-    private CategoryService service;
+    private CategoryService categoryService;
+
+    @Autowired
+    private MenuItemService menuItemService;
 
     @ApiOperation("get categories")
     @ApiResponse(code = 200, message = "categories found", response = List.class)
     @GetMapping
     public List<CategoryDTO> getCategories() {
-        List<CategoryDTO> categories = service.findAll().stream().map(CategoryDTO::new).collect(Collectors.toList());
+        List<CategoryDTO> categories = categoryService.findAll().stream().map(CategoryDTO::new).collect(Collectors.toList());
         return categories;
     }
 
@@ -41,7 +41,7 @@ public class CategoryController {
     @ApiResponse(code = 200, message = "category found", response = CategoryDTO.class)
     @GetMapping("/{id}")
     public CategoryDTO findById(@PathVariable Long id) {
-        Category category = service.read(id);
+        Category category = categoryService.read(id);
         return new CategoryDTO(category);
     }
 
@@ -54,7 +54,7 @@ public class CategoryController {
                 .color(categoryDTO.getColor())
                 .description(categoryDTO.getDescription())
                 .build();
-        category = service.create(category);
+        category = categoryService.create(category);
         return new CategoryDTO(category);
     }
 
@@ -62,12 +62,12 @@ public class CategoryController {
     @ApiResponse(code = 200, message = "category updated", response = CategoryDTO.class)
     @PutMapping("/{id}")
     public CategoryDTO update(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
-        Category category = service.read(id);
+        Category category = categoryService.read(id);
         category.setName(categoryDTO.getName());
         category.setColor(categoryDTO.getColor());
         category.setDescription(categoryDTO.getDescription());
 
-        category = service.update(category);
+        category = categoryService.update(category);
         return new CategoryDTO(category);
     }
 
@@ -80,7 +80,7 @@ public class CategoryController {
             ResponseEntity.badRequest().build();
         }
 
-        if (service.delete(id)) {
+        if (categoryService.delete(id)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.internalServerError().build();
@@ -98,10 +98,7 @@ public class CategoryController {
                     value = "The selected category")
             @PathVariable("id") Long categoryID) {
 
-        CategoryDTO dto = new CategoryDTO(service.read(categoryID));
-
-        return ResponseEntity.ok(dto.getMenuItemList());
-
+        return ResponseEntity.ok(menuItemService.findAllMenuItemByCategoryId(categoryID));
     }
 
     @ApiOperation("Get one menu item by id associated with the selected category")
@@ -119,51 +116,32 @@ public class CategoryController {
                     value = "The selected menu item to retrieve")
             @PathVariable("itemId") Long itemID) {
 
-        CategoryDTO dto = new CategoryDTO(service.read(categoryID));
-
-        if (CollectionUtils.isEmpty(dto.getMenuItemList()))
-            return ResponseEntity.ok().build();
-
-
-        Optional<MenuItemDTO> menuItemOptional = dto.getMenuItemList().stream()
-                .filter(m -> m.getID().equals(itemID))
-                .findFirst();
-
-        return menuItemOptional
-                .map(opt -> ResponseEntity.ok().body(opt))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(new MenuItemDTO(menuItemService.read(itemID)));
     }
 
     @ApiOperation("create menu item into selected category")
     @ApiResponse(code = 200, message = "list of menu item created", response = ResponseEntity.class)
     @PostMapping("/{id}/menuitem")
-    public ResponseEntity<CategoryDTO> createMenuItem(@RequestBody List<MenuItemDTO> menuItemDTOList,
-                                                      @ApiParam(name = "category ID",
-                                                              type = "Long",
-                                                              allowEmptyValue = false,
-                                                              required = true,
-                                                              value = "The selected category")
-                                                      @PathVariable("id") Long categoryID) {
+    public ResponseEntity<List<MenuItemDTO>> createMenuItem(@RequestBody List<MenuItemDTO> menuItemDTOList,
+                                                            @ApiParam(name = "category ID",
+                                                                    type = "Long",
+                                                                    allowEmptyValue = false,
+                                                                    required = true,
+                                                                    value = "The selected category")
+                                                            @PathVariable("id") Long categoryID) {
 
-        Category category = service.read(categoryID);
+        Category category = categoryService.read(categoryID);
 
-        List<MenuItem> menuItemList = menuItemDTOList.stream()
-                .map(CategoryService::menuItemDTO2Entity)
-                .collect(Collectors.toList());
+        menuItemService.saveMenuItemDTOListWithCategory(menuItemDTOList, category);
 
-        for (MenuItem mn : menuItemList) {
-            mn.setCategory(category);
-        }
-
-        category.getMenuItems().addAll(menuItemList);
-        return ResponseEntity.ok(new CategoryDTO(service.update(category)));
+        return ResponseEntity.ok(menuItemService.findAllMenuItemByCategoryId(categoryID));
 
     }
 
     @ApiOperation("update menu item with new properties by category id and item id")
     @ApiResponse(code = 200, message = "menu item updated", response = ResponseEntity.class)
     @PutMapping("/{id}/menuitem/{itemId}")
-    public ResponseEntity<CategoryDTO> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO,
+    public ResponseEntity<MenuItemDTO> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO,
                                                       @ApiParam(name = "category ID",
                                                               type = "Long",
                                                               allowEmptyValue = false,
@@ -176,25 +154,18 @@ public class CategoryController {
                                                               value = "The selected menu item to retrieve")
                                                       @PathVariable("itemId") Long itemID) {
 
-        Category category = service.read(categoryID);
+        MenuItem oldMenuItem = menuItemService.read(itemID);
 
-        category.getMenuItems().stream()
-                .filter(dto -> dto.getID().equals(itemID))
-                .findFirst()
-                .ifPresentOrElse(item -> CategoryService
-                                .updateMenuItemEntityProperties(item, CategoryService.menuItemDTO2Entity(menuItemDTO)),
-                        () -> {
-                            throw new EntityNotFoundException("Entity not found for ID:" + itemID);
-                        });
+        MenuItemService.updateMenuItemEntityProperties(oldMenuItem,
+                MenuItemService.menuItemDTO2Entity(menuItemDTO));
 
-        return ResponseEntity.ok(new CategoryDTO(service.update(category)));
-
+        return ResponseEntity.ok(new MenuItemDTO(menuItemService.update(oldMenuItem)));
     }
 
     @ApiOperation("remove one menu item from category")
     @ApiResponse(code = 200, message = "menu item deleted", response = ResponseEntity.class)
     @DeleteMapping("/{id}/menuitem/{itemId}")
-    public ResponseEntity<CategoryDTO> deleteMenuItemByIdAndCategoryId(
+    public ResponseEntity<List<MenuItemDTO>> deleteMenuItemByIdAndCategoryId(
             @ApiParam(name = "category ID",
                     type = "Long",
                     required = true,
@@ -206,14 +177,8 @@ public class CategoryController {
                     value = "The selected menu item to retrieve")
             @PathVariable("itemId") Long itemID) {
 
-        Category category = service.read(categoryID);
+        menuItemService.delete(itemID);
 
-        List<MenuItem> menuItemList = category.getMenuItems().stream()
-                .filter(dto -> !dto.getID().equals(itemID))
-                .collect(Collectors.toList());
-
-        category.getMenuItems().clear();
-        category.getMenuItems().addAll(menuItemList);
-        return ResponseEntity.ok(new CategoryDTO(service.update(category)));
+        return ResponseEntity.ok(menuItemService.findAllMenuItemByCategoryId(categoryID));
     }
 }
