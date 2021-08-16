@@ -28,7 +28,5 @@ public class CategoryDTO extends AbstractDTO {
         this.name = entity.getName();
         this.description = entity.getDescription();
         this.color = entity.getColor();
-        if (!CollectionUtils.isEmpty(entity.getMenuItems()))
-            this.menuItemList = entity.getMenuItems().stream().map(MenuItemDTO::new).collect(Collectors.toList());
     }
 }

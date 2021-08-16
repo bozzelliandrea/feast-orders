@@ -1,7 +1,7 @@
 package be.feastorders.core.entity;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,15 +9,22 @@ import javax.persistence.*;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseEntity extends Auditable<String> {
+public class BaseEntity extends Auditable<String> implements BaseEntityID<Long>{
 
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long ID;
+    private static final long serialVersionUID = -3373920749628688771L;
 
-    @NonNull
+    @NotNull
     @Column(name = "VERSION", nullable = false)
     @Version
     private Long version;
+
+    @Override
+    public Long getID() {
+        return null;
+    }
+
+    @Override
+    public void setID(Long ID) {
+        System.out.println("Bean Override");
+    }
 }

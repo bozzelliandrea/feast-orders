@@ -1,10 +1,14 @@
 package be.feastorders.order.dto;
 
+import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.order.entity.Order;
 import be.feastorders.core.dto.AbstractDTO;
 import lombok.*;
+import org.springframework.util.CollectionUtils;
 
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,6 +27,7 @@ public class OrderDTO extends AbstractDTO {
     private Long progressNumber;
     private Long discount;
     private Float total;
+    private List<MenuItemDTO> menuItemList;
 
     public OrderDTO(Order entity) {
         super(entity);
@@ -33,5 +38,7 @@ public class OrderDTO extends AbstractDTO {
         this.progressNumber = entity.getProgressNumber();
         this.discount = entity.getDiscount();
         this.total = entity.getTotal();
+        if (!CollectionUtils.isEmpty(entity.getMenuItems()))
+            this.menuItemList = entity.getMenuItems().stream().map(MenuItemDTO::new).collect(Collectors.toList());
     }
 }
