@@ -1,5 +1,7 @@
 package be.feastorders.printer.service;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.springframework.stereotype.Service;
 
 import javax.print.*;
@@ -8,8 +10,9 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -39,15 +42,79 @@ public class PrinterPOCService {
         return services;
     }
 
+    // print to a real printer
     public boolean print(String printerName, Map<String, String> params) {
         String filename = params.get("filename");
-        if (filename == null || filename.isEmpty()) {
-            // TODO lanciare eccezione
-            return false;
-        }
+        Objects.nonNull(filename);
 
         PrintRequestAttributeSet attrs = getAttributes(params);
         PrintService ps = getPrinterService(printerName, attrs).orElseThrow(IllegalArgumentException::new);
+        return printToService(filename, attrs, ps);
+    }
+
+    // Print to an output file instead of a printer
+    public boolean printToFile(Map<String, String> params) {
+        String inputFileName = params.get("inputFileName");
+        String outputFileName = params.get("outputFileName");
+        String outputMimeType = params.get("outputMimeType");
+
+        Objects.nonNull(inputFileName);
+        Objects.nonNull(outputFileName);
+
+        // Figure out what type of file we're printing
+        DocFlavor inputFlavor = getFlavorFromFilename(inputFileName); //DocFlavor.INPUT_STREAM.AUTOSENSE;
+        PrintRequestAttributeSet attrs = getAttributes(params);
+
+        if (outputMimeType == null) {
+            // TODO sistemare
+            outputMimeType = "application/pdf";
+        }
+        StreamPrintServiceFactory[] factories = StreamPrintServiceFactory.lookupStreamPrintServiceFactories(inputFlavor, outputMimeType);
+
+        // Error message if we can't print to the specified output type
+        if (factories.length == 0) {
+            System.out.println("Unable to print files of type: " + outputMimeType);
+            return false;
+        }
+
+        // Open the output file
+        try (FileOutputStream out = new FileOutputStream(outputFileName)) {
+            // Get a PrintService object to print to that file
+            StreamPrintService service = factories[0].getPrintService(out);
+            // Print using the method below
+            printToService(inputFileName, attrs, service);
+            // And remember to close the output file
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean printPdf(String printerName, Map<String, String> params) {
+        String filename = params.get("filename");
+        Objects.nonNull(filename);
+
+        PrintService service = getPrinterServiceAwt(printerName).orElseThrow(IllegalArgumentException::new);
+
+        PrinterJob job = PrinterJob.getPrinterJob();
+
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            PDDocument document = PDDocument.load(fis);
+            job.setPageable(new PDFPageable(document));
+            PrintRequestAttributeSet attrs = getAttributes(params);
+
+            job.setPrintService(service);
+            job.print(attrs);
+            return true;
+        } catch (PrinterException | IOException e) {
+            e.printStackTrace();
+            // todo gestire
+            return false;
+        }
+    }
+
+    private static boolean printToService(String filename, PrintRequestAttributeSet attrs, PrintService ps) {
         // Figure out what type of file we're printing
         DocFlavor flavor = getFlavorFromFilename(filename);
         // Create a print job from the service
@@ -78,12 +145,12 @@ public class PrinterPOCService {
             // Create a Doc object to print from the file and flavor.
             Doc doc = new SimpleDoc(fis, flavor, null);
             job.print(doc, attrs);
+            return true;
         } catch (IOException | PrintException e) {
             //TODO non catturare l'eccezione ma propagarla e gestirla nel controller
             e.printStackTrace();
+            return false;
         }
-
-        return true;
     }
 
     private static PrintRequestAttributeSet getAttributes(Map<String, String> params) {
@@ -142,10 +209,18 @@ public class PrinterPOCService {
 
     // A utility method to look up printers that can support the specified
     // attributes and return the one that matches the specified name.
-    private static Optional<PrintService> getPrinterService(String name, PrintRequestAttributeSet attrs) {
+    private static Optional<PrintService> getPrinterService(String printerName, PrintRequestAttributeSet attrs) {
         Optional<PrintService> service = Arrays.stream(PrintServiceLookup.lookupPrintServices(null, attrs))
                 .filter(printService -> {
-                    return printService.getName().equalsIgnoreCase(name);
+                    return printService.getName().equalsIgnoreCase(printerName);
+                }).findFirst();
+        return service;
+    }
+
+    private static Optional<PrintService> getPrinterServiceAwt(String printerName) {
+        Optional<PrintService> service = Arrays.stream(PrinterJob.lookupPrintServices())
+                .filter(printService -> {
+                    return printService.getName().equalsIgnoreCase(printerName);
                 }).findFirst();
         return service;
     }
@@ -169,6 +244,8 @@ public class PrinterPOCService {
                 return DocFlavor.INPUT_STREAM.POSTSCRIPT;
             case "txt":
                 return DocFlavor.INPUT_STREAM.TEXT_PLAIN_HOST;
+            case "pdf":
+                return DocFlavor.INPUT_STREAM.PDF;
             // Fallback: try to determine flavor from file content
             default:
                 return DocFlavor.INPUT_STREAM.AUTOSENSE;
