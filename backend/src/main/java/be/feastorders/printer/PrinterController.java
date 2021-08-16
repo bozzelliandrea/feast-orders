@@ -1,11 +1,14 @@
 package be.feastorders.printer;
 
+import be.feastorders.printer.dto.PrinterCfgDTO;
+import be.feastorders.printer.service.PrinterCfgService;
 import be.feastorders.printer.service.PrinterPOCService;
 import be.feastorders.printer.service.ReportService;
 import com.lowagie.text.DocumentException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.PrintService;
@@ -20,8 +23,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = {"/printer"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class PrinterController {
 
+    // todo add printer cfg endpoints
+
     @Autowired
     private PrinterPOCService pocService;
+
+    @Autowired
+    private PrinterCfgService printerCfgService;
 
     @Autowired
     private ReportService reportService;
@@ -29,10 +37,28 @@ public class PrinterController {
     @ApiOperation("get printers")
     @ApiResponse(code = 200, message = "printers found", response = List.class)
     @GetMapping("/list")
-    public List<String> getPrinters() {
+    public ResponseEntity<List<String>> getPrinters() {
         List<String> printers = pocService.getPrinterServices(null, null)
                 .stream().map(PrintService::getName).collect(Collectors.toList());
-        return printers;
+        return ResponseEntity.ok(printers);
+    }
+
+    @ApiOperation("get printer configurations")
+    @ApiResponse(code = 200, message = "printer configurations found", response = List.class)
+    @GetMapping("/cfg")
+    public ResponseEntity<List<PrinterCfgDTO>> getPrinterCfgs() {
+        List<PrinterCfgDTO> printerCfgs = printerCfgService.findAll().stream()
+                .map(PrinterCfgDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(printerCfgs);
+    }
+
+    @ApiOperation("create a printer configuration")
+    @ApiResponse(code = 200, message = "printer configuration created", response = List.class)
+    @PostMapping("/cfg")
+    public ResponseEntity<PrinterCfgDTO> createPrinterCfg(@RequestBody PrinterCfgDTO printerCfgDTO) {
+        PrinterCfgDTO printerCfg = printerCfgService.savePrinterCfgWithAttrs(printerCfgDTO);
+        return ResponseEntity.ok(printerCfg);
     }
 
     @ApiOperation("print to a real printer")
