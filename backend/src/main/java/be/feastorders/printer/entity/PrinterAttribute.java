@@ -1,5 +1,6 @@
 package be.feastorders.printer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class PrinterAttribute implements Serializable {
     private String type;
 
     @OneToMany(mappedBy = "attr", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<PrinterCfgAttribute> cfgAttrs = new ArrayList<>();
 
 }

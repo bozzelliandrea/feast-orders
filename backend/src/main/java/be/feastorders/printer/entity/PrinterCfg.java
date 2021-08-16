@@ -1,6 +1,7 @@
 package be.feastorders.printer.entity;
 
 import be.feastorders.core.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -36,6 +37,7 @@ public class PrinterCfg extends BaseEntity {
     private String printerName;
 
     @OneToMany(mappedBy = "cfg", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<PrinterCfgAttribute> cfgAttrs = new ArrayList<>();
 
     @Override

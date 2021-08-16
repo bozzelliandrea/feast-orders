@@ -1,6 +1,7 @@
 package be.feastorders.printer;
 
 import be.feastorders.printer.dto.PrinterCfgDTO;
+import be.feastorders.printer.entity.PrinterCfg;
 import be.feastorders.printer.service.PrinterCfgService;
 import be.feastorders.printer.service.PrinterPOCService;
 import be.feastorders.printer.service.ReportService;
@@ -22,8 +23,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(path = {"/printer"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class PrinterController {
-
-    // todo add printer cfg endpoints
 
     @Autowired
     private PrinterPOCService pocService;
@@ -54,11 +53,38 @@ public class PrinterController {
     }
 
     @ApiOperation("create a printer configuration")
-    @ApiResponse(code = 200, message = "printer configuration created", response = List.class)
+    @ApiResponse(code = 200, message = "printer configuration created", response = PrinterCfgDTO.class)
     @PostMapping("/cfg")
     public ResponseEntity<PrinterCfgDTO> createPrinterCfg(@RequestBody PrinterCfgDTO printerCfgDTO) {
         PrinterCfgDTO printerCfg = printerCfgService.savePrinterCfgWithAttrs(printerCfgDTO);
         return ResponseEntity.ok(printerCfg);
+    }
+
+    @ApiOperation("retrieve a printer configuration")
+    @ApiResponse(code = 200, message = "printer configuration retrieved", response = PrinterCfgDTO.class)
+    @GetMapping("/cfg/{id}")
+    public ResponseEntity<PrinterCfgDTO> retrievePrinterCfg(@PathVariable Long id) {
+        PrinterCfg cfg = printerCfgService.read(id);
+        PrinterCfgDTO printerCfgDTO = new PrinterCfgDTO(cfg);
+        return ResponseEntity.ok(printerCfgDTO);
+    }
+
+    @ApiOperation("update a printer configuration")
+    @ApiResponse(code = 200, message = "printer configuration updated", response = PrinterCfgDTO.class)
+    @PutMapping("/cfg/{id}")
+    public ResponseEntity<PrinterCfgDTO> updatePrinterCfg(@PathVariable Long id, @RequestBody PrinterCfgDTO printerCfgDTO) {
+        PrinterCfg cfg = printerCfgService.read(id);
+        printerCfgDTO = printerCfgService.updatePrinterCfg(cfg, printerCfgDTO);
+        return ResponseEntity.ok(printerCfgDTO);
+    }
+
+    @ApiOperation("delete a printer configuration")
+    @ApiResponse(code = 200, message = "printer configuration deleted", response = PrinterCfgDTO.class)
+    @DeleteMapping("/cfg/{id}")
+    public ResponseEntity<PrinterCfgDTO> deletePrinterCfg(@PathVariable Long id) {
+        PrinterCfg cfg = printerCfgService.read(id);
+        boolean result = printerCfgService.delete(id);
+        return ResponseEntity.ok(new PrinterCfgDTO(cfg));
     }
 
     @ApiOperation("print to a real printer")

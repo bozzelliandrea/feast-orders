@@ -1,5 +1,6 @@
 package be.feastorders.printer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,10 +23,12 @@ public class PrinterCfgAttribute implements Serializable {
     @MapsId("cfgId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cfgId", referencedColumnName = "ID")
+    @JsonIgnore
     private PrinterCfg cfg;
 
     @MapsId("attrId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attrId", referencedColumnName = "NAME")
+    @JsonIgnore
     private PrinterAttribute attr;
 }
