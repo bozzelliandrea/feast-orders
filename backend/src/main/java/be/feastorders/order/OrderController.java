@@ -7,6 +7,7 @@ import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.entity.Order;
 import be.feastorders.order.service.OrderService;
+import be.feastorders.printer.service.PrinterAsynchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -35,6 +36,9 @@ public class OrderController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private PrinterAsynchService printerAsynchService;
 
     @ApiOperation("Get all saved orders")
     @ApiResponse(code = 200, message = "return a list of orders", response = List.class)
@@ -71,7 +75,18 @@ public class OrderController {
                 .total(dto.getTotal())
                 .build();
 
-        return ResponseEntity.ok(new OrderDTO(orderService.create(entity)));
+        Order order = orderService.create(entity);
+        System.out.println("Order created!");
+
+        if (dto.getPrintOrder()) {
+            // todo: add orchestration post creation, asynchronous
+            List<Order> orders = new ArrayList<>();
+            orders.add(order);
+            printerAsynchService.executePrintTasks(orders);
+        }
+
+        System.out.println("returning order created!");
+        return ResponseEntity.ok(new OrderDTO(order));
     }
 
     @ApiOperation("Update an existing order")

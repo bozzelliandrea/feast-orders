@@ -28,6 +28,7 @@ public class OrderDTO extends AbstractDTO {
     private Long discount;
     private Float total;
     private List<MenuItemDTO> menuItemList;
+    private Boolean printOrder;
 
     public OrderDTO(Order entity) {
         super(entity);
