@@ -2,11 +2,14 @@ package be.feastorders.category.entity;
 
 import be.feastorders.core.entity.BaseEntity;
 import be.feastorders.menuitem.entity.MenuItem;
+import be.feastorders.printer.entity.PrinterCfg;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -40,6 +43,13 @@ public class Category extends BaseEntity {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<MenuItem> menuItems = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name = "CATEGORY_PRINTERCFG",
+            joinColumns = @JoinColumn(name = "CATEGORY_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRINTERCFG_ID")
+    )
+    private List<PrinterCfg> printerCfgs = new ArrayList<>();
 
     @Override
     public Long getID() {
