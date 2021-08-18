@@ -6,6 +6,9 @@ import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.service.MenuItemService;
+import be.feastorders.printer.dto.PrinterCfgDTO;
+import be.feastorders.printer.entity.PrinterCfg;
+import be.feastorders.printer.service.PrinterCfgService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -29,46 +32,63 @@ public class CategoryController {
     @Autowired
     private MenuItemService menuItemService;
 
+    @Autowired
+    private PrinterCfgService printerCfgService;
+
     @ApiOperation("get categories")
     @ApiResponse(code = 200, message = "categories found", response = List.class)
     @GetMapping
-    public List<CategoryDTO> getCategories() {
+    public ResponseEntity<List<CategoryDTO>> getCategories() {
         List<CategoryDTO> categories = categoryService.findAll().stream().map(CategoryDTO::new).collect(Collectors.toList());
-        return categories;
+        return ResponseEntity.ok(categories);
     }
 
     @ApiOperation("get category")
     @ApiResponse(code = 200, message = "category found", response = CategoryDTO.class)
     @GetMapping("/{id}")
-    public CategoryDTO findById(@PathVariable Long id) {
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
         Category category = categoryService.read(id);
-        return new CategoryDTO(category);
+        return ResponseEntity.ok(new CategoryDTO(category));
     }
 
     @ApiOperation("create category")
     @ApiResponse(code = 200, message = "category created", response = CategoryDTO.class)
     @PostMapping
-    public CategoryDTO create(@RequestBody CategoryDTO categoryDTO) {
-        Category category = Category.builder()
-                .name(categoryDTO.getName())
-                .color(categoryDTO.getColor())
-                .description(categoryDTO.getDescription())
-                .build();
+    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO categoryDTO) {
+        Category category = new Category();
+        category.setName(categoryDTO.getName());
+        category.setDescription(category.getDescription());
+        category.setColor(categoryDTO.getColor());
+        if (categoryDTO.getPrinterCfgList() != null && !categoryDTO.getPrinterCfgList().isEmpty()) {
+            List<PrinterCfg> printerCfgList = categoryDTO.getPrinterCfgList().stream().map(dto -> {
+                return printerCfgService.read(dto.getID());
+            }).collect(Collectors.toList());
+            category.getPrinterCfgs().addAll(printerCfgList);
+        }
+
         category = categoryService.create(category);
-        return new CategoryDTO(category);
+        return ResponseEntity.ok(new CategoryDTO(category));
     }
 
     @ApiOperation("update category")
     @ApiResponse(code = 200, message = "category updated", response = CategoryDTO.class)
     @PutMapping("/{id}")
-    public CategoryDTO update(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
+    public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
         Category category = categoryService.read(id);
         category.setName(categoryDTO.getName());
         category.setColor(categoryDTO.getColor());
         category.setDescription(categoryDTO.getDescription());
 
+        if (categoryDTO.getPrinterCfgList() != null && !categoryDTO.getPrinterCfgList().isEmpty()) {
+            List<PrinterCfg> printerCfgList = categoryDTO.getPrinterCfgList().stream().map(dto -> {
+                return printerCfgService.read(dto.getID());
+            }).collect(Collectors.toList());
+            category.getPrinterCfgs().clear();
+            category.getPrinterCfgs().addAll(printerCfgList);
+        }
+
         category = categoryService.update(category);
-        return new CategoryDTO(category);
+        return ResponseEntity.ok(new CategoryDTO(category));
     }
 
     @ApiOperation("delete category")
