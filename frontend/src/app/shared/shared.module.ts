@@ -1,31 +1,19 @@
-import { OrderCardComponent } from './component/order-card/order-card.component';
-import { OrderPanelComponent } from './component/order-panel/order-panel.component';
-import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from '../app-routing.module';
-import {DeleteDirective, DoneDirective, ProgressDirective, TodoDirective} from './directive/button.directive';
-
 @NgModule({
   declarations: [
     NavbarComponent,
-    DashboardComponent,
-    OrderPanelComponent,
-    OrderCardComponent,
-    TodoDirective,
-    ProgressDirective,
-    DoneDirective,
-    DeleteDirective
+    PageNotFoundComponent
   ],
   imports: [
-    CommonModule,
-    AppRoutingModule
+    CommonModule
   ],
   exports: [
     NavbarComponent,
-    DashboardComponent,
-    OrderPanelComponent
+    PageNotFoundComponent,
+    CommonModule
   ]
 })
 export class SharedModule { }

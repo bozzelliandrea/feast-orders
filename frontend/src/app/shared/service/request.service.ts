@@ -1,5 +1,6 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +15,13 @@ export class RequestService {
     const context: string = environment.api.context ? `/${environment.api.context}` : '';
 
     return hostname + port + context;
+  }
+
+  static get baseHttpOptions(): { headers: HttpHeaders } {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
   }
 }

@@ -38,7 +38,5 @@ public class OrderDTO extends AbstractDTO {
         this.progressNumber = entity.getProgressNumber();
         this.discount = entity.getDiscount();
         this.total = entity.getTotal();
-        if (!CollectionUtils.isEmpty(entity.getMenuItems()))
-            this.menuItemList = entity.getMenuItems().stream().map(MenuItemDTO::new).collect(Collectors.toList());
     }
 }

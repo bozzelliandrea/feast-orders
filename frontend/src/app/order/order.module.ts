@@ -1,15 +1,17 @@
+import { OrderFormComponent } from './component/order-form/order-form.component';
+import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { OrderComponent } from './component/order/order.component';
 import { OrderRoutingModule } from './order-routing.module';
 
 @NgModule({
   declarations: [
-    OrderComponent
+    OrderComponent,
+    OrderFormComponent
   ],
   imports: [
-    CommonModule,
-    OrderRoutingModule
+    OrderRoutingModule,
+    SharedModule
   ]
 })
 export class OrderModule { }
