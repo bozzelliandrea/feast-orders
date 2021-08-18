@@ -1,1 +1,27 @@
-<p>order works!</p>
+<div class="px-2">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-auto">
+        <button type="button" class="btn btn-primary" (click)="onFormNavigation()">Nuovo Ordine</button>
+      </div>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Tavolo</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Totale</th>
+        <th scope="col">Data Ordine</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders$ | async;">
+        <th scope="row">{{order?.tableNumber}}</th>
+        <td>{{order?.client}}</td>
+        <td>{{order?.total}}</td>
+        <td>{{order?.orderTime}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
