@@ -57,7 +57,7 @@ public class CategoryController {
     public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.getName());
-        category.setDescription(category.getDescription());
+        category.setDescription(categoryDTO.getDescription());
         category.setColor(categoryDTO.getColor());
         if (categoryDTO.getPrinterCfgList() != null && !categoryDTO.getPrinterCfgList().isEmpty()) {
             List<PrinterCfg> printerCfgList = categoryDTO.getPrinterCfgList().stream().map(dto -> {

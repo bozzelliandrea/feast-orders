@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "run-host": "ng serve --host 0.0.0.0 --disable-host-check",
+    "prod": "ng serve --configuration production"
   },
   "private": true,
   "dependencies": {

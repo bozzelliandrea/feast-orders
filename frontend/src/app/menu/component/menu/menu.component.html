@@ -1,1 +1,74 @@
-<p>menu works!</p>
+<div class="container">
+    <!-- Category creation -->
+    <h3>Nuova Categoria</h3>
+    <form [formGroup]="categoryForm" (ngSubmit)="addNewCategory()">
+        <div class="row align-items-end">
+            <div class="col-6">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" formControlName="name" class="form-control" id="name">
+            </div>
+            <div class="col-6">
+                <label for="description" class="form-label">Descrizione</label>
+                <input type="text" formControlName="description" class="form-control" id="description">
+            </div>
+            <div class="col-6">
+                <label for="color" class="form-label">Colore</label>
+                <select formControlName="color" class="form-select" id="color">
+                    <option value="primary">Blu</option>
+                    <option value="secondary">Grigio</option>
+                    <option value="success">Verde</option>
+                    <option value="danger">Rosso</option>
+                    <option value="warning">Giallo</option>
+                    <option value="info">Azzurro</option>
+                    <option value="dark">Nero</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
+                    <span class="material-icons-outlined">add</span>
+                    <span class="text">Aggiungi</span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <!-- Category card list -->
+    <h3 class="mt-3">Gestione Listino</h3>
+    <ng-container *ngFor="let category of category$ | async">
+        <div class="row card my-3" [ngClass]="'border-'+category?.color">
+            <div class="card-header fw-bold text-uppercase">
+                <div class="row">
+                    <div class="col-5">
+                        {{category?.name}}
+                    </div>
+                    <div class="col-2">
+                        <button type="button" (click)="editCategory(category)"
+                            class="btn btn-outline-primary d-flex justify-content-around align-items-center">
+                            <span class="material-icons-outlined">add</span>
+                            <span class="r-button-text">Aggiungi Prodotto</span>
+                        </button>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" (click)="editCategory(category)"
+                            class="btn btn-outline-primary d-flex justify-content-around align-items-center">
+                            <span class="material-icons-outlined">edit</span>
+                            <span class="r-button-text">Modifica Categoria</span>
+                        </button>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" (click)="deleteCategory(category)"
+                            class="btn btn-outline-primary d-flex justify-content-around align-items-center">
+                            <span class="material-icons-outlined">delete</span>
+                            <span class="r-button-text">Elimina Categoria</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h6 class="card-subtitle mt-3 text-muted">{{category?.description}}</h6>
+            <div class="card-body">
+                <h5 class="card-title">Primary card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+            </div>
+        </div>
+    </ng-container>
+</div>
