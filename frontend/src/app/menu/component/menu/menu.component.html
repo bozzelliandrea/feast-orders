@@ -33,7 +33,7 @@
     </form>
     <!-- Category card list -->
     <h3 class="mt-3">Gestione Listino</h3>
-    <ng-container *ngFor="let category of category$ | async">
+    <ng-container *ngFor="let category of categoryList">
         <div class="row card my-3" [ngClass]="'border-'+category?.color">
             <div class="card-header fw-bold text-uppercase">
                 <div class="row">
@@ -41,7 +41,7 @@
                         {{category?.name}}
                     </div>
                     <div class="col-2">
-                        <button type="button" (click)="editCategory(category)"
+                        <button type="button" (click)="addMenuItem(category)"
                             class="btn btn-outline-primary d-flex justify-content-around align-items-center">
                             <span class="material-icons-outlined">add</span>
                             <span class="r-button-text">Aggiungi Prodotto</span>
@@ -63,11 +63,23 @@
                     </div>
                 </div>
             </div>
-            <h6 class="card-subtitle mt-3 text-muted">{{category?.description}}</h6>
+            <h6 class="card-subtitle mt-3">{{category?.description}}</h6>
             <div class="card-body">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
+                <ng-container *ngFor="let item of category.menuItemList">
+                    <div class="row my-1 border border-1 border-start-0 border-bottom-0 rounded-top" [ngClass]="'border-'+category?.color">
+                        <div class="col-2">{{item.name}}</div>
+                        <div class="col-2">{{item.description}}</div>
+                        <div class="col-2">{{item.price}}</div>
+                        <div class="col-2">quantity</div>
+                        <div class="col-2 d-flex align-content-center align-items-center justify-content-center">
+                            <span class="material-icons-outlined icon-button" (click)="editMenuItem(category, item)">edit</span>
+                        </div>
+                        <div class="col-2 d-flex align-content-center align-items-center justify-content-center">
+                            <span class="material-icons-outlined icon-button" (click)="deleteMenyItem(category, item)">delete</span>
+                        </div>
+                    </div>
+                </ng-container>
+                <p *ngIf="!category.menuItemList.length" class="mt-3 text-muted">Nessun prodotto inserito.</p>
             </div>
         </div>
     </ng-container>

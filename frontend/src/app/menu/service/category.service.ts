@@ -45,7 +45,7 @@ export class CategoryService extends RequestService implements CRUDService<Categ
 
   update(dto: Category): Observable<Category> {
 
-    return this._http.put(this._getUrl(), dto, RequestService.baseHttpOptions).pipe(
+    return this._http.put(this._getUrl(dto.id), dto, RequestService.baseHttpOptions).pipe(
       map((res: any) => {
         return (res || {}) as Category
       })

@@ -24,17 +24,15 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
         this.repository = repository;
     }
 
-    public void saveMenuItemDTOListWithCategory(List<MenuItemDTO> menuItemDTOList, Category category) {
+    public void saveMenuItemDTOWithCategory(MenuItemDTO menuItemDTO, Category category) {
 
         category.getMenuItems().clear();
 
         List<MenuItem> menuItemList = new ArrayList<>();
 
-        for (MenuItemDTO dto : menuItemDTOList) {
-            MenuItem mn = menuItemDTO2Entity(dto);
-            mn.setCategory(category);
-            menuItemList.add(mn);
-        }
+        MenuItem mn = menuItemDTO2Entity(menuItemDTO);
+        mn.setCategory(category);
+        menuItemList.add(mn);
 
         repository.saveAll(menuItemList);
     }
@@ -93,20 +91,6 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
             entity.setVersion(dto.getVersion());
 
         return entity;
-    }
-
-    public MenuItemDTO readMenuItemByOrderIdAndItemId(Long orderID, Long menuItemID) {
-
-        Objects.requireNonNull(orderID, "Order ID param cannot be null!");
-        Objects.requireNonNull(menuItemID, "Menu Item ID param cannot be null!");
-
-        MenuItem entity = repository.readMenuItemByIdAndOrderId(orderID, menuItemID);
-
-        if (Objects.isNull(entity)) {
-            throw new EntityNotFoundException("No entity was found with ID:" + menuItemID + " for order: " + orderID);
-        }
-
-        return new MenuItemDTO(entity);
     }
 
     public List<MenuItemDTO> findAllMenuItemByOrderId(Long orderID) {

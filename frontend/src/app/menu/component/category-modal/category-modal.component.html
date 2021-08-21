@@ -1,0 +1,36 @@
+<div class="category-modal">
+
+    <div class="category-modal_content">
+        <h3>{{title}}</h3>
+
+        <form [formGroup]="categoryForm">
+            <div class="row align-items-end">
+                <div class="col-6">
+                    <label for="name" class="form-label">Nome</label>
+                    <input type="text" formControlName="name" class="form-control" id="name">
+                </div>
+                <div class="col-6">
+                    <label for="description" class="form-label">Descrizione</label>
+                    <input type="text" formControlName="description" class="form-control" id="description">
+                </div>
+                <div class="col-6">
+                    <label for="color" class="form-label">Colore</label>
+                    <select formControlName="color" class="form-select" id="color">
+                        <option value="primary">Blu</option>
+                        <option value="secondary">Grigio</option>
+                        <option value="success">Verde</option>
+                        <option value="danger">Rosso</option>
+                        <option value="warning">Giallo</option>
+                        <option value="info">Azzurro</option>
+                        <option value="dark">Nero</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        <div class="category-modal_footer">
+            <button type="button" class="btn btn-secondary" (click)="close()">Annulla</button>
+            <button type="button" class="btn btn-primary" (click)="save()">Salva</button>
+        </div>
+    </div>
+</div>

@@ -34,9 +34,6 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         if (Objects.nonNull(dto.getPlaceSettingNumber()))
             entity.setPlaceSettingNumber(dto.getPlaceSettingNumber());
 
-        if (Objects.nonNull(dto.getOrderTime()))
-            entity.setOrderTime(dto.getOrderTime());
-
         if (Objects.nonNull(dto.getProgressNumber()))
             entity.setProgressNumber(dto.getProgressNumber());
 

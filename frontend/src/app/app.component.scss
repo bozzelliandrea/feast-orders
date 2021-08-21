@@ -1,5 +1,5 @@
 .dashboard-container {
     height: calc(100vh - 70px); // right value is the navbar height
-    background: rgb(230, 242, 250);
+    background: var(--bs-gray-100);
     overflow: auto;
 }

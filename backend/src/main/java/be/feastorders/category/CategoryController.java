@@ -6,7 +6,6 @@ import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.service.MenuItemService;
-import be.feastorders.printer.dto.PrinterCfgDTO;
 import be.feastorders.printer.entity.PrinterCfg;
 import be.feastorders.printer.service.PrinterCfgService;
 import io.swagger.annotations.ApiOperation;
@@ -142,7 +141,7 @@ public class CategoryController {
     @ApiOperation("create menu item into selected category")
     @ApiResponse(code = 200, message = "list of menu item created", response = ResponseEntity.class)
     @PostMapping("/{id}/menuitem")
-    public ResponseEntity<List<MenuItemDTO>> createMenuItem(@RequestBody List<MenuItemDTO> menuItemDTOList,
+    public ResponseEntity<List<MenuItemDTO>> createMenuItem(@RequestBody MenuItemDTO menuItemDTO,
                                                             @ApiParam(name = "category ID",
                                                                     type = "Long",
                                                                     allowEmptyValue = false,
@@ -152,7 +151,7 @@ public class CategoryController {
 
         Category category = categoryService.read(categoryID);
 
-        menuItemService.saveMenuItemDTOListWithCategory(menuItemDTOList, category);
+        menuItemService.saveMenuItemDTOWithCategory(menuItemDTO, category);
 
         return ResponseEntity.ok(menuItemService.findAllMenuItemByCategoryId(categoryID));
 
@@ -161,7 +160,7 @@ public class CategoryController {
     @ApiOperation("update menu item with new properties by category id and item id")
     @ApiResponse(code = 200, message = "menu item updated", response = ResponseEntity.class)
     @PutMapping("/{id}/menuitem/{itemId}")
-    public ResponseEntity<MenuItemDTO> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO,
+    public ResponseEntity<List<MenuItemDTO>> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO,
                                                       @ApiParam(name = "category ID",
                                                               type = "Long",
                                                               allowEmptyValue = false,
@@ -179,7 +178,8 @@ public class CategoryController {
         MenuItemService.updateMenuItemEntityProperties(oldMenuItem,
                 MenuItemService.menuItemDTO2Entity(menuItemDTO));
 
-        return ResponseEntity.ok(new MenuItemDTO(menuItemService.update(oldMenuItem)));
+        menuItemService.update(oldMenuItem);
+        return ResponseEntity.ok(menuItemService.findAllMenuItemByCategoryId(categoryID));
     }
 
     @ApiOperation("remove one menu item from category")

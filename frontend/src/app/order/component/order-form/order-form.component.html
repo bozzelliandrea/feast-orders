@@ -1,38 +1,39 @@
 <div class="container">
     <h3>Nuovo Ordine</h3>
     <!-- order data form -->
-    <div class="row">
-        <div class="col">
-            <label for="client" class="form-label">Cliente</label>
-            <input type="text" class="form-control" id="client">
+    <form [formGroup]="orderForm">
+        <div class="row">
+            <div class="col">
+                <label for="client" class="form-label">Cliente</label>
+                <input type="text" formControlName="client" class="form-control" id="client">
+            </div>
+            <div class="col">
+                <label for="placeNumber" class="form-label">Coperti</label>
+                <input type="number" formControlName="placeSettingNumber" class="form-control" id="placeNumber">
+            </div>
+            <div class="col">
+                <label for="tableNumber" class="form-label">Tavolo</label>
+                <input type="number" formControlName="tableNumber" class="form-control" id="tableNumber">
+            </div>
         </div>
-        <div class="col">
-            <label for="placeNumber" class="form-label">Coperti</label>
-            <input type="text" class="form-control" id="placeNumber">
+        <div class="row mt-1">
+            <div class="col">
+                <label for="cashier" class="form-label">Cassiere</label>
+                <input type="text" class="form-control" id="cashier">
+            </div>
+            <div class="col">
+                <label for="note" class="form-label">Note Ordine</label>
+                <input type="text" class="form-control" id="note">
+            </div>
+            <div class="col align-self-center">
+                <label for="export" class="form-label">Asporto</label>
+                <select class="form-select" id="export">
+                    <option value="false" selected>No</option>
+                    <option value="true">Si</option>
+                </select>
+            </div>
         </div>
-        <div class="col">
-            <label for="tableNumber" class="form-label">Tavolo</label>
-            <input type="text" class="form-control" id="tableNumber">
-        </div>
-    </div>
-    <div class="row mt-1">
-        <div class="col">
-            <label for="cashier" class="form-label">Cassiere</label>
-            <input type="text" class="form-control" id="cashier">
-        </div>
-        <div class="col">
-            <label for="note" class="form-label">Note Ordine</label>
-            <input type="text" class="form-control" id="note">
-        </div>
-        <div class="col align-self-center">
-            <label for="export" class="form-label">Asporto</label>
-            <select class="form-select" id="export">
-                <option value="false" selected>No</option>
-                <option value="true">Si</option>
-            </select>
-        </div>
-    </div>
-
+    </form>
     <!-- left order detail table and menu items -->
     <div id="menu-item__container">
         <div class="menu-item__container-item ">
@@ -46,95 +47,71 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Riso</td>
-                        <td>150gr</td>
-                        <th scope="row">0.99</th>
-                        <td>per Boz</td>
-                    </tr>
-                    <tr>
-                        <td>Pollo</td>
-                        <td>250gr</td>
-                        <th scope="row">3.99</th>
-                        <td>per Boz</td>
-                    </tr>
-                    <tr>
-                        <td>ClenButerolo</td>
-                        <td>1gr</td>
-                        <th scope="row">25.00</th>
-                        <td>una dose al giorno</td>
+                    <tr *ngFor="let item of orderItemList">
+                        <td>{{item.menuItem?.name}}</td>
+                        <td>{{item?.quantity}}</td>
+                        <th scope="row">{{item?.totalPrice}}</th>
+                        <td>{{item?.note}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="menu-item__container-item ">
-            <div class="card menu-item__card-category--container">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Primi</h6>
-                    <button type="button" class="btn btn-primary">Riso</button>
-                    <button type="button" class="btn btn-primary">Pasta</button>
-                    <button type="button" class="btn btn-primary">Cus Cus</button>
+
+            <ng-container *ngFor="let category of categoryList">
+                <div class="card menu-item__card-category--container">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">{{category?.name}}</h6>
+                        <ng-container *ngFor="let item of category.menuItemList">
+                            <button type="button" class="btn btn-primary" (click)="addItemToOrder(category, item)">
+                                {{item?.name}}
+                            </button>
+                        </ng-container>
+                    </div>
                 </div>
-            </div>
-            <div class="card menu-item__card-category--container">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Secondi</h6>
-                    <button type="button" class="btn btn-primary">Manzo</button>
-                    <button type="button" class="btn btn-primary">Pollo</button>
-                    <button type="button" class="btn btn-primary">Uova</button>
-                    <button type="button" class="btn btn-primary">Albume</button>
-                </div>
-            </div>
-            <div class="card menu-item__card-category--container">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Bibite</h6>
-                    <button type="button" class="btn btn-primary">Clear Whey</button>
-                    <button type="button" class="btn btn-primary">Alphatech</button>
-                    <button type="button" class="btn btn-primary">ClenButerolo</button>
-                    <button type="button" class="btn btn-primary">GH</button>
-                    <button type="button" class="btn btn-primary">Yamamoto HydroRazan</button>
-                </div>
-            </div>
+            </ng-container>
         </div>
     </div>
 
     <!-- total price info -->
     <div id="price__container">
-            <b>Totale</b>
-            <div class="input-group">
-                <span class="input-group-text">€</span>
-                <input type="text" readonly value="300" class="form-control">
-            </div>
-            <span>Totale Pagato</span>
-            <div class="input-group">
-                <span class="input-group-text">€</span>
-                <input type="text" class="form-control">
-            </div>
-            <span>Resto</span>
-            <div class="input-group">
-                <span class="input-group-text">€</span>
-                <span class="input-group-text">300.00</span>
-            </div>
+        <b>Totale</b>
+        <div class="input-group">
+            <span class="input-group-text">€</span>
+            <input type="text" readonly value="300" class="form-control">
+        </div>
+        <span>Totale Pagato</span>
+        <div class="input-group">
+            <span class="input-group-text">€</span>
+            <input type="text" class="form-control">
+        </div>
+        <span>Resto</span>
+        <div class="input-group">
+            <span class="input-group-text">€</span>
+            <span class="input-group-text">300.00</span>
+        </div>
     </div>
 
     <!-- footer action button -->
     <div class="row d-flex justify-content-end my-3">
         <div class="col-auto">
-            <button type="button"
+            <button type="button" (click)="goBack()"
                 class="btn btn-outline-secondary mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">cancel</span>
                 <span class="r-button-text">Annulla</span>
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-primary mx-1 d-flex justify-content-around align-items-center">
+            <button type="button" (click)="save()"
+                class="btn btn-primary mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">save</span>
                 <span class="r-button-text">Salva</span>
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-success mx-1 d-flex justify-content-around align-items-center">
+            <button type="button" (click)="saveAndPrint()"
+                class="btn btn-success mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">save</span>
                 <span class="material-icons-outlined">print</span>
                 <span class="r-button-text">Salva e Stampa</span>
