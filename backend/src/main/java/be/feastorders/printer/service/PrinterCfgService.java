@@ -7,17 +7,12 @@ import be.feastorders.printer.entity.PrinterCfg;
 import be.feastorders.printer.entity.PrinterCfgAttribute;
 import be.feastorders.printer.entity.PrinterCfgAttributePk;
 import be.feastorders.printer.repository.PrinterAttrRepository;
-import be.feastorders.printer.repository.PrinterCfgAttrRepository;
 import be.feastorders.printer.repository.PrinterCfgRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {

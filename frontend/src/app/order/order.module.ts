@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { OrderFormComponent } from './component/order-form/order-form.component';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -11,7 +12,8 @@ import { OrderRoutingModule } from './order-routing.module';
   ],
   imports: [
     OrderRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class OrderModule { }

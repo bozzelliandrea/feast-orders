@@ -13,18 +13,9 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     List<MenuItem> findByCategoryID(Long categoryId);
 
-    @Query("SELECT m " +
-            "FROM MenuItem m " +
-            "JOIN m.orders o " +
-            "JOIN o.menuItems " +
-            "WHERE m.ID = :itemId AND o.ID = :orderId")
-    MenuItem readMenuItemByIdAndOrderId(@Param("orderId") Long orderID,
-                                        @Param("itemId") Long menuItemID);
-
-    @Query("SELECT m " +
-            "FROM MenuItem m " +
-            "JOIN m.orders o " +
-            "JOIN o.menuItems " +
+    @Query("SELECT od.menuItem " +
+            "FROM OrderItemDetail od " +
+            "JOIN od.order o " +
             "WHERE o.ID = :orderId")
     List<MenuItem> findMenuItemsByOrderId(@Param("orderId") Long orderID);
 }

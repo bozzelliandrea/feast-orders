@@ -22,7 +22,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.orders$ = this._orderService.getAllOrders();
+    this.orders$ = this._orderService.getAll();
   }
 
   ngOnDestroy(): void {

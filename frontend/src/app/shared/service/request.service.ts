@@ -1,13 +1,18 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { ApiResourceEnum } from '../enums/api-resource.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
 
-  constructor() { }
+  private _resource: ApiResourceEnum;
+
+  constructor(resource: ApiResourceEnum) {
+    this._resource = resource;
+  }
 
   static get baseUrl(): string {
     const hostname: string = environment.api.protocol + '://' + environment.api.hostname;
@@ -23,5 +28,12 @@ export class RequestService {
         'Content-Type': 'application/json'
       })
     };
+  }
+
+  protected _getUrl(id?: number): string {
+    if (id)
+      return `${RequestService.baseUrl}/${this._resource}/${id}`;
+    else
+      return `${RequestService.baseUrl}/${this._resource}`;
   }
 }

@@ -1,18 +1,15 @@
 package be.feastorders.order.entity;
 
-import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.core.entity.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import be.feastorders.printer.entity.PrinterCfgAttribute;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -44,10 +41,6 @@ public class Order extends BaseEntity {
     private Long placeSettingNumber;
 
     @NotNull
-    @Column(name = "ORDER_TIME", nullable = false)
-    private ZonedDateTime orderTime;
-
-    @NotNull
     @Column(name = "PROGRESS_NUMBER", nullable = false)
     private Long progressNumber;
 
@@ -59,12 +52,9 @@ public class Order extends BaseEntity {
     @Column(name = "TOTAL", nullable = false)
     private Float total;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinTable(name = "ORDER_MENU_ITEM",
-            joinColumns = @JoinColumn(name = "APP_ORDER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "MENU_ITEM_ID")
-    )
-    private List<MenuItem> menuItems = new ArrayList<>();
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<OrderItemDetail> orderItemDetails;
 
     @Override
     public Long getID() {

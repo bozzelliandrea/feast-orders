@@ -5,40 +5,55 @@ import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 import { Order } from '../interface/order.interface';
 import { ApiResourceEnum } from 'src/app/shared/enums/api-resource.enum';
+import { CRUDService } from 'src/app/shared/interface/crud-service.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class OrderService extends RequestService implements CRUDService<Order> {
 
-  constructor(private _http: HttpClient) { }
-
-  public getAllOrders(): Observable<Order[]> {
-
-    return this._http.get(this._getUrl(), RequestService.baseHttpOptions)
-      .pipe(
-        map((res: any) => {
-          return (res || []) as Order[];
-        }
-        )
-      );
+  constructor(private _http: HttpClient) {
+    super(ApiResourceEnum.ORDER);
   }
 
-  public getOrderById(id: number): Observable<Order> {
+  public getAll(): Observable<Order[]> {
 
-    return this._http.get(this._getUrl(id), RequestService.baseHttpOptions)
-      .pipe(
-        map((res: any) => {
-          return (res || {}) as Order;
-        }
-        )
-      );
+    return this._http.get(this._getUrl(), RequestService.baseHttpOptions).pipe(
+      map((res: any) => {
+        return (res || []) as Order[];
+      })
+    );
   }
 
-  private _getUrl(id?: number) {
-    if (id)
-      return `${RequestService.baseUrl}/${ApiResourceEnum.ORDER}/${id}`;
-    else
-      return `${RequestService.baseUrl}/${ApiResourceEnum.ORDER}`;
+  public getById(id: number): Observable<Order> {
+
+    return this._http.get(this._getUrl(id), RequestService.baseHttpOptions).pipe(
+      map((res: any) => {
+        return (res || {}) as Order;
+      })
+    );
+  }
+
+  public create(dto: Order): Observable<Order> {
+
+    return this._http.post(this._getUrl(), dto, RequestService.baseHttpOptions).pipe(
+      map((res: any) => {
+        return (res || {}) as Order
+      })
+    );
+  }
+
+  public update(dto: Order): Observable<Order> {
+
+    return this._http.put(this._getUrl(), dto, RequestService.baseHttpOptions).pipe(
+      map((res: any) => {
+        return (res || {}) as Order
+      })
+    );
+  }
+
+  public delete(id: number): Observable<any> {
+    
+    return this._http.delete(this._getUrl(id), RequestService.baseHttpOptions);
   }
 }

@@ -2,6 +2,7 @@ package be.feastorders.printer.service;
 
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.order.entity.Order;
+import be.feastorders.order.entity.OrderItemDetail;
 import com.lowagie.text.DocumentException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -33,7 +34,6 @@ public class ReportService {
         templateEngine.setTemplateResolver(templateResolver);
 
         Order order = new Order();
-        order.setOrderTime(ZonedDateTime.now());
         order.setClient("Rizzaccio");
         order.setTableNumber(1L);
         order.setProgressNumber(100L);
@@ -42,9 +42,16 @@ public class ReportService {
         MenuItem menuItem = new MenuItem();
         menuItem.setName("Birra media bionda");
         menuItem.setPrice(5f);
-        List<MenuItem> menuItemList = new ArrayList<>();
-        menuItemList.add(menuItem);
-        order.setMenuItems(menuItemList);
+
+        OrderItemDetail orderItemDetail = new OrderItemDetail();
+        orderItemDetail.setOrder(order);
+        orderItemDetail.setMenuItem(menuItem);
+        orderItemDetail.setQuantity(1L);
+        orderItemDetail.setTotalPrice(10f);
+
+        List<OrderItemDetail> orderItemDetails = new ArrayList<>();
+        orderItemDetails.add(orderItemDetail);
+        order.setOrderItemDetails(orderItemDetails);
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("order", order);
