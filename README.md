@@ -24,3 +24,8 @@ http://localhost:8081/api/h2
 * URL: jdbc:h2:mem:devdb
 * user: dev
 * password: 
+
+# Application URL
+
+* FE : http://localhost:8080/
+* BE : http://localhost:8081/
