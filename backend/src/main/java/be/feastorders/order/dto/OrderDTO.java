@@ -20,20 +20,21 @@ public class OrderDTO extends AbstractDTO {
     private String client;
     private Long tableNumber;
     private Long placeSettingNumber;
-    private ZonedDateTime orderTime;
-    private Long progressNumber;
-    private Long discount;
+    private String note;
+    private String cashier;
     private Float total;
+    private Boolean takeAway = false;
     private List<OrderItemDetailDTO> menuItemList;
-    private Boolean printOrder;
+    private Boolean printOrder = false;
 
     public OrderDTO(Order entity) {
         super(entity);
         this.client = entity.getClient();
         this.tableNumber = entity.getTableNumber();
         this.placeSettingNumber = entity.getPlaceSettingNumber();
-        this.progressNumber = entity.getProgressNumber();
-        this.discount = entity.getDiscount();
+        this.note = entity.getNote();
+        this.cashier = entity.getCashier();
         this.total = entity.getTotal();
+        this.takeAway = entity.getTakeAway();
     }
 }

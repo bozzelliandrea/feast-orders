@@ -5,6 +5,8 @@ import be.feastorders.core.service.BaseCRUDService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.repository.MenuItemRepository;
+import be.feastorders.order.dto.OrderItemDetailDTO;
+import be.feastorders.order.entity.OrderItemDetail;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -93,16 +95,16 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
         return entity;
     }
 
-    public List<MenuItemDTO> findAllMenuItemByOrderId(Long orderID) {
+    public List<OrderItemDetailDTO> findAllMenuItemByOrderId(Long orderID) {
 
         Objects.requireNonNull(orderID, "Order ID param cannot be null!");
 
-        List<MenuItem> entityList = repository.findMenuItemsByOrderId(orderID);
+        List<OrderItemDetail> entityList = repository.findMenuItemsByOrderId(orderID);
 
         if (Objects.isNull(entityList) || CollectionUtils.isEmpty(entityList)) {
             return new ArrayList<>();
         } else {
-            return entityList.stream().map(MenuItemDTO::new).collect(Collectors.toList());
+            return entityList.stream().map(OrderItemDetailDTO::new).collect(Collectors.toList());
         }
     }
 

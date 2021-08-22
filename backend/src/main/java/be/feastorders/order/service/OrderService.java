@@ -34,11 +34,11 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         if (Objects.nonNull(dto.getPlaceSettingNumber()))
             entity.setPlaceSettingNumber(dto.getPlaceSettingNumber());
 
-        if (Objects.nonNull(dto.getProgressNumber()))
-            entity.setProgressNumber(dto.getProgressNumber());
+        if (Objects.nonNull(dto.getCashier()))
+            entity.setCashier(dto.getCashier());
 
-        if (Objects.nonNull(dto.getDiscount()))
-            entity.setDiscount(dto.getDiscount());
+        if (Objects.nonNull(dto.getNote()))
+            entity.setNote(dto.getNote());
 
         if (Objects.nonNull(dto.getTotal()))
             entity.setTotal(dto.getTotal());

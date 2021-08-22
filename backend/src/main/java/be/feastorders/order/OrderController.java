@@ -68,8 +68,9 @@ public class OrderController {
                 .client(dto.getClient())
                 .tableNumber(dto.getTableNumber())
                 .placeSettingNumber(dto.getPlaceSettingNumber())
-                .progressNumber(dto.getProgressNumber())
-                .discount(dto.getDiscount())
+                .note(dto.getNote())
+                .cashier(dto.getCashier())
+                .takeAway(dto.getTakeAway())
                 .total(dto.getTotal())
                 .orderItemDetails(new ArrayList<>())
                 .build();
@@ -136,7 +137,7 @@ public class OrderController {
     @ApiOperation("Get all menu items in the selected order")
     @ApiResponse(code = 200, message = "return the menu item list", response = ResponseEntity.class)
     @GetMapping("/{id}/menuitem")
-    public ResponseEntity<List<MenuItemDTO>> getAllMenuItemByOrderId(@PathVariable("id") Long orderID) {
+    public ResponseEntity<List<OrderItemDetailDTO>> getAllMenuItemByOrderId(@PathVariable("id") Long orderID) {
 
         return ResponseEntity.ok(menuItemService.findAllMenuItemByOrderId(orderID));
     }

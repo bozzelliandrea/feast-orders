@@ -1,6 +1,7 @@
 package be.feastorders.menuitem.repository;
 
 import be.feastorders.menuitem.entity.MenuItem;
+import be.feastorders.order.entity.OrderItemDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,9 +14,9 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     List<MenuItem> findByCategoryID(Long categoryId);
 
-    @Query("SELECT od.menuItem " +
+    @Query("SELECT od " +
             "FROM OrderItemDetail od " +
             "JOIN od.order o " +
             "WHERE o.ID = :orderId")
-    List<MenuItem> findMenuItemsByOrderId(@Param("orderId") Long orderID);
+    List<OrderItemDetail> findMenuItemsByOrderId(@Param("orderId") Long orderID);
 }

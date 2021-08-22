@@ -1,12 +1,24 @@
 <div class="px-2">
   <div class="container">
-    <div class="row justify-content-end">
-      <div class="col-auto">
-        <button type="button" class="btn btn-primary" (click)="onFormNavigation()">Nuovo Ordine</button>
+    <div class="row">
+      <div class="col-4 d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" *ngIf="selectedOrder" (click)="onEditOrder()">
+          Modifica Ordine
+        </button>
+      </div>
+      <div class="col-4 d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" *ngIf="selectedOrder" (click)="onViewOrder()">
+          Visualizza Ordine
+        </button>
+      </div>
+      <div class="col-4 d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="onNewOrder()">
+          Nuovo Ordine
+        </button>
       </div>
     </div>
   </div>
-  <table class="table">
+  <table class="table my-3">
     <thead>
       <tr>
         <th scope="col">Tavolo</th>
@@ -16,7 +28,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let order of orders$ | async;">
+      <tr *ngFor="let order of orders$ | async;" 
+          (click)="onRowSelect(order)"
+          [ngClass]='{"table-secondary": order.id === selectedOrder?.id}'>
         <th scope="row">{{order?.tableNumber}}</th>
         <td>{{order?.client}}</td>
         <td>{{order?.total}}</td>

@@ -40,17 +40,18 @@ public class Order extends BaseEntity {
     @Column(name = "PLACE_SETTING_NUMBER", nullable = false)
     private Long placeSettingNumber;
 
-    @NotNull
-    @Column(name = "PROGRESS_NUMBER", nullable = false)
-    private Long progressNumber;
+    @Column(name = "NOTE")
+    private String note;
 
-    @NotNull
-    @Column(name = "DISCOUNT", nullable = false)
-    private Long discount;
+    @Column(name = "CASHIER")
+    private String cashier;
 
     @NotNull
     @Column(name = "TOTAL", nullable = false)
     private Float total;
+
+    @Column(name = "TAKEAWAY")
+    private Boolean takeAway;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
