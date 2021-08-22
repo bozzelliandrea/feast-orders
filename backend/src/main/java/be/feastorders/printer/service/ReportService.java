@@ -36,7 +36,7 @@ public class ReportService {
         Order order = new Order();
         order.setClient("Rizzaccio");
         order.setTableNumber(1L);
-        order.setProgressNumber(100L);
+        order.setCashier("Cassa");
         order.setPlaceSettingNumber(6L);
         order.setTotal(55.30f);
         MenuItem menuItem = new MenuItem();

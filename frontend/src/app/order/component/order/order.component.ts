@@ -13,6 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class OrderComponent implements OnInit, OnDestroy {
 
   public orders$: Observable<Order[]> | undefined;
+  public selectedOrder?: Order;
 
   private _subscription: Subscription = new Subscription();
 
@@ -29,7 +30,19 @@ export class OrderComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 
-  public onFormNavigation(): void {
-    this._router.navigate(['new'], {relativeTo: this._route});
+  public onNewOrder(): void {
+    this._router.navigate(['new'], { relativeTo: this._route });
+  }
+
+  public onEditOrder(): void {
+    this._router.navigate([ this.selectedOrder?.id, 'edit'], { relativeTo: this._route });
+  }
+
+  public onViewOrder(): void {
+    this._router.navigate([this.selectedOrder?.id], { relativeTo: this._route });
+  }
+
+  public onRowSelect(order: Order) {
+    this.selectedOrder = order;
   }
 }

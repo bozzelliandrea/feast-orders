@@ -19,79 +19,78 @@
         <div class="row mt-1">
             <div class="col">
                 <label for="cashier" class="form-label">Cassiere</label>
-                <input type="text" class="form-control" id="cashier">
+                <input type="text" formControlName="cashier" class="form-control" id="cashier">
             </div>
             <div class="col">
                 <label for="note" class="form-label">Note Ordine</label>
-                <input type="text" class="form-control" id="note">
+                <input type="text" formControlName="note" class="form-control" id="note">
             </div>
             <div class="col align-self-center">
                 <label for="export" class="form-label">Asporto</label>
-                <select class="form-select" id="export">
+                <select class="form-select" formControlName="takeAway" id="export">
                     <option value="false" selected>No</option>
                     <option value="true">Si</option>
                 </select>
             </div>
         </div>
-    </form>
-    <!-- left order detail table and menu items -->
-    <div id="menu-item__container">
-        <div class="menu-item__container-item ">
-            <table class="table">
-                <thead class="table-light">
-                    <tr>
-                        <th scope="col">Descrizione</th>
-                        <th scope="col">Quantità</th>
-                        <th scope="col">Totale</th>
-                        <th scope="col">Note</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of orderItemList">
-                        <td>{{item.menuItem?.name}}</td>
-                        <td>{{item?.quantity}}</td>
-                        <th scope="row">{{item?.totalPrice}}</th>
-                        <td>{{item?.note}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <!-- left order detail table and menu items -->
+        <div id="menu-item__container">
+            <div class="menu-item__container-item ">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Descrizione</th>
+                            <th scope="col">Quantità</th>
+                            <th scope="col">Totale</th>
+                            <th scope="col">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of orderItemList">
+                            <td>{{item.menuItem?.name}}</td>
+                            <td>{{item?.quantity}}</td>
+                            <th scope="row">{{item?.totalPrice}}</th>
+                            <td>{{item?.note}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="menu-item__container-item ">
-
-            <ng-container *ngFor="let category of categoryList">
-                <div class="card menu-item__card-category--container">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">{{category?.name}}</h6>
-                        <ng-container *ngFor="let item of category.menuItemList">
-                            <button type="button" class="btn btn-primary" (click)="addItemToOrder(category, item)">
-                                {{item?.name}}
-                            </button>
-                        </ng-container>
+            <div class="menu-item__container-item" [style.display]='mode === "VIEW" ? "none" : "block"'>
+                <ng-container *ngFor="let category of categoryList">
+                    <div class="card menu-item__card-category--container">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">{{category?.name}}</h6>
+                            <ng-container *ngFor="let item of category.menuItemList">
+                                <button type="button" class="btn btn-primary" (click)="addItemToOrder(category, item)">
+                                    {{item?.name}}
+                                </button>
+                            </ng-container>
+                        </div>
                     </div>
-                </div>
-            </ng-container>
+                </ng-container>
+            </div>
         </div>
-    </div>
 
-    <!-- total price info -->
-    <div id="price__container">
-        <b>Totale</b>
-        <div class="input-group">
-            <span class="input-group-text">€</span>
-            <input type="text" readonly value="300" class="form-control">
+        <!-- total price info -->
+        <div id="price__container">
+            <b>Totale</b>
+            <div class="input-group">
+                <span class="input-group-text">€</span>
+                <input type="text" formControlName="total" readonly class="form-control">
+            </div>
+            <span>Totale Pagato</span>
+            <div class="input-group">
+                <span class="input-group-text">€</span>
+                <input type="text" formControlName="totalPaid" class="form-control">
+            </div>
+            <span>Resto</span>
+            <div class="input-group">
+                <span class="input-group-text">€</span>
+                <input type="text" formControlName="rest" readonly class="form-control">
+            </div>
         </div>
-        <span>Totale Pagato</span>
-        <div class="input-group">
-            <span class="input-group-text">€</span>
-            <input type="text" class="form-control">
-        </div>
-        <span>Resto</span>
-        <div class="input-group">
-            <span class="input-group-text">€</span>
-            <span class="input-group-text">300.00</span>
-        </div>
-    </div>
+    </form>
 
     <!-- footer action button -->
     <div class="row d-flex justify-content-end my-3">
@@ -103,18 +102,25 @@
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" (click)="save()"
+            <button type="button" *ngIf='mode !== "VIEW"' (click)="save()"
                 class="btn btn-primary mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">save</span>
                 <span class="r-button-text">Salva</span>
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" (click)="saveAndPrint()"
+            <button type="button" *ngIf='mode !== "VIEW"' (click)="saveAndPrint()"
                 class="btn btn-success mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">save</span>
                 <span class="material-icons-outlined">print</span>
                 <span class="r-button-text">Salva e Stampa</span>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button type="button" *ngIf='mode === "VIEW"' (click)="print()"
+                class="btn btn-success mx-1 d-flex justify-content-around align-items-center">
+                <span class="material-icons-outlined">print</span>
+                <span class="r-button-text">Stampa Ordine</span>
             </button>
         </div>
     </div>
