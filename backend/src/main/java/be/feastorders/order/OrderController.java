@@ -1,24 +1,21 @@
 package be.feastorders.order;
 
 import be.feastorders.category.service.CategoryService;
-import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.dto.OrderItemDetailDTO;
 import be.feastorders.order.entity.Order;
 import be.feastorders.order.entity.OrderItemDetail;
 import be.feastorders.order.service.OrderService;
-import be.feastorders.printer.service.PrinterAsynchService;
+import be.feastorders.printer.entity.PrinterCfg;
+import be.feastorders.printer.service.PrinterAsyncService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -37,7 +34,7 @@ public class OrderController {
     private CategoryService categoryService;
 
     @Autowired
-    private PrinterAsynchService printerAsynchService;
+    private PrinterAsyncService printerAsyncService;
 
     @ApiOperation("Get all saved orders")
     @ApiResponse(code = 200, message = "return a list of orders", response = List.class)
@@ -92,10 +89,9 @@ public class OrderController {
         System.out.println("Order created!");
 
         if (dto.getPrintOrder()) {
-            // todo: add orchestration post creation, asynchronous
-            List<Order> orders = new ArrayList<>();
-            orders.add(order);
-            printerAsynchService.executePrintTasks(orders);
+            // print orchestration post creation, asynchronous
+            Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
+            printerAsyncService.executePrintTasks(printerCfgOrderMap);
         }
 
         System.out.println("returning order created!");

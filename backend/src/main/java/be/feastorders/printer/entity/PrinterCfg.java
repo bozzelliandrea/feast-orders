@@ -44,6 +44,9 @@ public class PrinterCfg extends BaseEntity {
     @ManyToMany(mappedBy = "printerCfgs", fetch = FetchType.LAZY)
     private List<Category> categories = new ArrayList<>();
 
+    @OneToOne
+    private ReportTemplate reportTemplate;
+
     @Override
     public Long getID() {
         return this.ID;

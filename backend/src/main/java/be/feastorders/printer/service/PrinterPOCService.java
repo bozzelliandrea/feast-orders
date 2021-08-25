@@ -45,7 +45,7 @@ public class PrinterPOCService {
     // print to a real printer
     public boolean print(String printerName, Map<String, String> params) {
         String filename = params.get("filename");
-        Objects.nonNull(filename);
+        Objects.requireNonNull(filename);
 
         PrintRequestAttributeSet attrs = getAttributes(params);
         PrintService ps = getPrinterService(printerName, attrs).orElseThrow(IllegalArgumentException::new);
@@ -58,8 +58,8 @@ public class PrinterPOCService {
         String outputFileName = params.get("outputFileName");
         String outputMimeType = params.get("outputMimeType");
 
-        Objects.nonNull(inputFileName);
-        Objects.nonNull(outputFileName);
+        Objects.requireNonNull(inputFileName);
+        Objects.requireNonNull(outputFileName);
 
         // Figure out what type of file we're printing
         DocFlavor inputFlavor = getFlavorFromFilename(inputFileName); //DocFlavor.INPUT_STREAM.AUTOSENSE;
@@ -91,9 +91,9 @@ public class PrinterPOCService {
         }
     }
 
-    public boolean printPdf(String printerName, Map<String, String> params) {
+    public boolean printPdf(String printerName, Map<String, String> params) throws IllegalArgumentException {
         String filename = params.get("filename");
-        Objects.nonNull(filename);
+        Objects.requireNonNull(filename);
 
         PrintService service = getPrinterServiceAwt(printerName).orElseThrow(IllegalArgumentException::new);
 
