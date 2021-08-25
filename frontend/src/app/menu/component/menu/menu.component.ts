@@ -4,11 +4,13 @@ import { MenuItemService } from './../../service/menu-item.service';
 import { CategoryModal } from '../category-modal/category-modal.component';
 import { ModalService } from './../../../shared/service/modal.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Category } from '../../interface/category.interface';
 import { CategoryService } from './../../service/category.service';
+import { PrinterCfgService } from 'src/app/printer/service/printercfg.service';
+import { PrinterCfg } from 'src/app/printer/interface/printercfg.interface';
 
 @Component({
   selector: 'menu',
@@ -18,6 +20,7 @@ import { CategoryService } from './../../service/category.service';
 export class MenuComponent implements OnInit {
 
   public categoryList: Array<Category> = new Array();
+  public printerCfgList: Array<PrinterCfg> = new Array();
 
   public categoryId: number | undefined;
   public categoryForm: FormGroup;
@@ -25,6 +28,7 @@ export class MenuComponent implements OnInit {
 
   constructor(private _categoryService: CategoryService,
     private _menuItemService: MenuItemService,
+    private _printerCfgService: PrinterCfgService,
     private _formBuilder: FormBuilder,
     private _modalService: ModalService) {
 
@@ -32,8 +36,22 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this._loadCategory();
+    this._loadPrinterCfg();
+  }
+
+  public onSelectionChange(event: any): void {
+    const checked = event.target.checked;
+    const id = +event.target.value;
+    const formControl: FormControl = this.categoryForm.controls["printerCfgList"] as FormControl;
+    const value: Array<PrinterCfg> = formControl.value || [];
+    if (checked) {
+      value.push({id} as PrinterCfg);
+    } else {
+      const index = value.findIndex(v => v.id === id);
+      value.splice(index, 1);
+    }
+    formControl.setValue(value);
   }
 
   public addNewCategory(): void {
@@ -46,6 +64,7 @@ export class MenuComponent implements OnInit {
         this._loadCategory();
       });
 
+    //TODO clean the switches
     this.categoryForm.reset();
   }
 
@@ -148,6 +167,14 @@ export class MenuComponent implements OnInit {
       });
   }
 
+  private _loadPrinterCfg(): void {
+    this._printerCfgService.getAll()
+      .pipe(first())
+      .subscribe((printerCfgList: PrinterCfg[]) => {
+        this.printerCfgList = printerCfgList;
+      });
+  }
+
   private _buildCategoryForm(): FormGroup {
     return this._formBuilder.group({
       id: [null],
@@ -159,7 +186,8 @@ export class MenuComponent implements OnInit {
       color: [null, Validators.required],
       name: [null, Validators.required],
       description: [null, Validators.required],
-      menuItemList: []
+      menuItemList: [],
+      printerCfgList: []
     })
   }
 }

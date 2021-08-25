@@ -8,7 +8,7 @@ const routes: Routes = [
   {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
   {path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule)},
   {path: 'menu', loadChildren: () => import('./menu/menu.module').then(m => m.MenuModule)},
-  {path: 'stations', loadChildren: () => import('./stations/stations.module').then(m => m.StationsModule)},
+  {path: 'printer', loadChildren: () => import('./printer/printer.module').then(m => m.PrinterModule)},
   {path: 'stats', loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule)},
   { path: '**', component: PageNotFoundComponent }
 ];
