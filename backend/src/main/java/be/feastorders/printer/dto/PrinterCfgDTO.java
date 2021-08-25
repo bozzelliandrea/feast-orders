@@ -22,6 +22,7 @@ public class PrinterCfgDTO extends AbstractDTO {
     private String description;
     private String printerName;
     private Map<String, String> attrs = new HashMap<>();
+    private String reportTemplate;
 
     public PrinterCfgDTO(PrinterCfg entity) {
         super(entity);
@@ -32,6 +33,9 @@ public class PrinterCfgDTO extends AbstractDTO {
             for (PrinterCfgAttribute cfgAttr : entity.getCfgAttrs()) {
                 attrs.put(cfgAttr.getAttr().getName(), cfgAttr.getValue());
             }
+        }
+        if (entity.getReportTemplate() != null) {
+            this.reportTemplate = entity.getReportTemplate().getName();
         }
     }
 }

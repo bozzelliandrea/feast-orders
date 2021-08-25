@@ -2,12 +2,10 @@ package be.feastorders.printer.service;
 
 import be.feastorders.core.service.BaseCRUDService;
 import be.feastorders.printer.dto.PrinterCfgDTO;
-import be.feastorders.printer.entity.PrinterAttribute;
-import be.feastorders.printer.entity.PrinterCfg;
-import be.feastorders.printer.entity.PrinterCfgAttribute;
-import be.feastorders.printer.entity.PrinterCfgAttributePk;
+import be.feastorders.printer.entity.*;
 import be.feastorders.printer.repository.PrinterAttrRepository;
 import be.feastorders.printer.repository.PrinterCfgRepository;
+import be.feastorders.printer.repository.ReportTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +20,9 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
     @Autowired
     private PrinterAttrRepository attrRepository;
 
+    @Autowired
+    private ReportTemplateRepository reportTemplateRepository;
+
     public PrinterCfgService(PrinterCfgRepository repository) {
         super(repository);
         this.cfgRepository = repository;
@@ -30,6 +31,7 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
     public PrinterCfgDTO savePrinterCfgWithAttrs(PrinterCfgDTO printerCfgDTO) {
         PrinterCfg cfg = printerCfgDTO2Entity(printerCfgDTO);
 
+        // printer attrs
         if (printerCfgDTO.getAttrs() != null && !printerCfgDTO.getAttrs().isEmpty()) {
             for (String key : printerCfgDTO.getAttrs().keySet()) {
                 PrinterAttribute attr = attrRepository.getById(key);
@@ -45,6 +47,11 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
             }
         }
 
+        // printer report template
+        String reportTemplateName = printerCfgDTO.getReportTemplate();
+        ReportTemplate reportTemplate = reportTemplateRepository.getById(reportTemplateName);
+        cfg.setReportTemplate(reportTemplate);
+
         cfgRepository.save(cfg);
 
         PrinterCfgDTO dto = new PrinterCfgDTO(cfgRepository.getById(cfg.getID()));
@@ -56,6 +63,7 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
         oldCfg.setDescription(newCfgDTO.getDescription());
         oldCfg.setPrinterName(newCfgDTO.getPrinterName());
 
+        // printer attrs
         if (newCfgDTO.getAttrs() != null && !newCfgDTO.getAttrs().isEmpty()) {
             for (String key : newCfgDTO.getAttrs().keySet()) {
                 Optional<PrinterCfgAttribute> first = oldCfg.getCfgAttrs().stream()
@@ -74,6 +82,12 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
                     oldCfg.getCfgAttrs().add(printerCfgAttr);
                 }
             }
+        }
+
+        // printer report template
+        if (!newCfgDTO.getReportTemplate().equalsIgnoreCase(oldCfg.getReportTemplate().getName())) {
+            ReportTemplate reportTemplate = reportTemplateRepository.getById(newCfgDTO.getReportTemplate());
+            oldCfg.setReportTemplate(reportTemplate);
         }
 
         cfgRepository.save(oldCfg);

@@ -2,6 +2,7 @@ package be.feastorders.printer;
 
 import be.feastorders.printer.dto.PrinterCfgDTO;
 import be.feastorders.printer.entity.PrinterCfg;
+import be.feastorders.printer.entity.ReportTemplate;
 import be.feastorders.printer.service.PrinterCfgService;
 import be.feastorders.printer.service.PrinterPOCService;
 import be.feastorders.printer.service.ReportService;
@@ -130,6 +131,15 @@ public class PrinterController {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @ApiOperation("get all report templates")
+    @ApiResponse(code = 200, message = "report templates found", response = List.class)
+    @GetMapping("/reportTemplate")
+    public ResponseEntity<List<String>> getReportTemplates() {
+        List<String> reportTemplates = reportService.getReportTemplates()
+                .stream().map(ReportTemplate::getName).collect(Collectors.toList());
+        return ResponseEntity.ok(reportTemplates);
     }
 
 }
