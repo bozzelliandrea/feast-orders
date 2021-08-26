@@ -125,4 +125,14 @@ public class OrderService extends BaseCRUDService<Order, Long> {
 
         return new OrderDTO(order);
     }
+
+    public boolean printOrder(OrderDTO dto) {
+        Order order = super.read(dto.getID());
+
+        // print orchestration post creation, asynchronous
+        Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
+        printerAsyncService.executePrintTasks(printerCfgOrderMap);
+
+        return true;
+    }
 }
