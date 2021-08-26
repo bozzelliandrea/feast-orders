@@ -74,7 +74,8 @@ export class MenuComponent implements OnInit {
   public editCategory(category: Category): void {
     const modalRef = this._modalService.create(CategoryModal, {
       title: 'Modifica Categoria ' + category.name?.toUpperCase(),
-      category
+      category,
+      printerCfgList: this.printerCfgList
     });
 
     modalRef.onResult().subscribe(
