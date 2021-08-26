@@ -33,9 +33,6 @@ public class OrderController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private PrinterAsyncService printerAsyncService;
-
     @ApiOperation("Get all saved orders")
     @ApiResponse(code = 200, message = "return a list of orders", response = List.class)
     @GetMapping
@@ -60,49 +57,13 @@ public class OrderController {
     @ApiResponse(code = 200, message = "created the order", response = OrderDTO.class)
     @PostMapping
     public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO dto) {
-
-        Order entity = Order.builder()
-                .client(dto.getClient())
-                .tableNumber(dto.getTableNumber())
-                .placeSettingNumber(dto.getPlaceSettingNumber())
-                .note(dto.getNote())
-                .cashier(dto.getCashier())
-                .takeAway(dto.getTakeAway())
-                .total(dto.getTotal())
-                .orderItemDetails(new ArrayList<>())
-                .build();
-
-
-        for(OrderItemDetailDTO detailDTO: dto.getMenuItemList()){
-
-            OrderItemDetail detailEntity = new OrderItemDetail();
-
-            detailEntity.setOrder(entity);
-            detailEntity.setQuantity(detailDTO.getQuantity());
-            detailEntity.setTotalPrice(detailDTO.getTotalPrice());
-            detailEntity.setMenuItem(menuItemService.read(detailDTO.getMenuItemId()));
-
-            entity.getOrderItemDetails().add(detailEntity);
-        }
-
-        Order order = orderService.create(entity);
-        System.out.println("Order created!");
-
-        if (dto.getPrintOrder()) {
-            // print orchestration post creation, asynchronous
-            Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
-            printerAsyncService.executePrintTasks(printerCfgOrderMap);
-        }
-
-        System.out.println("returning order created!");
-        return ResponseEntity.ok(new OrderDTO(order));
+        return ResponseEntity.ok(orderService.createEntity(dto));
     }
 
     @ApiOperation("Update an existing order")
     @ApiResponse(code = 200, message = "updated order", response = OrderDTO.class)
     @PutMapping("/{id}")
     public ResponseEntity<OrderDTO> update(@RequestBody OrderDTO dto, @PathVariable Long id) {
-
         if (Objects.isNull(dto.getID())) {
             if (Objects.isNull(id)) {
                 ResponseEntity.badRequest().build();
