@@ -1,1 +1,122 @@
-<p>printer configuration works!</p>
+<div class="container">
+  <!-- Printer cfg creation -->
+  <h3>Nuova Configurazione Stampante</h3>
+  <form [formGroup]="printerCfgForm" (ngSubmit)="addNewPrinterCfg()">
+    <div class="row align-items-end">
+      <div class="col-6">
+        <label for="name" class="form-label">Nome configurazione</label>
+        <input type="text" formControlName="name" class="form-control" id="name">
+      </div>
+      <div class="col-6">
+        <label for="description" class="form-label">Descrizione</label>
+        <input type="text" formControlName="description" class="form-control" id="description">
+      </div>
+      <div class="col-6">
+        <label for="printerName" class="form-label">Stampante</label>
+        <select formControlName="printerName" class="form-select" id="printerName">
+          <option *ngFor="let printer of printers" [value]="printer">{{printer}}</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label for="reportTemplate" class="form-label">Template Report</label>
+        <select formControlName="reportTemplate" class="form-select" id="reportTemplate">
+          <option *ngFor="let template of reportTemplates" [value]="template">{{template}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row align-items-end">
+      <h5>Attributi di stampa</h5>
+      <div class="col-6">
+        <label for="attrMediaSize" class="form-label">Formato stampa</label>
+        <select formControlName="attrMediaSize" class="form-select" id="attrMediaSize">
+          <option value="A4" selected>A4</option>
+          <option value="A5">A5</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label for="attrOrientation" class="form-label">Orientamento</label>
+        <select formControlName="attrOrientation" class="form-select" id="attrOrientation">
+          <option value="portrait" selected>Verticale</option>
+          <option value="landscape">Orizzontale</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <div class="form-check form-check-inline form-switch">
+          <input formControlName="attrColor" class="form-check-input" type="checkbox" id="attrColor">
+          <label class="form-check-label" for="attrColor">Colore</label>
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="attrSide" class="form-label">Lato</label>
+        <select formControlName="attrSide" class="form-select" id="attrSide">
+          <option value="one-side" selected>Uno per pagina</option>
+          <option value="duplex">Fronte retro</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label for="attrCopies" class="form-label">Copie</label>
+        <input type="number" formControlName="attrCopies" class="form-control" id="attrCopies" [defaultValue]="1">
+      </div>
+    </div>
+    <div class="col-6">
+      <button type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
+        <span class="material-icons-outlined">add</span>
+        <span class="text">Aggiungi</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Printer cfg list -->
+  <h3 class="mt-3">Gestione Configurazioni Stampanti</h3>
+  <!--  <ng-container *ngFor="let category of categoryList">-->
+  <!--    <div class="row card my-3" [ngClass]="'border-'+category?.color">-->
+  <!--      <div class="card-header fw-bold text-uppercase">-->
+  <!--        <div class="row">-->
+  <!--          <div class="col-5">-->
+  <!--            {{category?.name}}-->
+  <!--          </div>-->
+  <!--          <div class="col-2">-->
+  <!--            <button type="button" (click)="addMenuItem(category)"-->
+  <!--                    class="btn btn-outline-primary d-flex justify-content-around align-items-center">-->
+  <!--              <span class="material-icons-outlined">add</span>-->
+  <!--              <span class="r-button-text">Aggiungi Prodotto</span>-->
+  <!--            </button>-->
+  <!--          </div>-->
+  <!--          <div class="col-2">-->
+  <!--            <button type="button" (click)="editCategory(category)"-->
+  <!--                    class="btn btn-outline-primary d-flex justify-content-around align-items-center">-->
+  <!--              <span class="material-icons-outlined">edit</span>-->
+  <!--              <span class="r-button-text">Modifica Categoria</span>-->
+  <!--            </button>-->
+  <!--          </div>-->
+  <!--          <div class="col-2">-->
+  <!--            <button type="button" (click)="deleteCategory(category)"-->
+  <!--                    class="btn btn-outline-primary d-flex justify-content-around align-items-center">-->
+  <!--              <span class="material-icons-outlined">delete</span>-->
+  <!--              <span class="r-button-text">Elimina Categoria</span>-->
+  <!--            </button>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--      <h6 class="card-subtitle mt-3">{{category?.description}}</h6>-->
+  <!--      <div class="card-body">-->
+  <!--        <ng-container *ngFor="let item of category.menuItemList">-->
+  <!--          <div class="row my-1 border border-1 border-start-0 border-bottom-0 rounded-top"-->
+  <!--               [ngClass]="'border-'+category?.color">-->
+  <!--            <div class="col-2">{{item.name}}</div>-->
+  <!--            <div class="col-2">{{item.description}}</div>-->
+  <!--            <div class="col-2">{{item.price}}</div>-->
+  <!--            <div class="col-2">quantity</div>-->
+  <!--            <div class="col-2 d-flex align-content-center align-items-center justify-content-center">-->
+  <!--              <span class="material-icons-outlined icon-button" (click)="editMenuItem(category, item)">edit</span>-->
+  <!--            </div>-->
+  <!--            <div class="col-2 d-flex align-content-center align-items-center justify-content-center">-->
+  <!--              <span class="material-icons-outlined icon-button" (click)="deleteMenyItem(category, item)">delete</span>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </ng-container>-->
+  <!--        <p *ngIf="!category.menuItemList.length" class="mt-3 text-muted">Nessun prodotto inserito.</p>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </ng-container>-->
+</div>
