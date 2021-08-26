@@ -54,7 +54,7 @@ export class OrderService extends RequestService implements CRUDService<Order> {
   }
 
   public getOrderItemDetails(orderId: number): Observable<any[]> {
-    
+
     return this._http.get(this._getUrl(orderId).concat('/menuitem'), RequestService.baseHttpOptions).pipe(
       map((res: any) => {
         return (res || []) as OrderItem[];
@@ -63,7 +63,15 @@ export class OrderService extends RequestService implements CRUDService<Order> {
   }
 
   public delete(id: number): Observable<any> {
-    
+
     return this._http.delete(this._getUrl(id), RequestService.baseHttpOptions);
+  }
+
+  public printOrder(dto: Order): Observable<any> {
+    return this._http.post(this._getUrl(dto.id).concat('/print'), dto, RequestService.baseHttpOptions).pipe(
+      map((res: any) => {
+        return (res || true);
+      })
+    );
   }
 }

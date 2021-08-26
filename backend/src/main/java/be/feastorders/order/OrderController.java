@@ -98,4 +98,22 @@ public class OrderController {
 
         return ResponseEntity.ok(menuItemService.findAllMenuItemByOrderId(orderID));
     }
+
+    @ApiOperation("Print an order")
+    @ApiResponse(code = 200, message = "print successful", response = OrderDTO.class)
+    @PostMapping("/{id}/print")
+    public ResponseEntity<?> print(@RequestBody OrderDTO dto, @PathVariable Long id) {
+        if (Objects.isNull(dto.getID())) {
+            if (Objects.isNull(id)) {
+                ResponseEntity.badRequest().build();
+            } else {
+                dto.setID(id);
+            }
+        }
+        if (orderService.printOrder(dto)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

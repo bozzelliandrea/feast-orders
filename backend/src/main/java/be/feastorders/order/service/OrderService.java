@@ -12,9 +12,7 @@ import be.feastorders.printer.service.PrinterAsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class OrderService extends BaseCRUDService<Order, Long> {
@@ -45,7 +43,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
                 .build();
 
 
-        for(OrderItemDetailDTO detailDTO: dto.getMenuItemList()){
+        for (OrderItemDetailDTO detailDTO : dto.getMenuItemList()) {
             OrderItemDetail detailEntity = new OrderItemDetail();
 
             detailEntity.setOrder(entity);
@@ -88,7 +86,34 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         if (Objects.nonNull(dto.getTotal()))
             entity.setTotal(dto.getTotal());
 
-        // todo update the order item details
+        List<OrderItemDetail> orderItemDetailList = new ArrayList<>();
+        if (dto.getMenuItemList() != null) {
+            if (!dto.getMenuItemList().isEmpty()) {
+                for (OrderItemDetailDTO detailDTO : dto.getMenuItemList()) {
+                    Optional<OrderItemDetail> orderItemDetailOptional = entity.getOrderItemDetails().stream().filter(orderItemDetail -> {
+                        return Objects.equals(orderItemDetail.getPk().getOrderId(), detailDTO.getOrderId()) &&
+                                Objects.equals(orderItemDetail.getPk().getMenuItemId(), detailDTO.getMenuItemId());
+                    }).findFirst();
+                    OrderItemDetail orderItemDetail;
+                    if (orderItemDetailOptional.isPresent()) {
+                        orderItemDetail = orderItemDetailOptional.get();
+                        orderItemDetail.setQuantity(detailDTO.getQuantity());
+                        orderItemDetail.setTotalPrice(detailDTO.getTotalPrice());
+                        orderItemDetail.setNote(detailDTO.getNote());
+                    } else {
+                        orderItemDetail = new OrderItemDetail();
+                        orderItemDetail.setOrder(entity);
+                        orderItemDetail.setQuantity(detailDTO.getQuantity());
+                        orderItemDetail.setTotalPrice(detailDTO.getTotalPrice());
+                        orderItemDetail.setMenuItem(menuItemService.read(detailDTO.getMenuItemId()));
+                    }
+
+                    orderItemDetailList.add(orderItemDetail);
+                }
+            }
+        }
+
+        entity.setOrderItemDetails(orderItemDetailList);
 
         Order order = super.update(entity);
 
@@ -99,5 +124,15 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         }
 
         return new OrderDTO(order);
+    }
+
+    public boolean printOrder(OrderDTO dto) {
+        Order order = super.read(dto.getID());
+
+        // print orchestration post creation, asynchronous
+        Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
+        printerAsyncService.executePrintTasks(printerCfgOrderMap);
+
+        return true;
     }
 }
