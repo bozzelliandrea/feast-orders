@@ -3,9 +3,8 @@ import { MenuItemModalComponent } from './../menu-item-modal/menu-item-modal.com
 import { MenuItemService } from './../../service/menu-item.service';
 import { CategoryModal } from '../category-modal/category-modal.component';
 import { ModalService } from './../../../shared/service/modal.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Category } from '../../interface/category.interface';
 import { CategoryService } from './../../service/category.service';
@@ -30,7 +29,8 @@ export class MenuComponent implements OnInit {
     private _menuItemService: MenuItemService,
     private _printerCfgService: PrinterCfgService,
     private _formBuilder: FormBuilder,
-    private _modalService: ModalService) {
+    private _modalService: ModalService,
+    private _elRef:ElementRef) {
 
     this.categoryForm = this._buildCategoryForm();
   }
@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit {
     this._loadPrinterCfg();
   }
 
-  public onSelectionChange(event: any): void {
+  public onPrinterCfgChange(event: any): void {
     const checked = event.target.checked;
     const id = +event.target.value;
     const formControl: FormControl = this.categoryForm.controls["printerCfgList"] as FormControl;
@@ -64,7 +64,10 @@ export class MenuComponent implements OnInit {
         this._loadCategory();
       });
 
-    //TODO clean the switches
+    const printerCfgSwitches: any[] = this._elRef.nativeElement.querySelectorAll('.printercfg-input');
+    printerCfgSwitches.forEach(element => {
+      element.checked = false;
+    });
     this.categoryForm.reset();
   }
 
