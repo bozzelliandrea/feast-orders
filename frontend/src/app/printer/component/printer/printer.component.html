@@ -68,55 +68,43 @@
 
   <!-- Printer cfg list -->
   <h3 class="mt-3">Gestione Configurazioni Stampanti</h3>
-  <!--  <ng-container *ngFor="let category of categoryList">-->
-  <!--    <div class="row card my-3" [ngClass]="'border-'+category?.color">-->
-  <!--      <div class="card-header fw-bold text-uppercase">-->
-  <!--        <div class="row">-->
-  <!--          <div class="col-5">-->
-  <!--            {{category?.name}}-->
-  <!--          </div>-->
-  <!--          <div class="col-2">-->
-  <!--            <button type="button" (click)="addMenuItem(category)"-->
-  <!--                    class="btn btn-outline-primary d-flex justify-content-around align-items-center">-->
-  <!--              <span class="material-icons-outlined">add</span>-->
-  <!--              <span class="r-button-text">Aggiungi Prodotto</span>-->
-  <!--            </button>-->
-  <!--          </div>-->
-  <!--          <div class="col-2">-->
-  <!--            <button type="button" (click)="editCategory(category)"-->
-  <!--                    class="btn btn-outline-primary d-flex justify-content-around align-items-center">-->
-  <!--              <span class="material-icons-outlined">edit</span>-->
-  <!--              <span class="r-button-text">Modifica Categoria</span>-->
-  <!--            </button>-->
-  <!--          </div>-->
-  <!--          <div class="col-2">-->
-  <!--            <button type="button" (click)="deleteCategory(category)"-->
-  <!--                    class="btn btn-outline-primary d-flex justify-content-around align-items-center">-->
-  <!--              <span class="material-icons-outlined">delete</span>-->
-  <!--              <span class="r-button-text">Elimina Categoria</span>-->
-  <!--            </button>-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--      <h6 class="card-subtitle mt-3">{{category?.description}}</h6>-->
-  <!--      <div class="card-body">-->
-  <!--        <ng-container *ngFor="let item of category.menuItemList">-->
-  <!--          <div class="row my-1 border border-1 border-start-0 border-bottom-0 rounded-top"-->
-  <!--               [ngClass]="'border-'+category?.color">-->
-  <!--            <div class="col-2">{{item.name}}</div>-->
-  <!--            <div class="col-2">{{item.description}}</div>-->
-  <!--            <div class="col-2">{{item.price}}</div>-->
-  <!--            <div class="col-2">quantity</div>-->
-  <!--            <div class="col-2 d-flex align-content-center align-items-center justify-content-center">-->
-  <!--              <span class="material-icons-outlined icon-button" (click)="editMenuItem(category, item)">edit</span>-->
-  <!--            </div>-->
-  <!--            <div class="col-2 d-flex align-content-center align-items-center justify-content-center">-->
-  <!--              <span class="material-icons-outlined icon-button" (click)="deleteMenyItem(category, item)">delete</span>-->
-  <!--            </div>-->
-  <!--          </div>-->
-  <!--        </ng-container>-->
-  <!--        <p *ngIf="!category.menuItemList.length" class="mt-3 text-muted">Nessun prodotto inserito.</p>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--  </ng-container>-->
+    <ng-container *ngFor="let printerCfg of printerCfgList">
+      <div class="row card my-3">
+        <div class="card-header fw-bold text-uppercase">
+          <div class="row">
+            <div class="col-5">
+              {{printerCfg?.name}}
+            </div>
+            <div class="col-2">
+              <button type="button" (click)="editPrinterCfg(printerCfg)"
+                      class="btn btn-outline-primary d-flex justify-content-around align-items-center">
+                <span class="material-icons-outlined">edit</span>
+                <span class="r-button-text">Modifica Configurazione</span>
+              </button>
+            </div>
+            <div class="col-2">
+              <button type="button" (click)="deletePrinterCfg(printerCfg)"
+                      class="btn btn-outline-primary d-flex justify-content-around align-items-center">
+                <span class="material-icons-outlined">delete</span>
+                <span class="r-button-text">Elimina Configurazione</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <h6 class="card-subtitle mt-3">{{printerCfg?.description}}</h6>
+        <div class="card-body">
+          <div class="row my-1">
+            <div class="col-6">Stampante: {{printerCfg?.printerName}}</div>
+            <div class="col-6">Template report: {{printerCfg?.reportTemplate}}</div>
+          </div>
+          <div class="row my-1">
+            <div class="col-6">Formato stampa: {{printerCfg?.attrs?.mediaSize}}</div>
+            <div class="col-6">Orientamento: {{printerCfg?.attrs?.orientation}}</div>
+            <div class="col-6">Colore: {{printerCfg?.attrs?.color}}</div>
+            <div class="col-6">Lato: {{printerCfg?.attrs?.sides}}</div>
+            <div class="col-6">Numero Copie: {{printerCfg?.attrs?.copies}}</div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
 </div>

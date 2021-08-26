@@ -42,6 +42,14 @@ export class PrinterComponent implements OnInit {
     this.printerCfgForm.reset();
   }
 
+  editPrinterCfg(printerCfg: PrinterCfg) {
+    // todo
+  }
+
+  deletePrinterCfg(printerCfg: PrinterCfg) {
+    // todo
+  }
+
   private _loadPrinterCfgList() {
     this._printerCfgService.getAll().pipe(first()).subscribe((printerCfgList: PrinterCfg[]) => {
       this.printerCfgList = printerCfgList;
