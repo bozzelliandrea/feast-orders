@@ -145,7 +145,11 @@ export class OrderFormComponent implements OnInit, OnDestroy {
   }
 
   public print(): void {
-    console.info("To Be Implemented");
+    const dto: Order = this.orderForm.value;
+    dto.menuItemList = this.orderItemList;
+    this._orderService.printOrder(dto).pipe(first()).subscribe((res: boolean) => {
+      // noop, as usually wrote Gastalf the white
+    });
   }
 
   public addItemToOrder(category: Category, menuItem: MenuItem): void {
