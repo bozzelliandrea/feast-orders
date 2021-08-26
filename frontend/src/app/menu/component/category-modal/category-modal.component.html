@@ -25,7 +25,7 @@
                         <option value="dark">Nero</option>
                     </select>
                 </div>
-                <div class="col-6">
+                <div class="col-12">
                     <ng-container *ngFor="let printerCfg of printerCfgList">
                         <div class="form-check form-check-inline form-switch">
                             <input class="form-check-input printercfg-input" type="checkbox" [value]="printerCfg?.id" (change)="onPrinterCfgChange($event)">
