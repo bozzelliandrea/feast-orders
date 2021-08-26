@@ -24,7 +24,7 @@
         </select>
       </div>
     </div>
-    <div class="row align-items-end">
+    <div class="row align-items-end mt-3">
       <h5>Attributi di stampa</h5>
       <div class="col-6">
         <label for="attrMediaSize" class="form-label">Formato stampa</label>
@@ -57,12 +57,12 @@
         <label for="attrCopies" class="form-label">Copie</label>
         <input type="number" formControlName="attrCopies" class="form-control" id="attrCopies" [defaultValue]="1">
       </div>
-    </div>
-    <div class="col-6">
-      <button type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
-        <span class="material-icons-outlined">add</span>
-        <span class="text">Aggiungi</span>
-      </button>
+      <div class="col-6">
+        <button type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
+          <span class="material-icons-outlined">add</span>
+          <span class="text">Aggiungi</span>
+        </button>
+      </div>
     </div>
   </form>
 
@@ -75,14 +75,14 @@
             <div class="col-5">
               {{printerCfg?.name}}
             </div>
-            <div class="col-2">
+            <div class="col-4">
               <button type="button" (click)="editPrinterCfg(printerCfg)"
                       class="btn btn-outline-primary d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">edit</span>
                 <span class="r-button-text">Modifica Configurazione</span>
               </button>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <button type="button" (click)="deletePrinterCfg(printerCfg)"
                       class="btn btn-outline-primary d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">delete</span>
