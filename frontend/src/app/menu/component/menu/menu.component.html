@@ -23,15 +23,15 @@
                     <option value="dark">Nero</option>
                 </select>
             </div>
-            <div class="col-12">
+            <div class="col-12 mt-3">
                 <ng-container *ngFor="let printerCfg of printerCfgList">
                     <div class="form-check form-check-inline form-switch">
                         <input class="form-check-input printercfg-input" type="checkbox" [value]="printerCfg?.id" (change)="onPrinterCfgChange($event)">
-                        <label class="form-check-label" for="{{printerCfg.id}}">{{printerCfg?.name}}</label>
+                        <label class="form-check-label">{{printerCfg?.name}}</label>
                     </div>
                 </ng-container>
             </div>
-            <div class="col-6">
+            <div class="col-6 mt-3">
                 <button type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
                     <span class="material-icons-outlined">add</span>
                     <span class="text">Aggiungi</span>
@@ -78,7 +78,6 @@
                         <div class="col-2">{{item.name}}</div>
                         <div class="col-2">{{item.description}}</div>
                         <div class="col-2">{{item.price}}</div>
-                        <div class="col-2">quantity</div>
                         <div class="col-2 d-flex align-content-center align-items-center justify-content-center">
                             <span class="material-icons-outlined icon-button" (click)="editMenuItem(category, item)">edit</span>
                         </div>

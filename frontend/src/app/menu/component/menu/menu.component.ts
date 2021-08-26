@@ -1,13 +1,13 @@
-import { MenuItem } from './../../interface/menu-item.interface';
-import { MenuItemModalComponent } from './../menu-item-modal/menu-item-modal.component';
-import { MenuItemService } from './../../service/menu-item.service';
+import { MenuItem } from '../../interface/menu-item.interface';
+import { MenuItemModalComponent } from '../menu-item-modal/menu-item-modal.component';
+import { MenuItemService } from '../../service/menu-item.service';
 import { CategoryModal } from '../category-modal/category-modal.component';
-import { ModalService } from './../../../shared/service/modal.service';
+import { ModalService } from '../../../shared/service/modal.service';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { Category } from '../../interface/category.interface';
-import { CategoryService } from './../../service/category.service';
+import { CategoryService } from '../../service/category.service';
 import { PrinterCfgService } from 'src/app/printer/service/printercfg.service';
 import { PrinterCfg } from 'src/app/printer/interface/printercfg.interface';
 
@@ -18,12 +18,9 @@ import { PrinterCfg } from 'src/app/printer/interface/printercfg.interface';
 })
 export class MenuComponent implements OnInit {
 
-  public categoryList: Array<Category> = new Array();
-  public printerCfgList: Array<PrinterCfg> = new Array();
-
-  public categoryId: number | undefined;
+  public categoryList: Array<Category> = [];
+  public printerCfgList: Array<PrinterCfg> = [];
   public categoryForm: FormGroup;
-  public menuItemForm: FormGroup | undefined;
 
   constructor(private _categoryService: CategoryService,
     private _menuItemService: MenuItemService,

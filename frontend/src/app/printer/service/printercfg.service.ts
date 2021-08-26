@@ -15,7 +15,7 @@ export class PrinterCfgService extends RequestService implements CRUDService<Pri
     constructor(private _http: HttpClient) {
         super(ApiResourceEnum.PRINTER_CFG);
     }
-    
+
     getAll(): Observable<PrinterCfg[]> {
         return this._http.get(this._getUrl(), RequestService.baseHttpOptions).pipe(
             map((res: any) => {
@@ -23,7 +23,7 @@ export class PrinterCfgService extends RequestService implements CRUDService<Pri
             })
         );
     }
-    
+
     getById(id: number): Observable<PrinterCfg> {
         return this._http.get(this._getUrl(id), RequestService.baseHttpOptions).pipe(
             map((res: any) => {
@@ -31,7 +31,7 @@ export class PrinterCfgService extends RequestService implements CRUDService<Pri
             })
           );
     }
-    
+
     create(dto: PrinterCfg): Observable<PrinterCfg> {
         return this._http.post(this._getUrl(), dto, RequestService.baseHttpOptions).pipe(
             map((res: any) => {
@@ -39,7 +39,7 @@ export class PrinterCfgService extends RequestService implements CRUDService<Pri
             })
         );
     }
-    
+
     update(dto: PrinterCfg): Observable<PrinterCfg> {
         return this._http.put(this._getUrl(dto.id), dto, RequestService.baseHttpOptions).pipe(
             map((res: any) => {
@@ -47,8 +47,8 @@ export class PrinterCfgService extends RequestService implements CRUDService<Pri
             })
           );
     }
-    
-    delete(id: number): Observable<boolean> | Observable<any> {
+
+    delete(id: number): Observable<any> {
         return this._http.delete(this._getUrl(id), RequestService.baseHttpOptions);
     }
 

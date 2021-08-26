@@ -129,7 +129,19 @@ export class OrderFormComponent implements OnInit, OnDestroy {
   }
 
   public saveAndPrint(): void {
-    console.info("To Be Implemented");
+    const dto: Order = this.orderForm.value;
+    dto.menuItemList = this.orderItemList;
+    dto.printOrder = true;
+
+    if (this.mode === ModeType.NEW) {
+      this._orderService.create(dto).pipe(first()).subscribe((order: Order) => {
+        this.goBack();
+      });
+    } else if (this.mode === ModeType.EDIT) {
+      this._orderService.update(dto).pipe(first()).subscribe((order: Order) => {
+        this.goBack();
+      });
+    }
   }
 
   public print(): void {

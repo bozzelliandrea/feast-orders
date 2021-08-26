@@ -106,6 +106,8 @@ public class PrinterPOCService {
 
             job.setPrintService(service);
             job.print(attrs);
+
+            document.close();
             return true;
         } catch (PrinterException | IOException e) {
             e.printStackTrace();
