@@ -1,10 +1,8 @@
-import { AfterContentChecked, AfterViewInit, Component, ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { PrinterCfg } from 'src/app/printer/interface/printercfg.interface';
-import { PrinterCfgService } from 'src/app/printer/service/printercfg.service';
-import { AbstractModal } from 'src/app/shared/class/abstract-modal.class';
-import { Category } from '../../interface/category.interface';
+import {AfterViewInit, Component, ElementRef} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {PrinterCfg} from 'src/app/printer/interface/printercfg.interface';
+import {AbstractModal} from 'src/app/shared/class/abstract-modal.class';
+import {Category} from '../../interface/category.interface';
 
 @Component({
   selector: 'category-modal',
@@ -16,7 +14,7 @@ export class CategoryModal extends AbstractModal implements AfterViewInit {
   public title: string | undefined;
   public category!: Category;
   public categoryForm: FormGroup;
-  public printerCfgList: Array<PrinterCfg> = new Array();
+  public printerCfgList: Array<PrinterCfg> = [];
 
   constructor(private _formBuilder: FormBuilder, private _elRef: ElementRef) {
     super();
@@ -36,10 +34,6 @@ export class CategoryModal extends AbstractModal implements AfterViewInit {
 
   save(): void {
     this.close(this.categoryForm.value);
-  }
-
-  cancel(): void {
-    this.dismiss();
   }
 
   public onPrinterCfgChange(event: any): void {
