@@ -29,7 +29,7 @@
                     <ng-container *ngFor="let printerCfg of printerCfgList">
                         <div class="form-check form-check-inline form-switch">
                             <input class="form-check-input printercfg-input" type="checkbox" [value]="printerCfg?.id" (change)="onPrinterCfgChange($event)">
-                            <label class="form-check-label" for="{{printerCfg.id}}">{{printerCfg?.name}}</label>
+                            <label class="form-check-label">{{printerCfg?.name}}</label>
                         </div>
                     </ng-container>
                 </div>
