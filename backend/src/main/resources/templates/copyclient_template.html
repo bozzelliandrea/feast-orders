@@ -32,7 +32,7 @@
 
 <!-- order items details -->
 <h5>PRODOTTI ORDINATI</h5>
-<table style="width: 100%">
+<table style="width: 100%; border-top: 1px solid; border-bottom: 1px solid; padding-top: 25px; padding-bottom: 25px;">
     <thead>
     <tr>
         <th></th>
@@ -52,11 +52,11 @@
 </table>
 
 <!-- order notes -->
-<div>
+<div style="margin-top: 20px;">
     <span>Note</span><span th:text="' ' + ${order.note}"></span>
 </div>
 
-<h3 th:text="'TOTALE: ' + ${#numbers.formatDecimal(order.total, 0, 'POINT', 2, 'COMMA')} + '€'"></h3>
+<h2 th:text="'TOTALE: ' + ${#numbers.formatDecimal(order.total, 0, 'POINT', 2, 'COMMA')} + '€'"></h2>
 
 <table style="width: 100%">
     <thead>

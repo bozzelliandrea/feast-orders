@@ -81,7 +81,7 @@ public class PrinterAsyncService {
     public void executePrintTasks(Map<PrinterCfg, Order> printerCfgOrderMap) {
         for (PrinterCfg printerCfg: printerCfgOrderMap.keySet()) {
             Callable<String> printTask = () -> {
-                TimeUnit.MILLISECONDS.sleep(3000);
+                TimeUnit.MILLISECONDS.sleep(1000);
                 Order order = printerCfgOrderMap.get(printerCfg);
                 String orderPdfFilePath = reportService.createPdf(order, printerCfg);
                 System.out.println("Callable task, order: " + order.getID() + ", created PDF for " + printerCfg.getReportTemplate().getName());
