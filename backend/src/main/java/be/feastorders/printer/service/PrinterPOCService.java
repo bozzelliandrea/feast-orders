@@ -24,9 +24,6 @@ public class PrinterPOCService {
         List<PrintService> services = Arrays.asList(PrintServiceLookup.lookupPrintServices(docFlavor, attributes));
         // Loop through available services
         for (PrintService service : services) {
-            // Print service name
-            System.out.print(service.getName());
-
             // Then query and print the document types it can print
             DocFlavor[] flavors = service.getSupportedDocFlavors();
             for (DocFlavor flavor : flavors) {
@@ -35,7 +32,6 @@ public class PrinterPOCService {
                 String repclass = flavor.getRepresentationClassName();
                 if (!repclass.equals("java.io.InputStream"))
                     continue;
-                System.out.println("\t" + flavor.getMimeType());
             }
         }
 

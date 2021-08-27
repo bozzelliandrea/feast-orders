@@ -6,47 +6,74 @@
 </head>
 <body style="font-family: 'Helvetica'">
 <!-- header -->
-<h3 style="text-align: center" th:text="'Festa della birra Mellaredo 2021'"></h3>
+<h3 style="text-align: center">Festa della birra Mellaredo 2021</h3>
 
-<div>
-    <span th:text="'Ordine ' + ${order.ID}"></span>
+<div style="margin-top: 10px;">
+    <span>ORDINE</span><strong><span th:text="' ' + ${order.ID}"></span></strong>
 </div>
-
-<div></div>
 
 <!-- order details -->
-<div>
-    <span th:text="'Tavolo ' + ${order.tableNumber}"></span>
-    <span th:text="'Coperti ' + ${order.placeSettingNumber}"></span>
-    <span th:text="'Cliente ' + ${order.client}"></span>
-</div>
-
-<div></div>
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <th>TAVOLO</th>
+        <th>COPERTI</th>
+        <th>CLIENTE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${order.tableNumber}"/>
+        <td th:text="${order.placeSettingNumber}"/>
+        <td th:text="${order.client}"/>
+    </tr>
+    </tbody>
+</table>
 
 <!-- order items details -->
-<tr th:each="detail: ${order.orderItemDetails}">
-    <td th:text="${detail.quantity}"/>
-    <td th:text="${detail.menuItemName}"/>
-    <td th:text="${detail.menuItemPrice}"/>
-    <td th:text="${detail.totalPrice}"/>
-</tr>
+<h5>PRODOTTI ORDINATI</h5>
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <th></th>
+        <th>DESCRIZIONE</th>
+        <th>PREZZO</th>
+        <th>TOTALE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="detail: ${order.orderItemDetails}">
+        <td th:text="${detail.quantity}"/>
+        <td th:text="${detail.menuItemName}"/>
+        <td><span th:text="${#numbers.formatDecimal(detail.menuItemPrice, 0, 'POINT', 2, 'COMMA')}"></span>€</td>
+        <td><span th:text="${#numbers.formatDecimal(detail.totalPrice, 0, 'POINT', 2, 'COMMA')}"></span>€</td>
+    </tr>
+    </tbody>
+</table>
 
 <!-- order notes -->
 <div>
-    <span>Note: urgente band - attenzione utente ceilaco</span>
+    <span>Note</span><span th:text="' ' + ${order.note}"></span>
 </div>
 
-<div>
-    <strong><span th:text="'Totale: ' + ${order.total}"></span></strong>
-</div>
+<h3 th:text="'TOTALE: ' + ${#numbers.formatDecimal(order.total, 0, 'POINT', 2, 'COMMA')} + '€'"></h3>
 
-<div></div>
-
-<div>
-    <span><strong>Cassiere Bozzz</strong></span>
-    <span th:text="${order.creationTimestamp}"></span>
-    <span>Copia cliente</span>
-</div>
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="'Cassiere ' + ${order.cashier}"/>
+        <td th:text="'' + ${order.zonedDateTime}"/>
+        <td>COPIA CLIENTE</td>
+    </tr>
+    </tbody>
+</table>
 
 <!-- footer -->
 </body>
