@@ -21,6 +21,7 @@
   <table class="table my-3">
     <thead>
       <tr>
+        <th scope="col">Numero</th>
         <th scope="col">Tavolo</th>
         <th scope="col">Cliente</th>
         <th scope="col">Totale</th>
@@ -28,13 +29,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let order of orders$ | async;" 
+      <tr *ngFor="let order of orders$ | async;"
           (click)="onRowSelect(order)"
           [ngClass]='{"table-secondary": order.id === selectedOrder?.id}'>
-        <th scope="row">{{order?.tableNumber}}</th>
+        <th scope="row">{{order?.id}}</th>
+        <td>{{order?.tableNumber}}</td>
         <td>{{order?.client}}</td>
-        <td>{{order?.total}}</td>
-        <td>{{order?.creationTimestamp}}</td>
+        <td>{{order?.total | currency: 'EUR'}}</td>
+        <td>{{order?.creationTimestamp | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
       </tr>
     </tbody>
   </table>
