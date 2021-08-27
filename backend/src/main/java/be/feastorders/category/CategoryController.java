@@ -6,6 +6,7 @@ import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.service.MenuItemService;
+import be.feastorders.printer.dto.PrinterCfgDTO;
 import be.feastorders.printer.entity.PrinterCfg;
 import be.feastorders.printer.service.PrinterCfgService;
 import io.swagger.annotations.ApiOperation;
@@ -15,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -78,13 +81,26 @@ public class CategoryController {
         category.setColor(categoryDTO.getColor());
         category.setDescription(categoryDTO.getDescription());
 
-        if (categoryDTO.getPrinterCfgList() != null && !categoryDTO.getPrinterCfgList().isEmpty()) {
-            List<PrinterCfg> printerCfgList = categoryDTO.getPrinterCfgList().stream().map(dto -> {
-                return printerCfgService.read(dto.getID());
-            }).collect(Collectors.toList());
-            category.getPrinterCfgs().clear();
-            category.getPrinterCfgs().addAll(printerCfgList);
+        List<PrinterCfg> printerCfgList = new ArrayList<>();
+        if (categoryDTO.getPrinterCfgList() != null) {
+            if (!categoryDTO.getPrinterCfgList().isEmpty()) {
+                for (PrinterCfgDTO printerCfgDTO: categoryDTO.getPrinterCfgList()) {
+                    Optional<PrinterCfg> printerCfgOptional = category.getPrinterCfgs().stream().filter(printerCfg -> {
+                        return printerCfg.getID().equals(printerCfgDTO.getID());
+                    }).findFirst();
+
+                    PrinterCfg printerCfg;
+                    if (printerCfgOptional.isPresent()) {
+                        printerCfg = printerCfgOptional.get();
+                    } else {
+                        printerCfg = printerCfgService.read(printerCfgDTO.getID());
+                    }
+
+                    printerCfgList.add(printerCfg);
+                }
+            }
         }
+        category.setPrinterCfgs(printerCfgList);
 
         category = categoryService.update(category);
         return ResponseEntity.ok(new CategoryDTO(category));
