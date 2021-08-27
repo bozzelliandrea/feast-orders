@@ -10,6 +10,9 @@ import be.feastorders.printer.entity.PrinterCfgAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,8 +55,11 @@ public class PrinterAsyncService {
                     subOrder.setClient(order.getClient());
                     subOrder.setPlaceSettingNumber(order.getPlaceSettingNumber());
                     subOrder.setCashier(order.getCashier());
-                    subOrder.setNote(order.getNote());
+                    subOrder.setNote(order.getNote() != null ? order.getNote() : "");
                     subOrder.setTakeAway(order.getTakeAway());
+                    ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(order.getCreationTimestamp().toInstant(),
+                            ZoneId.systemDefault());
+                    subOrder.setZonedDateTime(zonedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
                     List<OrderItemDetail> details = new ArrayList<>();
                     details.add(detail);
                     subOrder.setOrderItemDetails(details);
@@ -75,7 +81,7 @@ public class PrinterAsyncService {
     public void executePrintTasks(Map<PrinterCfg, Order> printerCfgOrderMap) {
         for (PrinterCfg printerCfg: printerCfgOrderMap.keySet()) {
             Callable<String> printTask = () -> {
-                TimeUnit.MILLISECONDS.sleep(3000);
+                TimeUnit.MILLISECONDS.sleep(1000);
                 Order order = printerCfgOrderMap.get(printerCfg);
                 String orderPdfFilePath = reportService.createPdf(order, printerCfg);
                 System.out.println("Callable task, order: " + order.getID() + ", created PDF for " + printerCfg.getReportTemplate().getName());

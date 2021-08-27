@@ -66,4 +66,7 @@ public class Order extends BaseEntity {
     public void setID(Long ID) {
         this.ID = ID;
     }
+
+    @Transient
+    private String zonedDateTime;
 }

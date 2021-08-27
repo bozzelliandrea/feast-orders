@@ -8,39 +8,65 @@
 <!-- header -->
 <h3 style="text-align: center" th:text="'Festa della birra Mellaredo 2021'"></h3>
 
-<div>
-    <span th:text="'Ordine ' + ${order.ID}"></span>
+<div style="margin-top: 10px;">
+    <span>ORDINE</span><strong><span th:text="' ' + ${order.ID}"></span></strong>
 </div>
-
-<div></div>
 
 <!-- order details -->
-<div>
-    <span th:text="'Tavolo ' + ${order.tableNumber}"></span>
-    <span th:text="'Coperti ' + ${order.placeSettingNumber}"></span>
-    <span th:text="'Cliente ' + ${order.client}"></span>
-</div>
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <th>TAVOLO</th>
+        <th>COPERTI</th>
+        <th>CLIENTE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${order.tableNumber}"/>
+        <td th:text="${order.placeSettingNumber}"/>
+        <td th:text="${order.client}"/>
+    </tr>
+    </tbody>
+</table>
 
-<div></div>
+<h1 style="text-align: center">BAR</h1>
 
 <!-- order items details -->
-<tr th:each="detail: ${order.orderItemDetails}">
-    <td th:text="${detail.quantity}"/>
-    <td th:text="${detail.menuItemName}"/>
-</tr>
+<table style="width: 100%; border-top: 1px solid; border-bottom: 1px solid; padding-top: 25px; padding-bottom: 25px;">
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="detail: ${order.orderItemDetails}">
+        <td th:text="${detail.quantity}"/>
+        <td th:text="${detail.menuItemName}"/>
+    </tr>
+    </tbody>
+</table>
 
 <!-- order notes -->
-<div>
-    <span>Note: urgente band - attenzione utente ceilaco</span>
-</div>
+<h3 th:text="'Note ' + ${order.note}"></h3>
 
-<div></div>
-
-<div>
-    <span><strong>Cassiere Bozzz</strong></span>
-    <span th:text="${order.creationTimestamp}"></span>
-    <span>Copia bar</span>
-</div>
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="'Cassiere ' + ${order.cashier}"/>
+        <td th:text="'' + ${order.zonedDateTime}"/>
+        <td>COPIA BAR</td>
+    </tr>
+    </tbody>
+</table>
 
 <!-- footer -->
 </body>
