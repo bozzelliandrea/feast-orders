@@ -50,8 +50,8 @@
                         <tr *ngFor="let item of orderItemList">
                             <td>{{item?.menuItemName}}</td>
                             <td>{{item?.quantity}}</td>
-                            <td>{{item?.menuItemPrice}}</td>
-                            <th scope="row">{{item?.totalPrice}}</th>
+                            <td>{{item?.menuItemPrice | currency:'EUR'}}</td>
+                            <th scope="row">{{item?.totalPrice | currency:'EUR'}}</th>
                             <td>{{item?.note}}</td>
                           <!-- todo aggiungere pulsanti +/- per aggiungere/rimuovere quantità item -->
                         </tr>
