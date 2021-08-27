@@ -1,6 +1,7 @@
 package be.feastorders.order;
 
 import be.feastorders.category.service.CategoryService;
+import be.feastorders.core.dto.AbstractDTO;
 import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.dto.OrderItemDetailDTO;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,7 +39,9 @@ public class OrderController {
     public ResponseEntity<List<OrderDTO>> findAll() {
 
         return ResponseEntity
-                .ok(orderService.findAll().stream().map(OrderDTO::new).collect(Collectors.toList()));
+                .ok(orderService.findAll().stream().map(OrderDTO::new)
+                        .sorted(Comparator.comparing(AbstractDTO::getCreationTimestamp).reversed())
+                        .collect(Collectors.toList()));
     }
 
     @ApiOperation("Get order by ID")

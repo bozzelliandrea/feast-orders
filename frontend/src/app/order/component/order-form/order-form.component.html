@@ -1,5 +1,5 @@
 <div class="container">
-    <h3>Nuovo Ordine</h3>
+    <h3>{{title}}</h3>
     <!-- order data form -->
     <form [formGroup]="orderForm">
         <div class="row">
@@ -35,30 +35,6 @@
         </div>
         <!-- left order detail table and menu items -->
         <div id="menu-item__container">
-            <div class="menu-item__container-item ">
-                <table class="table">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Descrizione</th>
-                            <th scope="col">Quantità</th>
-                            <th scope="col">Prezzo</th>
-                            <th scope="col">Totale</th>
-                            <th scope="col">Note</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of orderItemList">
-                            <td>{{item?.menuItemName}}</td>
-                            <td>{{item?.quantity}}</td>
-                            <td>{{item?.menuItemPrice}}</td>
-                            <th scope="row">{{item?.totalPrice}}</th>
-                            <td>{{item?.note}}</td>
-                          <!-- todo aggiungere pulsanti +/- per aggiungere/rimuovere quantità item -->
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
             <div class="menu-item__container-item" [style.display]='mode === "VIEW" ? "none" : "block"'>
                 <ng-container *ngFor="let category of categoryList">
                     <div class="card menu-item__card-category--container">
@@ -72,6 +48,30 @@
                         </div>
                     </div>
                 </ng-container>
+            </div>
+
+            <div class="menu-item__container-item ">
+                <table class="table">
+                    <thead class="table-light">
+                    <tr>
+                        <th scope="col">Descrizione</th>
+                        <th scope="col">Qa</th>
+                        <th scope="col">Prezzo</th>
+                        <th scope="col">Totale</th>
+                        <th scope="col">Note</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of orderItemList">
+                        <td>{{item?.menuItemName}}</td>
+                        <td>{{item?.quantity}}</td>
+                        <td>{{item?.menuItemPrice | currency:'EUR'}}</td>
+                        <th scope="row">{{item?.totalPrice | currency:'EUR'}}</th>
+                        <td>{{item?.note}}</td>
+                        <!-- todo aggiungere pulsanti +/- per aggiungere/rimuovere quantità item -->
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 

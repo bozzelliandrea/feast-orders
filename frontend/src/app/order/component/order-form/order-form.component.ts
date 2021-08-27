@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Category } from 'src/app/menu/interface/category.interface';
-import { MenuItem } from 'src/app/menu/interface/menu-item.interface';
-import { OrderItem } from '../../interface/order-item.interface';
-import { Order } from '../../interface/order.interface';
-import { CategoryService } from './../../../menu/service/category.service';
-import { MenuItemService } from './../../../menu/service/menu-item.service';
-import { ModeType } from './../../../shared/enums/mode.enum';
-import { OrderService } from './../../service/order.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {first} from 'rxjs/operators';
+import {Category} from 'src/app/menu/interface/category.interface';
+import {MenuItem} from 'src/app/menu/interface/menu-item.interface';
+import {OrderItem} from '../../interface/order-item.interface';
+import {Order} from '../../interface/order.interface';
+import {CategoryService} from './../../../menu/service/category.service';
+import {MenuItemService} from './../../../menu/service/menu-item.service';
+import {ModeType} from './../../../shared/enums/mode.enum';
+import {OrderService} from './../../service/order.service';
 
 @Component({
   selector: 'order-form',
@@ -20,6 +20,7 @@ import { OrderService } from './../../service/order.service';
 export class OrderFormComponent implements OnInit, OnDestroy {
 
   public mode: ModeType | undefined;
+  public title: string;
   public orderId: number | undefined;
   public orderForm !: FormGroup;
   public categoryList: Array<Category> = [];
@@ -37,6 +38,8 @@ export class OrderFormComponent implements OnInit, OnDestroy {
     if (_route.snapshot.paramMap.get('id'))
       this.orderId = parseInt(_route.snapshot.paramMap.get('id') as string);
     this.mode = _route.snapshot.data?.mode as ModeType;
+    this.title = this.mode === ModeType.NEW ? 'Nuovo' : (this.mode === ModeType.EDIT) ? 'Modifica' : 'Visualizza';
+    this.title += ' Ordine';
   }
 
   ngOnInit(): void {
