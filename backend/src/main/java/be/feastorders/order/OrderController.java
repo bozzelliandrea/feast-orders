@@ -4,18 +4,16 @@ import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.dto.OrderItemDetailDTO;
-import be.feastorders.order.entity.Order;
-import be.feastorders.order.entity.OrderItemDetail;
 import be.feastorders.order.service.OrderService;
-import be.feastorders.printer.entity.PrinterCfg;
-import be.feastorders.printer.service.PrinterAsyncService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

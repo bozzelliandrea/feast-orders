@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Thymeleaf template for orders</title>
+    <title>Copia cliente</title>
     <link href="@{../static/styles/main.css}" th:href="@{../static/styles/main.css}" rel="stylesheet" />
 </head>
 <body style="font-family: 'Helvetica'">
@@ -26,8 +26,8 @@
 <!-- order items details -->
 <tr th:each="detail: ${order.orderItemDetails}">
     <td th:text="${detail.quantity}"/>
-    <td th:text="${detail.menuItem.name}"/>
-    <td th:text="${detail.menuItem.price}"/>
+    <td th:text="${detail.menuItemName}"/>
+    <td th:text="${detail.menuItemPrice}"/>
     <td th:text="${detail.totalPrice}"/>
 </tr>
 

@@ -1,9 +1,11 @@
 package be.feastorders.order.entity;
 
-import be.feastorders.menuitem.entity.MenuItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +24,17 @@ public class OrderItemDetail implements Serializable {
     private OrderItemDetailPk pk = new OrderItemDetailPk();
 
     @NotNull
+    @Column(name = "MENU_ITEM_NAME", nullable = false)
+    private String menuItemName;
+
+    @NotNull
+    @Column(name = "MENU_ITEM_PRICE", nullable = false)
+    private Float menuItemPrice;
+
+    @Column(name = "MENU_ITEM_CAT_ID")
+    private Long menuItemCategoryId;
+
+    @NotNull
     @Column(name = "QUANTITY", nullable = false)
     private Long quantity;
 
@@ -37,10 +50,4 @@ public class OrderItemDetail implements Serializable {
     @JoinColumn(name = "orderId", referencedColumnName = "ID")
     @JsonIgnore
     private Order order;
-
-    @MapsId("menuItemId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menuItemId", referencedColumnName = "ID")
-    @JsonIgnore
-    private MenuItem menuItem;
 }

@@ -28,5 +28,7 @@ public class MenuItemDTO extends AbstractDTO {
         this.description = entity.getDescription();
         this.color = entity.getColor();
         this.price = entity.getPrice();
+        this.category = new CategoryDTO(entity.getCategory());
+        this.categoryId = entity.getCategory().getID();
     }
 }

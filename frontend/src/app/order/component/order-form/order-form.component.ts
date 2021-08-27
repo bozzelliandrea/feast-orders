@@ -22,8 +22,8 @@ export class OrderFormComponent implements OnInit, OnDestroy {
   public mode: ModeType | undefined;
   public orderId: number | undefined;
   public orderForm !: FormGroup;
-  public categoryList: Array<Category> = new Array;
-  public orderItemList: Array<OrderItem> = new Array;
+  public categoryList: Array<Category> = [];
+  public orderItemList: Array<OrderItem> = [];
 
   private paidSub: Subscription = Subscription.EMPTY;
 
@@ -110,18 +110,14 @@ export class OrderFormComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-
     const dto: Order = this.orderForm.value;
-
     dto.menuItemList = this.orderItemList;
 
     if (this.mode === ModeType.NEW) {
-
       this._orderService.create(dto).pipe(first()).subscribe((order: Order) => {
         this.goBack();
       });
     } else if (this.mode === ModeType.EDIT) {
-
       this._orderService.update(dto).pipe(first()).subscribe((order: Order) => {
         this.goBack();
       });
@@ -157,14 +153,16 @@ export class OrderFormComponent implements OnInit, OnDestroy {
     const orderItem = this.orderItemList?.find(orderItem => orderItem.menuItemId === menuItem.id);
     if (orderItem) {
       orderItem.quantity = orderItem.quantity + 1;
-      orderItem.totalPrice = orderItem.quantity * orderItem.menuItem.price;
+      orderItem.totalPrice = orderItem.quantity * orderItem.menuItemPrice;
     } else {
 
       const orderItem: OrderItem = {
-        menuItem: menuItem,
         quantity: 1,
         totalPrice: menuItem.price,
-        menuItemId: menuItem.id
+        menuItemId: menuItem.id,
+        menuItemName: menuItem.name,
+        menuItemPrice: menuItem.price,
+        menuItemCategoryId: menuItem.category?.id
       };
 
       this.orderItemList.push(orderItem);

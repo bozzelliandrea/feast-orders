@@ -1,6 +1,7 @@
 package be.feastorders.printer.service;
 
 import be.feastorders.category.entity.Category;
+import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.order.entity.Order;
 import be.feastorders.order.entity.OrderItemDetail;
@@ -22,6 +23,9 @@ public class PrinterAsyncService {
     private final ExecutorService executorService;
 
     @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
     private ReportService reportService;
 
     @Autowired
@@ -36,8 +40,9 @@ public class PrinterAsyncService {
         Map<PrinterCfg, Order> printerCfgOrderMap = new HashMap<>();
 
         for (OrderItemDetail detail: order.getOrderItemDetails()) {
-            MenuItem menuItem = detail.getMenuItem();
-            Category category = menuItem.getCategory();
+            Long categoryId = detail.getMenuItemCategoryId();
+            Category category = categoryService.read(categoryId);
+
             for (PrinterCfg printerCfg: category.getPrinterCfgs()) {
                 if (!printerCfgOrderMap.containsKey(printerCfg)) {
                     Order subOrder = new Order();
