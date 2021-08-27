@@ -2,16 +2,12 @@ package be.feastorders.menuitem.entity;
 
 import be.feastorders.category.entity.Category;
 import be.feastorders.core.entity.BaseEntity;
-import be.feastorders.order.entity.OrderItemDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -46,10 +42,6 @@ public class MenuItem extends BaseEntity {
             nullable = false,
             foreignKey = @ForeignKey(name = "FK_CATEGORY"))
     private Category category;
-
-    @OneToMany(mappedBy = "menuItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<OrderItemDetail> orderItemDetails = new ArrayList<>();
 
     @Override
     public Long getID() {

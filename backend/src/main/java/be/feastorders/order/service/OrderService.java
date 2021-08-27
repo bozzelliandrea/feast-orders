@@ -1,6 +1,7 @@
 package be.feastorders.order.service;
 
 import be.feastorders.core.service.BaseCRUDService;
+import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.dto.OrderItemDetailDTO;
@@ -49,7 +50,11 @@ public class OrderService extends BaseCRUDService<Order, Long> {
             detailEntity.setOrder(entity);
             detailEntity.setQuantity(detailDTO.getQuantity());
             detailEntity.setTotalPrice(detailDTO.getTotalPrice());
-            detailEntity.setMenuItem(menuItemService.read(detailDTO.getMenuItemId()));
+            MenuItem menuItem = menuItemService.read(detailDTO.getMenuItemId());
+            detailEntity.getPk().setMenuItemId(menuItem.getID());
+            detailEntity.setMenuItemName(menuItem.getName());
+            detailEntity.setMenuItemPrice(menuItem.getPrice());
+            detailEntity.setMenuItemCategoryId(menuItem.getCategory().getID());
 
             entity.getOrderItemDetails().add(detailEntity);
         }
@@ -105,7 +110,11 @@ public class OrderService extends BaseCRUDService<Order, Long> {
                         orderItemDetail.setOrder(entity);
                         orderItemDetail.setQuantity(detailDTO.getQuantity());
                         orderItemDetail.setTotalPrice(detailDTO.getTotalPrice());
-                        orderItemDetail.setMenuItem(menuItemService.read(detailDTO.getMenuItemId()));
+                        MenuItem menuItem = menuItemService.read(detailDTO.getMenuItemId());
+                        orderItemDetail.getPk().setMenuItemId(menuItem.getID());
+                        orderItemDetail.setMenuItemName(menuItem.getName());
+                        orderItemDetail.setMenuItemPrice(menuItem.getPrice());
+                        orderItemDetail.setMenuItemCategoryId(menuItem.getCategory().getID());
                     }
 
                     orderItemDetailList.add(orderItemDetail);

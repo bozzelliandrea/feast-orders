@@ -58,44 +58,6 @@ public class ReportService {
         return templateEngine.process(templateFilePath, context);
     }
 
-    public String parseThymeleafTemplate() {
-        // todo to remove
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-
-        TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
-
-        Order order = new Order();
-        order.setClient("Rizzaccio");
-        order.setTableNumber(1L);
-        order.setCashier("Cassa");
-        order.setPlaceSettingNumber(6L);
-        order.setTotal(55.30f);
-        MenuItem menuItem = new MenuItem();
-        menuItem.setName("Birra media bionda");
-        menuItem.setPrice(5f);
-
-        OrderItemDetail orderItemDetail = new OrderItemDetail();
-        orderItemDetail.setOrder(order);
-        orderItemDetail.setMenuItem(menuItem);
-        orderItemDetail.setQuantity(1L);
-        orderItemDetail.setTotalPrice(10f);
-
-        List<OrderItemDetail> orderItemDetails = new ArrayList<>();
-        orderItemDetails.add(orderItemDetail);
-        order.setOrderItemDetails(orderItemDetails);
-
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("order", order);
-
-        Context context = new Context();
-        context.setVariables(variables);
-
-        return templateEngine.process("templates/thymeleaf_template", context);
-    }
-
     public String generatePdfFromTemplate(String template, String destinationFolder, String destinationFileName) throws IOException, DocumentException {
         String outputFolder = System.getProperty(destinationFolder) + File.separator + destinationFileName;
         OutputStream outputStream = new FileOutputStream(outputFolder);
@@ -107,19 +69,6 @@ public class ReportService {
 
         outputStream.close();
         return outputFolder;
-    }
-
-    public void generatePdfFromHtml(String html) throws DocumentException, IOException {
-        // todo to remove
-        String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
-        OutputStream outputStream = new FileOutputStream(outputFolder);
-
-        ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(html);
-        renderer.layout();
-        renderer.createPDF(outputStream);
-
-        outputStream.close();
     }
 
 }
