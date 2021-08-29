@@ -184,7 +184,7 @@ export class MenuComponent implements OnInit {
       updateTimestamp: [null],
       creationUser: [null],
       updateUser: [null],
-      color: [null, Validators.required],
+      color: [null],
       name: [null, Validators.required],
       description: [null, Validators.required],
       menuItemList: [],

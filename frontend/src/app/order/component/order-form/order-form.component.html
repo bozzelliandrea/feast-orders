@@ -5,15 +5,15 @@
         <div class="row">
             <div class="col">
                 <label for="client" class="form-label">Cliente</label>
-                <input type="text" formControlName="client" class="form-control" id="client">
+                <input type="text" [ngClass]="{ 'is-invalid': orderForm.controls['client']?.invalid }" formControlName="client" class="form-control" id="client">
             </div>
             <div class="col">
                 <label for="placeNumber" class="form-label">Coperti</label>
-                <input type="number" formControlName="placeSettingNumber" class="form-control" id="placeNumber">
+                <input type="number" [ngClass]="{ 'is-invalid': orderForm.controls['placeSettingNumber']?.invalid }" formControlName="placeSettingNumber" class="form-control" id="placeNumber">
             </div>
             <div class="col">
                 <label for="tableNumber" class="form-label">Tavolo</label>
-                <input type="number" formControlName="tableNumber" class="form-control" id="tableNumber">
+                <input type="number" [ngClass]="{ 'is-invalid': orderForm.controls['tableNumber']?.invalid }" formControlName="tableNumber" class="form-control" id="tableNumber">
             </div>
         </div>
         <div class="row mt-1">
@@ -53,23 +53,29 @@
             <div class="menu-item__container-item ">
                 <table class="table">
                     <thead class="table-light">
-                    <tr>
-                        <th scope="col">Descrizione</th>
-                        <th scope="col">Qa</th>
-                        <th scope="col">Prezzo</th>
-                        <th scope="col">Totale</th>
-                        <th scope="col">Note</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">Descrizione</th>
+                            <th scope="col">Qa</th>
+                            <th scope="col">Prezzo</th>
+                            <th scope="col">Totale</th>
+                            <th scope="col">Note</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of orderItemList">
-                        <td>{{item?.menuItemName}}</td>
-                        <td>{{item?.quantity}}</td>
-                        <td>{{item?.menuItemPrice | currency:'EUR'}}</td>
-                        <th scope="row">{{item?.totalPrice | currency:'EUR'}}</th>
-                        <td>{{item?.note}}</td>
-                        <!-- todo aggiungere pulsanti +/- per aggiungere/rimuovere quantità item -->
-                    </tr>
+                        <tr *ngFor="let item of orderItemList">
+                            <td>
+                                <button *ngIf='mode !== "VIEW"' type="button" (click)="removeMenuItemUnitFromOrder(item.menuItemName)"
+                                    class="btn btn-secondary btn-sm">
+                                    <span class="material-icons-outlined">remove_circle</span>
+                                </button>
+                                {{item?.menuItemName}}
+                            </td>
+                            <td>{{item?.quantity}}</td>
+                            <td>{{item?.menuItemPrice | currency:'EUR'}}</td>
+                            <th scope="row">{{item?.totalPrice | currency:'EUR'}}</th>
+                            <td>{{item?.note}}</td>
+                            <!-- todo aggiungere pulsanti +/- per aggiungere/rimuovere quantità item -->
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -105,14 +111,14 @@
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" *ngIf='mode !== "VIEW"' (click)="save()"
+            <button type="button" [disabled]="orderForm.invalid" *ngIf='mode !== "VIEW"' (click)="save()"
                 class="btn btn-primary mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">save</span>
                 <span class="r-button-text">Salva</span>
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" *ngIf='mode !== "VIEW"' (click)="saveAndPrint()"
+            <button type="button" [disabled]="orderForm.invalid" *ngIf='mode !== "VIEW"' (click)="saveAndPrint()"
                 class="btn btn-success mx-1 d-flex justify-content-around align-items-center">
                 <span class="material-icons-outlined">save</span>
                 <span class="material-icons-outlined">print</span>

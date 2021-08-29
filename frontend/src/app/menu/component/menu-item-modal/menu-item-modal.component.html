@@ -7,7 +7,9 @@
             <div class="row align-items-end">
                 <div class="col-6">
                     <label for="name" class="form-label">Nome</label>
-                    <input type="text" formControlName="name" class="form-control" id="name">
+                    <input type="text" [ngClass]="{ 'is-invalid': menuItemForm.controls['name'].invalid }"
+                        formControlName="name" class="form-control" id="name">
+                    <div class="invalid-feedback">Nome obbligatorio.</div>
                 </div>
                 <div class="col-6">
                     <label for="description" class="form-label">Descrizione</label>
@@ -17,7 +19,9 @@
             <div class="row align-items-end">
                 <div class="col-6">
                     <label for="price" class="form-label">Prezzo</label>
-                    <input type="number" formControlName="price" class="form-control" id="price">
+                    <input type="number" [ngClass]="{ 'is-invalid': menuItemForm.controls['price'].invalid }"
+                        formControlName="price" class="form-control" id="price">
+                    <div class="invalid-feedback">Prezzo obbligatorio.</div>
                 </div>
                 <div class="col-6">
                     <label for="category" class="form-label">Categoria</label>
@@ -28,7 +32,8 @@
 
         <div class="item-modal_footer">
             <button type="button" class="btn btn-secondary" (click)="close()">Annulla</button>
-            <button type="button" class="btn btn-primary" (click)="save()">Salva</button>
+            <button type="button" class="btn btn-primary" [disabled]="menuItemForm.invalid"
+                (click)="save()">Salva</button>
         </div>
     </div>
 </div>
