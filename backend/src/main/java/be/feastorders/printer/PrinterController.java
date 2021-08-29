@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.PrintService;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(path = {"/printer"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class PrinterController {
@@ -54,6 +56,7 @@ public class PrinterController {
     @ApiOperation("create a printer configuration")
     @ApiResponse(code = 200, message = "printer configuration created", response = PrinterCfgDTO.class)
     @PostMapping("/cfg")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PrinterCfgDTO> createPrinterCfg(@RequestBody PrinterCfgDTO printerCfgDTO) {
         PrinterCfgDTO printerCfg = printerCfgService.savePrinterCfgWithAttrs(printerCfgDTO);
         return ResponseEntity.ok(printerCfg);
@@ -71,6 +74,7 @@ public class PrinterController {
     @ApiOperation("update a printer configuration")
     @ApiResponse(code = 200, message = "printer configuration updated", response = PrinterCfgDTO.class)
     @PutMapping("/cfg/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PrinterCfgDTO> updatePrinterCfg(@PathVariable Long id, @RequestBody PrinterCfgDTO printerCfgDTO) {
         PrinterCfg cfg = printerCfgService.read(id);
         printerCfgDTO = printerCfgService.updatePrinterCfg(cfg, printerCfgDTO);
@@ -80,6 +84,7 @@ public class PrinterController {
     @ApiOperation("delete a printer configuration")
     @ApiResponse(code = 200, message = "printer configuration deleted", response = PrinterCfgDTO.class)
     @DeleteMapping("/cfg/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PrinterCfgDTO> deletePrinterCfg(@PathVariable Long id) {
         PrinterCfg cfg = printerCfgService.read(id);
         boolean result = printerCfgService.delete(id);
