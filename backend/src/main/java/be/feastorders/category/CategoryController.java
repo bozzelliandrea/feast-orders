@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class CategoryController {
     @ApiOperation("create category")
     @ApiResponse(code = 200, message = "category created", response = CategoryDTO.class)
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.getName());
@@ -76,6 +78,7 @@ public class CategoryController {
     @ApiOperation("update category")
     @ApiResponse(code = 200, message = "category updated", response = CategoryDTO.class)
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
         Category category = categoryService.read(id);
         category.setName(categoryDTO.getName());
@@ -110,6 +113,7 @@ public class CategoryController {
     @ApiOperation("delete category")
     @ApiResponse(code = 200, message = "category deleted", response = CategoryDTO.class)
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (Objects.isNull(id)) {
@@ -158,6 +162,7 @@ public class CategoryController {
     @ApiOperation("create menu item into selected category")
     @ApiResponse(code = 200, message = "list of menu item created", response = ResponseEntity.class)
     @PostMapping("/{id}/menuitem")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MenuItemDTO>> createMenuItem(@RequestBody MenuItemDTO menuItemDTO,
                                                             @ApiParam(name = "category ID",
                                                                     type = "Long",
@@ -177,6 +182,7 @@ public class CategoryController {
     @ApiOperation("update menu item with new properties by category id and item id")
     @ApiResponse(code = 200, message = "menu item updated", response = ResponseEntity.class)
     @PutMapping("/{id}/menuitem/{itemId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MenuItemDTO>> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO,
                                                       @ApiParam(name = "category ID",
                                                               type = "Long",
@@ -202,6 +208,7 @@ public class CategoryController {
     @ApiOperation("remove one menu item from category")
     @ApiResponse(code = 200, message = "menu item deleted", response = ResponseEntity.class)
     @DeleteMapping("/{id}/menuitem/{itemId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MenuItemDTO>> deleteMenuItemByIdAndCategoryId(
             @ApiParam(name = "category ID",
                     type = "Long",
