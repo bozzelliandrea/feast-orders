@@ -1,4 +1,5 @@
 export enum ApiResourceEnum {
+    AUTH = "auth",
     ORDER = "order",
     CATEGORY = "category",
     MENU_ITEM = "menuitem",

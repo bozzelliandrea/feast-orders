@@ -1,20 +1,25 @@
-import { PageNotFoundComponent } from './shared/component/page-not-found/page-not-found.component';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {PageNotFoundComponent} from './shared/component/page-not-found/page-not-found.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from "./login/login.component";
+import {RegisterComponent} from "./register/register.component";
 
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
+  {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
   {path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule)},
   {path: 'menu', loadChildren: () => import('./menu/menu.module').then(m => m.MenuModule)},
   {path: 'printer', loadChildren: () => import('./printer/printer.module').then(m => m.PrinterModule)},
   {path: 'stats', loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule)},
-  { path: '**', component: PageNotFoundComponent }
+  {path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

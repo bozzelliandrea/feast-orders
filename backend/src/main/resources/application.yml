@@ -6,3 +6,8 @@ server:
 spring:
   profiles:
     active: dev
+
+app:
+  security:
+    jwtSecret: feastBearSecretKey
+    jwtExpirationMs: 86400000

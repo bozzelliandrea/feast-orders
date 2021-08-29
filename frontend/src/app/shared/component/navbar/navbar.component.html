@@ -17,7 +17,25 @@
       <li class="nav-item">
         <a (click)='navigateTo("stats")' class="nav-link">Statistiche</a>
       </li>
+
+      <ng-container *ngIf="!isLoggedIn; else userLoggedIn">
+        <li class="nav-item">
+          <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a href="/login" class="nav-link" routerLink="login">Login</a>
+        </li>
+      </ng-container>
+      <ng-template #userLoggedIn>
+        <li class="nav-item">
+          <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+        </li>
+        <li class="nav-item">
+          <a href class="nav-link" (click)="logout()">LogOut</a>
+        </li>
+      </ng-template>
     </ul>
+
     <div class="hamburger" (click)="toggleMenu()">
       <span class="bar"></span>
       <span class="bar"></span>
