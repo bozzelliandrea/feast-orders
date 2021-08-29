@@ -3,7 +3,7 @@ logging:
     root: INFO
 
 spring:
-  profiles: dev
+  profiles: devh2
   datasource:
     driver-class-name: org.h2.Driver
     username: dev
