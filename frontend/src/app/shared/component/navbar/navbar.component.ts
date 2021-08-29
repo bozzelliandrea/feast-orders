@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {TokenStorageService} from "../../service/token-storage.service";
 
 @Component({
   selector: 'navbar',
@@ -8,11 +9,15 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
+  @Input() isLoggedIn: boolean;
+  @Input() username?: string;
+
   private _hamburger: Element | null = null;
   private _navMenu: Element | null = null;
   private _isMenuActive: boolean = false;
 
-  constructor(private _router: Router) { }
+  constructor(private _router: Router, private _tokenStorage: TokenStorageService) {
+  }
 
   ngOnInit(): void {
     this._hamburger = document.querySelector(".hamburger");
@@ -34,5 +39,10 @@ export class NavbarComponent implements OnInit {
       this._hamburger?.classList.remove("active");
       this._navMenu?.classList.remove("active");
     }
+  }
+
+  public logout(): void {
+    this._tokenStorage.signOut();
+    window.location.reload();
   }
 }
