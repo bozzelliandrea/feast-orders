@@ -51,7 +51,7 @@ export class MenuItemModalComponent extends AbstractModal {
       updateUser: [null],
       color: [null],
       name: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [null],
       price: [null, Validators.required],
       categoryId: [null, Validators.required]
     })

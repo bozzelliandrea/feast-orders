@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {first} from 'rxjs/operators';
-import {Category} from 'src/app/menu/interface/category.interface';
-import {MenuItem} from 'src/app/menu/interface/menu-item.interface';
-import {OrderItem} from '../../interface/order-item.interface';
-import {Order} from '../../interface/order.interface';
-import {CategoryService} from './../../../menu/service/category.service';
-import {MenuItemService} from './../../../menu/service/menu-item.service';
-import {ModeType} from './../../../shared/enums/mode.enum';
-import {OrderService} from './../../service/order.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { Category } from 'src/app/menu/interface/category.interface';
+import { MenuItem } from 'src/app/menu/interface/menu-item.interface';
+import { OrderItem } from '../../interface/order-item.interface';
+import { Order } from '../../interface/order.interface';
+import { CategoryService } from './../../../menu/service/category.service';
+import { MenuItemService } from './../../../menu/service/menu-item.service';
+import { ModeType } from './../../../shared/enums/mode.enum';
+import { OrderService } from './../../service/order.service';
 
 @Component({
   selector: 'order-form',
@@ -22,7 +22,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
   public mode: ModeType | undefined;
   public title: string;
   public orderId: number | undefined;
-  public orderForm !: FormGroup;
+  public orderForm!: FormGroup;
   public categoryList: Array<Category> = [];
   public orderItemList: Array<OrderItem> = [];
 
@@ -171,6 +171,26 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       this.orderItemList.push(orderItem);
     }
 
+    this._loadTotalPrice();
+  }
+
+  public removeMenuItemUnitFromOrder(menuItemName: string): void {
+
+    const orderItem = this.orderItemList?.find(orderItem => orderItem.menuItemName === menuItemName);
+    if (orderItem) {
+      orderItem.quantity = orderItem.quantity - 1;
+      orderItem.totalPrice = orderItem.quantity * orderItem.menuItemPrice;
+    }
+
+    if (orderItem?.quantity === 0) {
+      this.orderItemList = this.orderItemList.filter(item => item.menuItemId !== orderItem.menuItemId)
+    }
+
+    this._loadTotalPrice();
+  }
+
+  private _loadTotalPrice(): void {
+
     const totalPrice: number = this.orderItemList
       .map(orderItem => orderItem.totalPrice)
       .reduce(function (a, b) {
@@ -193,7 +213,7 @@ export class OrderFormComponent implements OnInit, OnDestroy {
       client: [null, Validators.required],
       tableNumber: [null, Validators.required],
       placeSettingNumber: [null, Validators.required],
-      note: [null, Validators.required],
+      note: [null],
       cashier: [null],
       takeAway: [false],
       total: [null],

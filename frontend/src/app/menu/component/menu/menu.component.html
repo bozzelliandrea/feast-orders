@@ -32,7 +32,7 @@
                 </ng-container>
             </div>
             <div class="col-6 mt-3">
-                <button type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
+                <button [disabled]="categoryForm.invalid" type="submit" class="btn btn-primary d-flex justify-content-around align-items-center">
                     <span class="material-icons-outlined">add</span>
                     <span class="text">Aggiungi</span>
                 </button>

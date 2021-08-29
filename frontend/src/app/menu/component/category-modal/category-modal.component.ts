@@ -58,7 +58,7 @@ export class CategoryModal extends AbstractModal implements AfterViewInit {
       updateTimestamp: [null],
       creationUser: [null],
       updateUser: [null],
-      color: [null, Validators.required],
+      color: [null],
       name: [null, Validators.required],
       description: [null, Validators.required],
       menuItemList: [],

@@ -7,11 +7,13 @@
             <div class="row align-items-end">
                 <div class="col-6">
                     <label for="name" class="form-label">Nome</label>
-                    <input type="text" formControlName="name" class="form-control" id="name">
+                    <input type="text" [ngClass]="{ 'is-invalid': categoryForm.controls['name'].invalid }" formControlName="name" class="form-control" id="name">
+                    <div class="invalid-feedback">Nome obbligatorio.</div>
                 </div>
                 <div class="col-6">
                     <label for="description" class="form-label">Descrizione</label>
-                    <input type="text" formControlName="description" class="form-control" id="description">
+                    <input type="text" [ngClass]="{ 'is-invalid': categoryForm.controls['description'].invalid }" formControlName="description" class="form-control" id="description">
+                    <div class="invalid-feedback">Descrizione obbligatoria.</div>
                 </div>
                 <div class="col-6">
                     <label for="color" class="form-label">Colore</label>
@@ -38,7 +40,7 @@
 
         <div class="category-modal_footer">
             <button type="button" class="btn btn-secondary" (click)="close()">Annulla</button>
-            <button type="button" class="btn btn-primary" (click)="save()">Salva</button>
+            <button type="button" class="btn btn-primary" [disabled]="categoryForm.invalid" (click)="save()">Salva</button>
         </div>
     </div>
 </div>
