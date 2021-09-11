@@ -8,9 +8,9 @@ spring:
     hikari:
       connection-timeout: 20000
       maximum-pool-size: 5
-    url: jdbc:postgresql://postgres:5432/postgres
-    username: postgres
-    password: password
+    url: ${PSTURL}
+    username: ${PSTUSERNAME}
+    password: ${PSTPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
