@@ -93,7 +93,8 @@ public class PrinterAsyncService {
                     String value = attr.getValue();
                     printerAttrs.put(key, value);
                 }
-                boolean result = printerService.printPdf(printerCfg.getPrinterName(), printerAttrs);
+//                boolean result = printerService.printPdf(printerCfg.getPrinterName(), printerAttrs);
+                boolean result = printerService.printBytes(printerCfg.getPrinterName(), printerAttrs);
                 System.out.println("Callable task, order: " + order.getID() + ", printed PDF for " + printerCfg.getReportTemplate().getName());
 
                 return "Callable task, order: " + order.getID() + ", printed: " + result;

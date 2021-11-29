@@ -44,7 +44,7 @@ public class PrinterPOCService {
         Objects.requireNonNull(filename);
 
         PrintRequestAttributeSet attrs = getAttributes(params);
-        PrintService ps = getPrinterService(printerName, attrs).orElseThrow(IllegalArgumentException::new);
+        PrintService ps = getPrinterService(printerName, attrs, null).orElseThrow(IllegalArgumentException::new);
         return printToService(filename, attrs, ps);
     }
 
@@ -106,6 +106,27 @@ public class PrinterPOCService {
             document.close();
             return true;
         } catch (PrinterException | IOException e) {
+            e.printStackTrace();
+            // todo gestire
+            return false;
+        }
+    }
+
+    public boolean printBytes(String printerName, Map<String, String> params) throws IllegalArgumentException {
+        String filename = params.get("filename");
+        Objects.requireNonNull(filename);
+
+        PrintRequestAttributeSet attrs = getAttributes(params);
+        DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+        PrintService service = getPrinterService(printerName, null, flavor).orElseThrow(IllegalArgumentException::new);
+        DocPrintJob job = service.createPrintJob();
+
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            byte[] bytes = fis.readAllBytes();
+            Doc doc = new SimpleDoc(bytes, flavor, null);
+            job.print(doc, null);
+            return true;
+        } catch (IOException | PrintException e) {
             e.printStackTrace();
             // todo gestire
             return false;
@@ -207,8 +228,8 @@ public class PrinterPOCService {
 
     // A utility method to look up printers that can support the specified
     // attributes and return the one that matches the specified name.
-    private static Optional<PrintService> getPrinterService(String printerName, PrintRequestAttributeSet attrs) {
-        Optional<PrintService> service = Arrays.stream(PrintServiceLookup.lookupPrintServices(null, attrs))
+    private static Optional<PrintService> getPrinterService(String printerName, PrintRequestAttributeSet attrs, DocFlavor flavor) {
+        Optional<PrintService> service = Arrays.stream(PrintServiceLookup.lookupPrintServices(flavor, attrs))
                 .filter(printService -> {
                     return printService.getName().equalsIgnoreCase(printerName);
                 }).findFirst();
