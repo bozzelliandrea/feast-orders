@@ -1,17 +1,16 @@
 # Feast-orders
-Cloud microservices oriented application for the kitchen and dining room management of restaurants.
+Cloud microservices oriented application for the kitchen and dining room management.
 
 # Repositories
-Backend: https://github.com/bozzaccio/feast-orders-backend
+Backend: https://github.com/bozzaccio/feast-orders/tree/main/backend
 
-Frontend: https://github.com/bozzaccio/feast-orders-frontend
+Frontend: https://github.com/bozzaccio/feast-orders/tree/main/frontend
 
-Mobile: https://github.com/bozzaccio/feast-orders-cross-platform
+Mobile: https://github.com/bozzaccio/feast-orders/tree/main/mobile
 
-# Devs
+Docs: https://github.com/bozzaccio/feast-orders/tree/main/docs
 
-* Rizzi Alberto: https://github.com/rizzaccio87
-* Bozzelli Andrea: https://github.com/bozzaccio
+Test Repo: https://github.com/bozzaccio/feast-orders-test-bench
 
 # Build Status
 
