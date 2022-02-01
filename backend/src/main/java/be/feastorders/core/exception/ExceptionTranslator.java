@@ -1,5 +1,6 @@
 package be.feastorders.core.exception;
 
+import be.feastorders.core.exception.errors.HttpFeastServerException;
 import be.feastorders.core.exception.errors.OrderNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ExceptionTranslator {
         return this._buildError(exception);
     }
 
-    private ResponseEntity<FeastErrorResponse> _buildError(RuntimeException exception) {
+    private ResponseEntity<FeastErrorResponse> _buildError(HttpFeastServerException exception) {
 
         HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 
