@@ -280,7 +280,8 @@ Da sinistra a destra, stampa copia cucina, stampa ordine completo (copia cliente
 
 ![image alt text](image_6.jpg)![image alt text](image_7.jpg)![image alt text](image_8.jpg)
 
-**Progressivo: **aggiungere 2 api per apertura e chiusura cassa, da capire se è fattibile gestendo un Thread evitando transazioni a db, oppure tramite query verificare se la cassa è aperta per data apertura = oggi, recupero l’ultimo record ed aumento il progressivo, oppure utilizzando una sequence (da capire come azzerare in esecuzione)
+
+**Progressivo: **aggiungere 2 api per apertura e chiusura cassa, da capire se è fattibile gestendo un Thread evitando transazioni a db, oppure tramite query verificare se la cassa è aperta per data apertura = oggi, recupero l’ultimo record ed aumento il progressivo, oppure utilizzando una sequence (da capire come azzerare in esecuzione)
 
 da provare a gestire il progressivo tramite spring config/bean con un Integer all’interno del bean + data
 
