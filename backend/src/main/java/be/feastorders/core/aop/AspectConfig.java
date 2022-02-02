@@ -12,24 +12,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class AspectConfig {
 
-    @Pointcut("within(@org.springframework.stereotype.Repository *)" +
-            " || within(@org.springframework.stereotype.Service *)" +
-            " || within(@org.springframework.web.bind.annotation.RestController *)")
-    public void springBeanPointcut() {
-    }
-
-    @Pointcut("within(be.feastorders..*)")
-    public void feastBearPointcut() {
-    }
-
-
-    @AfterThrowing(pointcut = "feastBearPointcut() && springBeanPointcut()", throwing = "e")
-    public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
-        final Logger logger = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
-
-        logger.error("Transaction error in {} method, exception details: cause = {}, message = {}",
-                joinPoint.getSignature().getName(),
-                e.getCause(),
-                e.getMessage());
-    }
 }
