@@ -1,5 +1,6 @@
 package be.feastorders;
 
+import be.feastorders.core.aop.AspectConfig;
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -8,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -30,6 +32,7 @@ import java.util.Collections;
 @EnableJpaAuditing
 @EnableSwagger2
 @Configuration
+@Import({AspectConfig.class})
 public class FeastOrdersApplication {
 
     public static void main(String[] args) {
