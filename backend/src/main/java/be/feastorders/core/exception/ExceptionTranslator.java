@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -17,6 +18,11 @@ public class ExceptionTranslator {
     @ExceptionHandler(OrderNotFoundException.class)
     protected ResponseEntity<FeastErrorResponse> handleOrderNotFound(OrderNotFoundException exception, WebRequest request) {
         return this._buildError(exception);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<FeastErrorResponse> handleEntityNotFoundException(EntityNotFoundException exception, WebRequest request) {
+        return this._buildError(new HttpFeastServerException(exception.getMessage()));
     }
 
     private ResponseEntity<FeastErrorResponse> _buildError(HttpFeastServerException exception) {
@@ -28,7 +34,7 @@ public class ExceptionTranslator {
         }
 
         final FeastErrorResponse err = new FeastErrorResponse(
-                LocalDateTime.now(),
+                LocalDateTime.now().toString(),
                 httpCode.value(),
                 httpCode.getReasonPhrase(),
                 exception.getMessage()

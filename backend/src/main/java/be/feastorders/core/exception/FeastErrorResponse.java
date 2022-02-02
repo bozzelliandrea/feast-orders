@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public class FeastErrorResponse {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private LocalDateTime timestamp;
+    private String timestamp;
     private int status;
     private String message;
     private String cause;
@@ -15,18 +15,18 @@ public class FeastErrorResponse {
     public FeastErrorResponse() {
     }
 
-    public FeastErrorResponse(LocalDateTime timestamp, int status, String message, String cause) {
+    public FeastErrorResponse(String timestamp, int status, String message, String cause) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
         this.cause = cause;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
