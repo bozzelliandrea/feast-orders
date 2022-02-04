@@ -2,7 +2,10 @@ package be.feastorders.core.exception.atomic;
 
 
 import be.feastorders.core.entity.Auditable;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -16,7 +19,8 @@ import javax.persistence.*;
 public class ErrorTracking extends Auditable<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "ERR_TRACK_GEN", sequenceName = "ERR_TRACK_GEN_SQ", allocationSize = 1)
+    @GeneratedValue(generator = "ERR_TRACK_GEN", strategy = GenerationType.SEQUENCE)
     @Column(name = "ID")
     private Long id;
 

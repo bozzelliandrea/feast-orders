@@ -38,7 +38,9 @@ public class LoggerAspect {
                 e.getCause(),
                 e.getMessage());
 
-        ErrorTracking error = new ErrorTracking(e.getMessage(), e.getClass().getName());
+        String message = e.getMessage() != null ? e.getMessage().substring(0, 200) : "";
+
+        ErrorTracking error = new ErrorTracking(message, e.getClass().getName());
         errorRepository.saveAndFlush(error);
     }
 }
