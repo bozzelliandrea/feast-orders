@@ -1,5 +1,6 @@
 package be.feastorders.rest;
 
+import be.feastorders.core.exception.errors.OrderNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,6 @@ public class OrderREST {
 
     @GetMapping
     public String hello(){
-        return "Hello World";
+        throw new OrderNotFoundException("Hello World");
     }
 }

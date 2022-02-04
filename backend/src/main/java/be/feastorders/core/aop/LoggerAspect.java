@@ -1,14 +1,22 @@
 package be.feastorders.core.aop;
 
+import be.feastorders.core.exception.atomic.ErrorRepository;
+import be.feastorders.core.exception.atomic.ErrorTracking;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Aspect
+@Component
 public class LoggerAspect {
+
+    @Autowired
+    private ErrorRepository errorRepository;
 
     @Pointcut("within(@org.springframework.stereotype.Repository *)" +
             " || within(@org.springframework.stereotype.Service *)" +
@@ -29,5 +37,8 @@ public class LoggerAspect {
                 joinPoint.getSignature().getName(),
                 e.getCause(),
                 e.getMessage());
+
+        ErrorTracking error = new ErrorTracking(e.getMessage(), e.getClass().getName());
+        errorRepository.saveAndFlush(error);
     }
 }
