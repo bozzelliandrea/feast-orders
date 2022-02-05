@@ -38,9 +38,17 @@ public class LoggerAspect {
                 e.getCause(),
                 e.getMessage());
 
-        String message = e.getMessage() != null ? e.getMessage().substring(0, 200) : "";
+        try {
+            String message = "";
+            if (e.getMessage() != null) {
+                int maxLength = Math.min(e.getMessage().length(), 200);
+                message = e.getMessage() != null ? e.getMessage().substring(0, maxLength) : "";
+            }
 
-        ErrorTracking error = new ErrorTracking(message, e.getClass().getName());
-        errorRepository.saveAndFlush(error);
+            ErrorTracking error = new ErrorTracking(message, e.getClass().getName());
+            errorRepository.saveAndFlush(error);
+        } catch (Exception internalException) {
+            logger.error("Internal Aspect Error: cannot save message to ErrorTracking entity, cause {}", internalException.getMessage());
+        }
     }
 }

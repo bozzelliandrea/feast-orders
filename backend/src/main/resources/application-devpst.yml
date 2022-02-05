@@ -6,6 +6,7 @@ spring:
   profiles: devpst
   datasource:
     hikari:
+      data-source-properties: stringtype=unspecified
       connection-timeout: 20000
       maximum-pool-size: 5
     url: jdbc:postgresql://localhost:5432/postgres
@@ -13,7 +14,7 @@ spring:
     password: password
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -8,11 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.support.Repositories;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.*;
 
 @DataJpaTest
 @SuppressWarnings({"all"})
+@ActiveProfiles(profiles = {"test"})
 public abstract class AbstractJpaDataProvider {
 
     @Autowired
@@ -56,7 +58,7 @@ public abstract class AbstractJpaDataProvider {
         }
     }
 
-    protected  <T> JpaRepository<?, ?> getRepository(Class<T> clazz) {
+    protected <T> JpaRepository<?, ?> getRepository(Class<T> clazz) {
         Repositories repositories = new Repositories((ListableBeanFactory) _beanFactory);
         Optional<Object> opt = repositories.getRepositoryFor(clazz);
         if (opt.isPresent()) {

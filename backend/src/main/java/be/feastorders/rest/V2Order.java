@@ -18,7 +18,7 @@ public class V2Order {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "jsonb")
     @Convert(converter = JsonOrderContentConverter.class)
     private OrderContent orderContent;
 }

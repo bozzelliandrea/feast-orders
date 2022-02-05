@@ -16,7 +16,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 import java.util.Collections;
 
-@Profile("devh2")
+@Profile({"devh2", "devpst"})
 @Configuration
 @EnableWebSecurity
 public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
