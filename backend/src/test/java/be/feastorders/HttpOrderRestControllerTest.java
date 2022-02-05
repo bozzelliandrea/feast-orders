@@ -13,8 +13,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = {"test"})
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
@@ -42,14 +40,6 @@ class HttpOrderRestControllerTest {
 
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getBody().getStatus());
-    }
-
-    @Test
-    @DisplayName("GET -> v2/order -> success")
-    public void invokeV2Get_shouldReturnMessage() {
-
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v2/order",
-                String.class)).contains("Hello World");
     }
 
 }
