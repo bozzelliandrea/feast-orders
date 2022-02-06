@@ -16,3 +16,8 @@ app:
   security:
     jwtSecret: feastBearSecretKey
     jwtExpirationMs: 86400000
+
+
+application:
+  title: Feast Bear Server
+  version: 2.0.0
