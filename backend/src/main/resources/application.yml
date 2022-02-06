@@ -6,6 +6,9 @@ server:
 spring:
   profiles:
     active: devpst
+  output:
+    ansi:
+      enabled: always
 
 app:
   security:

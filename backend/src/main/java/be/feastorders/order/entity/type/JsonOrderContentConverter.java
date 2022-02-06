@@ -6,21 +6,22 @@ import lombok.SneakyThrows;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import java.util.List;
 
 @Converter
-public class JsonOrderContentConverter implements AttributeConverter<OrderContent, String> {
+public class JsonOrderContentConverter implements AttributeConverter<List<OrderContent>, String> {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @SneakyThrows
     @Override
-    public String convertToDatabaseColumn(OrderContent meta) {
+    public String convertToDatabaseColumn(List<OrderContent> meta) {
         return objectMapper.writeValueAsString(meta);
     }
 
     @SneakyThrows
     @Override
-    public OrderContent convertToEntityAttribute(String dbData) {
-        return objectMapper.readValue(dbData, OrderContent.class);
+    public List<OrderContent> convertToEntityAttribute(String dbData) {
+        return objectMapper.readValue(dbData, List.class);
     }
 }

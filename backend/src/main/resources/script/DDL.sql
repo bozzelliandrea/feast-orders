@@ -66,9 +66,29 @@ CREATE TABLE public.error_tracking (
 
 -- DROP TABLE public.order_new;
 
+-- public.order_new definition
+
+-- Drop table
+
+-- DROP TABLE public.order_new;
+
 CREATE TABLE public.order_new (
 	id bigserial NOT NULL,
 	"content" jsonb NULL,
+	bar bool NULL,
+	kitchen bool NULL,
+	note varchar(255) NULL,
+	plate bool NULL,
+	takeaway bool NULL,
+	status varchar NULL,
+	total double precision NULL,
+	table_number smallint NULL,
+	place_setting_number smallint NULL,
+	creation_timestamp timestamp NULL,
+	creation_user varchar(255) NULL,
+	update_timestamp timestamp NULL,
+	update_user varchar(255) NULL,
+	"version" int8 NULL,
 	CONSTRAINT order_new_pkey PRIMARY KEY (id)
 );
 
@@ -237,4 +257,18 @@ CREATE TABLE public.category_printercfg (
 	printercfg_id int8 NOT NULL,
 	CONSTRAINT fkd7pl092hsk0yfvvm7g0pnq30t FOREIGN KEY (printercfg_id) REFERENCES public.printercfg(id),
 	CONSTRAINT fkmqb4egd393dfen67x7b1rc2f1 FOREIGN KEY (category_id) REFERENCES public.category(id)
+);
+
+-- public.order_history definition
+
+-- Drop table
+
+-- DROP TABLE public.order_history;
+
+CREATE TABLE public.order_history (
+	id bigserial NOT NULL,
+	"content" jsonb NULL,
+	"date" timestamp NOT NULL,
+	total float8 NOT NULL,
+	CONSTRAINT order_history_pkey PRIMARY KEY (id)
 );
