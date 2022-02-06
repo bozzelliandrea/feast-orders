@@ -3,9 +3,11 @@ package be.feastorders.rest;
 import be.feastorders.core.exception.errors.OrderNotFoundException;
 import be.feastorders.core.exception.errors.OrderUpdateException;
 import be.feastorders.order.dto.OrderStatus;
+import be.feastorders.order.service.OrderHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,9 @@ public class V2OrderController {
 
     @Autowired
     private V2OrderRepository repository;
+
+    @Autowired
+    private OrderHistoryService orderHistoryService;
 
     @PostMapping
     public String create() {
@@ -43,7 +48,7 @@ public class V2OrderController {
     }
 
     @PatchMapping("/{id}")
-    public String patchStatus(@PathVariable Long id, @RequestBody String newStatus) {
+    public String patchStatus(@PathVariable Long id, @RequestBody String newStatus) throws ParseException {
         OrderStatus status = OrderStatus.valueOf(newStatus);
         Optional<V2Order> orderOpt = repository.findById(id);
 
@@ -54,8 +59,15 @@ public class V2OrderController {
                 throw new OrderUpdateException("The selected order already have this status.");
             }
 
-            order.setStatus(status);
-            repository.saveAndFlush(order);
+            if (status.equals(OrderStatus.DONE)) {
+                boolean result = orderHistoryService.create(order);
+                if (result)
+                    repository.deleteById(id);
+            } else {
+                order.setStatus(status);
+                repository.saveAndFlush(order);
+            }
+
             return "Order saved with status: " + status.name();
 
         } else {

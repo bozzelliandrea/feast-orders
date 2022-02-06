@@ -268,7 +268,123 @@ CREATE TABLE public.category_printercfg (
 CREATE TABLE public.order_history (
 	id bigserial NOT NULL,
 	"content" jsonb NULL,
-	"date" timestamp NOT NULL,
+	"date" date NOT NULL,
 	total float8 NOT NULL,
 	CONSTRAINT order_history_pkey PRIMARY KEY (id)
 );
+
+-- public.app_order_gen_sq definition
+
+-- DROP SEQUENCE public.app_order_gen_sq;
+
+CREATE SEQUENCE IF NOT EXISTS public.app_order_gen_sq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.category_gen_sq definition
+
+-- DROP SEQUENCE public.category_gen_sq;
+
+CREATE SEQUENCE IF NOT EXISTS public.category_gen_sq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.err_track_gen_sq definition
+
+-- DROP SEQUENCE public.err_track_gen_sq;
+
+CREATE SEQUENCE IF NOT EXISTS public.err_track_gen_sq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.menu_item_gen_sq definition
+
+-- DROP SEQUENCE public.menu_item_gen_sq;
+
+CREATE SEQUENCE IF NOT EXISTS public.menu_item_gen_sq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.order_history_id_seq definition
+
+-- DROP SEQUENCE public.order_history_id_seq;
+
+CREATE SEQUENCE IF NOT EXISTS public.order_history_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.order_new_id_seq definition
+
+-- DROP SEQUENCE public.order_new_id_seq;
+
+CREATE SEQUENCE IF NOT EXISTS public.order_new_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.printer_cfg_gen_sq definition
+
+-- DROP SEQUENCE public.printer_cfg_gen_sq;
+
+CREATE SEQUENCE IF NOT EXISTS public.printer_cfg_gen_sq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.roles_id_seq definition
+
+-- DROP SEQUENCE public.roles_id_seq;
+
+CREATE SEQUENCE IF NOT EXISTS public.roles_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- public.users_id_seq definition
+
+-- DROP SEQUENCE public.users_id_seq;
+
+CREATE SEQUENCE IF NOT EXISTS public.users_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;

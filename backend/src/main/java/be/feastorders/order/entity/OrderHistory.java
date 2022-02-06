@@ -1,11 +1,14 @@
-package be.feastorders.rest;
+package be.feastorders.order.entity;
 
 import be.feastorders.order.entity.type.JsonOrderContentConverter;
+import be.feastorders.rest.OrderContent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +17,8 @@ import java.util.List;
 @Table(name = "ORDER_HISTORY")
 @NoArgsConstructor
 public class OrderHistory {
+
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +34,8 @@ public class OrderHistory {
     private Double total;
 
     @NotNull
-    @Column(name = "DATE")
+    @Basic
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Temporal(TemporalType.DATE)
     private Date date;
 }
