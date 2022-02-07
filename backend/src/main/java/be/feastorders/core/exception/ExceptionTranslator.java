@@ -1,7 +1,6 @@
 package be.feastorders.core.exception;
 
 import be.feastorders.core.exception.errors.HttpFeastServerException;
-import be.feastorders.core.exception.errors.OrderNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,8 +14,8 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ExceptionTranslator {
 
-    @ExceptionHandler(OrderNotFoundException.class)
-    protected ResponseEntity<FeastErrorResponse> handleOrderNotFound(OrderNotFoundException exception, WebRequest request) {
+    @ExceptionHandler({HttpFeastServerException.class})
+    protected ResponseEntity<FeastErrorResponse> handleHttpFeastServerException(HttpFeastServerException exception, WebRequest request) {
         return this._buildError(exception);
     }
 

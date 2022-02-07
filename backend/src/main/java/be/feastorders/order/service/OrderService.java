@@ -18,8 +18,6 @@ import java.util.*;
 @Service
 public class OrderService extends BaseCRUDService<Order, Long> {
 
-    private final OrderRepository repository;
-
     @Autowired
     private MenuItemService menuItemService;
 
@@ -28,7 +26,6 @@ public class OrderService extends BaseCRUDService<Order, Long> {
 
     public OrderService(OrderRepository repository) {
         super(repository);
-        this.repository = repository;
     }
 
     public OrderDTO createEntity(OrderDTO dto) {
