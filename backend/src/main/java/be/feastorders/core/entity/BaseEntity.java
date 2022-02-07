@@ -1,6 +1,6 @@
 package be.feastorders.core.entity;
 
-import be.feastorders.configurations.security.service.UserDetailsImpl;
+import be.feastorders.security.service.UserDetailsImpl;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;

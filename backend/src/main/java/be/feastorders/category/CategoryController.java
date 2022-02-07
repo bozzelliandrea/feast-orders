@@ -1,6 +1,7 @@
 package be.feastorders.category;
 
 import be.feastorders.category.dto.CategoryDTO;
+import be.feastorders.category.dto.CategoryProcessingZone;
 import be.feastorders.category.entity.Category;
 import be.feastorders.category.service.CategoryService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
@@ -63,6 +64,7 @@ public class CategoryController {
         Category category = new Category();
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
+        category.setProcessingZone(CategoryProcessingZone.valueOf(categoryDTO.getProcessingZone()));
         category.setColor(categoryDTO.getColor());
         if (categoryDTO.getPrinterCfgList() != null && !categoryDTO.getPrinterCfgList().isEmpty()) {
             List<PrinterCfg> printerCfgList = categoryDTO.getPrinterCfgList().stream().map(dto -> {
@@ -83,12 +85,13 @@ public class CategoryController {
         Category category = categoryService.read(id);
         category.setName(categoryDTO.getName());
         category.setColor(categoryDTO.getColor());
+        category.setProcessingZone(CategoryProcessingZone.valueOf(categoryDTO.getProcessingZone()));
         category.setDescription(categoryDTO.getDescription());
 
         List<PrinterCfg> printerCfgList = new ArrayList<>();
         if (categoryDTO.getPrinterCfgList() != null) {
             if (!categoryDTO.getPrinterCfgList().isEmpty()) {
-                for (PrinterCfgDTO printerCfgDTO: categoryDTO.getPrinterCfgList()) {
+                for (PrinterCfgDTO printerCfgDTO : categoryDTO.getPrinterCfgList()) {
                     Optional<PrinterCfg> printerCfgOptional = category.getPrinterCfgs().stream().filter(printerCfg -> {
                         return printerCfg.getID().equals(printerCfgDTO.getID());
                     }).findFirst();
@@ -184,17 +187,17 @@ public class CategoryController {
     @PutMapping("/{id}/menuitem/{itemId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MenuItemDTO>> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO,
-                                                      @ApiParam(name = "category ID",
-                                                              type = "Long",
-                                                              allowEmptyValue = false,
-                                                              required = true,
-                                                              value = "The selected category")
-                                                      @PathVariable("id") Long categoryID,
-                                                      @ApiParam(name = "menu item ID",
-                                                              type = "Long",
-                                                              required = true,
-                                                              value = "The selected menu item to retrieve")
-                                                      @PathVariable("itemId") Long itemID) {
+                                                            @ApiParam(name = "category ID",
+                                                                    type = "Long",
+                                                                    allowEmptyValue = false,
+                                                                    required = true,
+                                                                    value = "The selected category")
+                                                            @PathVariable("id") Long categoryID,
+                                                            @ApiParam(name = "menu item ID",
+                                                                    type = "Long",
+                                                                    required = true,
+                                                                    value = "The selected menu item to retrieve")
+                                                            @PathVariable("itemId") Long itemID) {
 
         MenuItem oldMenuItem = menuItemService.read(itemID);
 

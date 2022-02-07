@@ -19,6 +19,7 @@ public class JsonOrderContentConverter implements AttributeConverter<List<OrderC
         return objectMapper.writeValueAsString(meta);
     }
 
+    @SuppressWarnings("unchecked")
     @SneakyThrows
     @Override
     public List<OrderContent> convertToEntityAttribute(String dbData) {

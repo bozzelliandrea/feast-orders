@@ -1,4 +1,4 @@
-package be.feastorders.configurations.security;
+package be.feastorders.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -11,8 +11,6 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
-import static be.feastorders.rest.OrderContent.Category.SUB;
-
 //TODO: CONTROLLER TEMPORANEO PER IL REFACTOR DEGLI ORDINI CON JSONB
 @RestController
 @RequestMapping(value = "/v2/order")
@@ -29,14 +27,13 @@ public class V2OrderController {
 
         V2Order order = new V2Order();
 
-        order.setContent(List.of(OrderContent.emptyBuilder()
-                .itemId("panino1")
-                .category(SUB)
+        order.setContent(List.of(OrderContent.builder()
+                .itemId("itemId")
+                .categoryId("categoryId")
                 .qty(1)
-                .additions("senape")
-                .additions("ketchup")
-                .less("salad")
-                .price(SUB.getPrice())
+                .additions(List.of("senape", "ketchup"))
+                .less(List.of("salad"))
+                .price(20.0)
                 .build()));
 
         order.setTotal(20.0);
@@ -59,7 +56,7 @@ public class V2OrderController {
                 throw new OrderUpdateException("The selected order already have this status.");
             }
 
-            if (status.equals(OrderStatus.DONE)) {
+            if (status.isClosed()) {
                 boolean result = orderHistoryService.create(order);
                 if (result)
                     repository.deleteById(id);
