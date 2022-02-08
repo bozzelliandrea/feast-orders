@@ -1,10 +1,9 @@
 package be.feastorders.category.entity;
 
 import be.feastorders.category.dto.CategoryProcessingZone;
-import be.feastorders.core.entity.BaseEntity;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.printer.entity.PrinterCfg;
-import lombok.*;
+import entity.BaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,12 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Builder
-@Setter
-@Getter
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "CATEGORY")
 public class Category extends BaseEntity {
 
@@ -57,12 +51,58 @@ public class Category extends BaseEntity {
     )
     private List<PrinterCfg> printerCfgs = new ArrayList<>();
 
-    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public CategoryProcessingZone getProcessingZone() {
+        return processingZone;
+    }
+
+    public void setProcessingZone(CategoryProcessingZone processingZone) {
+        this.processingZone = processingZone;
+    }
+
+    public Set<MenuItem> getMenuItems() {
+        return menuItems;
+    }
+
+    public void setMenuItems(Set<MenuItem> menuItems) {
+        this.menuItems = menuItems;
+    }
+
+    public List<PrinterCfg> getPrinterCfgs() {
+        return printerCfgs;
+    }
+
+    public void setPrinterCfgs(List<PrinterCfg> printerCfgs) {
+        this.printerCfgs = printerCfgs;
+    }
+
     public Long getID() {
         return this.ID;
     }
 
-    @Override
     public void setID(Long ID) {
         this.ID = ID;
     }

@@ -1,17 +1,11 @@
 package be.feastorders.menuitem.entity;
 
 import be.feastorders.category.entity.Category;
-import be.feastorders.core.entity.BaseEntity;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import entity.BaseEntity;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "MENU_ITEM")
 public class MenuItem extends BaseEntity {
@@ -43,13 +37,51 @@ public class MenuItem extends BaseEntity {
             foreignKey = @ForeignKey(name = "FK_CATEGORY"))
     private Category category;
 
-    @Override
     public Long getID() {
         return this.ID;
     }
 
-    @Override
     public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

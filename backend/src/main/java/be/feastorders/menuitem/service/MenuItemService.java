@@ -1,7 +1,6 @@
 package be.feastorders.menuitem.service;
 
 import be.feastorders.category.entity.Category;
-import be.feastorders.core.service.BaseCRUDService;
 import be.feastorders.menuitem.dto.MenuItemDTO;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.repository.MenuItemRepository;
@@ -9,8 +8,8 @@ import be.feastorders.order.dto.OrderItemDetailDTO;
 import be.feastorders.order.entity.OrderItemDetail;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import service.BaseCRUDService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

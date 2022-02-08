@@ -1,7 +1,6 @@
 package be.feastorders.printer.entity;
 
 import com.sun.istack.NotNull;
-import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Builder
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "REPORTTEMPLATE")
 public class ReportTemplate implements Serializable {
@@ -32,4 +26,27 @@ public class ReportTemplate implements Serializable {
     @Column(name = "FILEPATH", nullable = false)
     private String filepath;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
 }

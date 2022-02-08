@@ -1,22 +1,13 @@
 package be.feastorders.order.entity;
 
-import be.feastorders.core.entity.BaseEntity;
-import be.feastorders.printer.entity.PrinterCfgAttribute;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.*;
+import entity.BaseEntity;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Builder
 @Table(name = "APP_ORDER")
 public class Order extends BaseEntity {
 
@@ -57,14 +48,84 @@ public class Order extends BaseEntity {
     @JsonIgnore
     private List<OrderItemDetail> orderItemDetails;
 
-    @Override
     public Long getID() {
         return this.ID;
     }
 
-    @Override
     public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public Long getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(Long tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public Long getPlaceSettingNumber() {
+        return placeSettingNumber;
+    }
+
+    public void setPlaceSettingNumber(Long placeSettingNumber) {
+        this.placeSettingNumber = placeSettingNumber;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getCashier() {
+        return cashier;
+    }
+
+    public void setCashier(String cashier) {
+        this.cashier = cashier;
+    }
+
+    public Float getTotal() {
+        return total;
+    }
+
+    public void setTotal(Float total) {
+        this.total = total;
+    }
+
+    public Boolean getTakeAway() {
+        return takeAway;
+    }
+
+    public void setTakeAway(Boolean takeAway) {
+        this.takeAway = takeAway;
+    }
+
+    public List<OrderItemDetail> getOrderItemDetails() {
+        return orderItemDetails;
+    }
+
+    public void setOrderItemDetails(List<OrderItemDetail> orderItemDetails) {
+        this.orderItemDetails = orderItemDetails;
+    }
+
+    public String getZonedDateTime() {
+        return zonedDateTime;
+    }
+
+    public void setZonedDateTime(String zonedDateTime) {
+        this.zonedDateTime = zonedDateTime;
     }
 
     @Transient

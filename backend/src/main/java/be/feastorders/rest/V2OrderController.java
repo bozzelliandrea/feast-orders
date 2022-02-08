@@ -1,9 +1,9 @@
 package be.feastorders.rest;
 
-import be.feastorders.core.exception.errors.OrderNotFoundException;
-import be.feastorders.core.exception.errors.OrderUpdateException;
 import be.feastorders.order.dto.OrderStatus;
 import be.feastorders.order.service.OrderHistoryService;
+import exception.errors.OrderNotFoundException;
+import exception.errors.OrderUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +27,14 @@ public class V2OrderController {
 
         V2Order order = new V2Order();
 
-        order.setContent(List.of(OrderContent.builder()
-                .itemId("itemId")
-                .categoryId("categoryId")
-                .qty(1)
-                .additions(List.of("senape", "ketchup"))
-                .less(List.of("salad"))
-                .price(20.0)
-                .build()));
+//        order.setContent(List.of(OrderContent.builder()
+//                .itemId("itemId")
+//                .categoryId("categoryId")
+//                .qty(1)
+//                .additions(List.of("senape", "ketchup"))
+//                .less(List.of("salad"))
+//                .price(20.0)
+//                .build()));
 
         order.setTotal(20.0);
         order.setTableNumber((short) 2);

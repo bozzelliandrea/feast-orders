@@ -1,6 +1,5 @@
 package be.feastorders.order.service;
 
-import be.feastorders.core.service.BaseCRUDService;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
@@ -12,6 +11,7 @@ import be.feastorders.printer.entity.PrinterCfg;
 import be.feastorders.printer.service.PrinterAsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import service.BaseCRUDService;
 
 import java.util.*;
 
@@ -29,16 +29,19 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     }
 
     public OrderDTO createEntity(OrderDTO dto) {
-        Order entity = Order.builder()
-                .client(dto.getClient())
-                .tableNumber(dto.getTableNumber())
-                .placeSettingNumber(dto.getPlaceSettingNumber())
-                .note(dto.getNote())
-                .cashier(dto.getCashier())
-                .takeAway(dto.getTakeAway())
-                .total(dto.getTotal())
-                .orderItemDetails(new ArrayList<>())
-                .build();
+
+        Order entity = new Order();
+        //TODO: REFACTOR
+//        Order entity = Order.builder()
+//                .client(dto.getClient())
+//                .tableNumber(dto.getTableNumber())
+//                .placeSettingNumber(dto.getPlaceSettingNumber())
+//                .note(dto.getNote())
+//                .cashier(dto.getCashier())
+//                .takeAway(dto.getTakeAway())
+//                .total(dto.getTotal())
+//                .orderItemDetails(new ArrayList<>())
+//                .build();
 
 
         for (OrderItemDetailDTO detailDTO : dto.getMenuItemList()) {

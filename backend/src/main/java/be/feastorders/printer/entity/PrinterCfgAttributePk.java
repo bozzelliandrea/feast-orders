@@ -1,21 +1,24 @@
 package be.feastorders.printer.entity;
 
-import lombok.*;
-
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+
 @Embeddable
 public class PrinterCfgAttributePk implements Serializable {
     private static final long serialVersionUID = 8161449427356484522L;
 
     private Long cfgId;
     private String attrId;
+
+    public PrinterCfgAttributePk() {
+    }
+
+    public PrinterCfgAttributePk(Long cfgId, String attrId) {
+        this.cfgId = cfgId;
+        this.attrId = attrId;
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -32,5 +35,21 @@ public class PrinterCfgAttributePk implements Serializable {
         hash = hash * prime + this.cfgId.hashCode();
         hash = hash * prime + this.attrId.hashCode();
         return hash;
+    }
+
+    public Long getCfgId() {
+        return cfgId;
+    }
+
+    public void setCfgId(Long cfgId) {
+        this.cfgId = cfgId;
+    }
+
+    public String getAttrId() {
+        return attrId;
+    }
+
+    public void setAttrId(String attrId) {
+        this.attrId = attrId;
     }
 }

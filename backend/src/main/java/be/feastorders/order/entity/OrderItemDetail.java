@@ -2,18 +2,10 @@ package be.feastorders.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "ORDERITEM")
 public class OrderItemDetail implements Serializable {
@@ -50,4 +42,68 @@ public class OrderItemDetail implements Serializable {
     @JoinColumn(name = "orderId", referencedColumnName = "ID")
     @JsonIgnore
     private Order order;
+
+    public OrderItemDetailPk getPk() {
+        return pk;
+    }
+
+    public void setPk(OrderItemDetailPk pk) {
+        this.pk = pk;
+    }
+
+    public String getMenuItemName() {
+        return menuItemName;
+    }
+
+    public void setMenuItemName(String menuItemName) {
+        this.menuItemName = menuItemName;
+    }
+
+    public Float getMenuItemPrice() {
+        return menuItemPrice;
+    }
+
+    public void setMenuItemPrice(Float menuItemPrice) {
+        this.menuItemPrice = menuItemPrice;
+    }
+
+    public Long getMenuItemCategoryId() {
+        return menuItemCategoryId;
+    }
+
+    public void setMenuItemCategoryId(Long menuItemCategoryId) {
+        this.menuItemCategoryId = menuItemCategoryId;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

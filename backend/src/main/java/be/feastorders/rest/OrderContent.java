@@ -1,17 +1,8 @@
 package be.feastorders.rest;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.List;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class OrderContent implements Serializable {
 
     private static final long serialVersionUID = -1990103258206178473L;
@@ -23,5 +14,61 @@ public class OrderContent implements Serializable {
     private List<String> less;
     private String info;
     private Double price;
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getQty() {
+        return qty;
+    }
+
+    public void setQty(Integer qty) {
+        this.qty = qty;
+    }
+
+    public List<String> getAdditions() {
+        return additions;
+    }
+
+    public void setAdditions(List<String> additions) {
+        this.additions = additions;
+    }
+
+    public List<String> getLess() {
+        return less;
+    }
+
+    public void setLess(List<String> less) {
+        this.less = less;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }
 

@@ -2,18 +2,12 @@ package be.feastorders.printer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "PRINTERATTR")
 public class PrinterAttribute implements Serializable {
@@ -33,5 +27,28 @@ public class PrinterAttribute implements Serializable {
     @JsonIgnore
     private List<PrinterCfgAttribute> cfgAttrs = new ArrayList<>();
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<PrinterCfgAttribute> getCfgAttrs() {
+        return cfgAttrs;
+    }
+
+    public void setCfgAttrs(List<PrinterCfgAttribute> cfgAttrs) {
+        this.cfgAttrs = cfgAttrs;
+    }
 }
 

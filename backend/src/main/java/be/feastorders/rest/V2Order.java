@@ -1,11 +1,9 @@
 package be.feastorders.rest;
 
 
-import be.feastorders.core.entity.BaseEntity;
 import be.feastorders.order.dto.OrderStatus;
 import be.feastorders.order.entity.type.JsonOrderContentConverter;
-import lombok.Getter;
-import lombok.Setter;
+import entity.BaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,8 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "ORDER_NEW")
-@Getter
-@Setter
 public class V2Order extends BaseEntity {
 
 
@@ -60,4 +56,92 @@ public class V2Order extends BaseEntity {
 
     @Column(name = "NOTE")
     private String note;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<OrderContent> getContent() {
+        return content;
+    }
+
+    public void setContent(List<OrderContent> content) {
+        this.content = content;
+    }
+
+    public boolean isKitchenArea() {
+        return kitchenArea;
+    }
+
+    public void setKitchenArea(boolean kitchenArea) {
+        this.kitchenArea = kitchenArea;
+    }
+
+    public boolean isBarArea() {
+        return barArea;
+    }
+
+    public void setBarArea(boolean barArea) {
+        this.barArea = barArea;
+    }
+
+    public boolean isPlateArea() {
+        return plateArea;
+    }
+
+    public void setPlateArea(boolean plateArea) {
+        this.plateArea = plateArea;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public short getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(short tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public short getPlaceSettingNumber() {
+        return placeSettingNumber;
+    }
+
+    public void setPlaceSettingNumber(short placeSettingNumber) {
+        this.placeSettingNumber = placeSettingNumber;
+    }
+
+    public Boolean getTakeAway() {
+        return takeAway;
+    }
+
+    public void setTakeAway(Boolean takeAway) {
+        this.takeAway = takeAway;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 }
