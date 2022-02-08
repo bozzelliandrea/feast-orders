@@ -1,6 +1,5 @@
 package be.feastorders.core.entity;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -15,7 +14,7 @@ import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @Getter
-@Setter(AccessLevel.PROTECTED)
+@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable<U> {

@@ -1,16 +1,16 @@
 package be.feastorders.security;
 
-import be.feastorders.configurations.security.jwt.JwtUtils;
-import be.feastorders.configurations.security.service.UserDetailsImpl;
 import be.feastorders.security.entity.ERole;
 import be.feastorders.security.entity.Role;
 import be.feastorders.security.entity.User;
+import be.feastorders.security.jwt.JwtUtils;
 import be.feastorders.security.payload.JwtResponse;
 import be.feastorders.security.payload.LoginRequest;
 import be.feastorders.security.payload.MessageResponse;
 import be.feastorders.security.payload.SignupRequest;
 import be.feastorders.security.repository.RoleRepository;
 import be.feastorders.security.repository.UserRepository;
+import be.feastorders.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,6 +1,6 @@
-package be.feastorders.configurations.security.jwt;
+package be.feastorders.security.jwt;
 
-import be.feastorders.configurations.security.service.UserDetailsServiceImpl;
+import be.feastorders.security.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

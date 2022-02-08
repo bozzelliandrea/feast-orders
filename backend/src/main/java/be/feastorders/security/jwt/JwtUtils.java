@@ -1,6 +1,6 @@
-package be.feastorders.configurations.security.jwt;
+package be.feastorders.security.jwt;
 
-import be.feastorders.configurations.security.service.UserDetailsImpl;
+import be.feastorders.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

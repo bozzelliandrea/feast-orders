@@ -27,16 +27,23 @@ public class ExceptionTranslator {
     private ResponseEntity<FeastErrorResponse> _buildError(HttpFeastServerException exception) {
 
         HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        String errorMessage;
 
         if (exception.getClass().isAnnotationPresent(ResponseStatus.class)) {
             httpCode = exception.getClass().getAnnotation(ResponseStatus.class).code();
+        }
+
+        if (exception.getMessage() == null) {
+            errorMessage = exception.getClass().getName();
+        } else {
+            errorMessage = exception.getMessage();
         }
 
         final FeastErrorResponse err = new FeastErrorResponse(
                 LocalDateTime.now().toString(),
                 httpCode.value(),
                 httpCode.getReasonPhrase(),
-                exception.getMessage()
+                errorMessage
         );
 
         return ResponseEntity.status(httpCode).body(err);

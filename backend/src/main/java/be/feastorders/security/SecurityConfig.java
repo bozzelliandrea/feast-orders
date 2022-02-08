@@ -1,8 +1,8 @@
-package be.feastorders.configurations.security;
+package be.feastorders.security;
 
-import be.feastorders.configurations.security.jwt.AuthEntryPointJwt;
-import be.feastorders.configurations.security.jwt.AuthTokenFilter;
-import be.feastorders.configurations.security.service.UserDetailsServiceImpl;
+import be.feastorders.security.jwt.AuthEntryPointJwt;
+import be.feastorders.security.jwt.AuthTokenFilter;
+import be.feastorders.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

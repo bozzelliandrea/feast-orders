@@ -1,12 +1,13 @@
 package be.feastorders.category.entity;
 
+import be.feastorders.category.dto.CategoryProcessingZone;
 import be.feastorders.core.entity.BaseEntity;
 import be.feastorders.menuitem.entity.MenuItem;
 import be.feastorders.printer.entity.PrinterCfg;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,11 @@ public class Category extends BaseEntity {
 
     @Column(name = "COLOR")
     private String color;
+
+    @NotNull
+    @Column(name = "PROCESSING_ZONE")
+    @Enumerated(EnumType.STRING)
+    private CategoryProcessingZone processingZone;
 
     @OneToMany(mappedBy = "category",
             fetch = FetchType.LAZY,

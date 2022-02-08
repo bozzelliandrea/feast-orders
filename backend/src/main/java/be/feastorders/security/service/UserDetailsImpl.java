@@ -1,4 +1,4 @@
-package be.feastorders.configurations.security.service;
+package be.feastorders.security.service;
 
 import be.feastorders.security.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;

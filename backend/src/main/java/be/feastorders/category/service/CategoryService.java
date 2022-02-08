@@ -1,14 +1,11 @@
 package be.feastorders.category.service;
 
 import be.feastorders.category.dto.CategoryDTO;
+import be.feastorders.category.dto.CategoryProcessingZone;
 import be.feastorders.category.entity.Category;
 import be.feastorders.category.repository.CategoryRepository;
 import be.feastorders.core.service.BaseCRUDService;
-import be.feastorders.menuitem.dto.MenuItemDTO;
-import be.feastorders.menuitem.entity.MenuItem;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class CategoryService extends BaseCRUDService<Category, Long> {
@@ -23,7 +20,7 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setColor(dto.getColor());
-
+        entity.setProcessingZone(CategoryProcessingZone.valueOf(dto.getProcessingZone()));
         return entity;
     }
 
