@@ -1,4 +1,4 @@
-package be.feastorders.core.converter;
+package be.feastorders.core.component;
 
 public abstract class AbstractConverter<E, DTO> {
 

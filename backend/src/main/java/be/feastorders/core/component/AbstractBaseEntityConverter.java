@@ -1,4 +1,4 @@
-package be.feastorders.core.converter;
+package be.feastorders.core.component;
 
 import be.feastorders.core.dto.AbstractDTO;
 import be.feastorders.core.entity.BaseEntity;
