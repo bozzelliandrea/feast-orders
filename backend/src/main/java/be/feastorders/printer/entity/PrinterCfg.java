@@ -1,20 +1,15 @@
 package be.feastorders.printer.entity;
 
 import be.feastorders.category.entity.Category;
-import be.feastorders.core.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.*;
+import entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
 @Table(name = "PRINTERCFG")
 public class PrinterCfg extends BaseEntity {
@@ -47,13 +42,59 @@ public class PrinterCfg extends BaseEntity {
     @OneToOne
     private ReportTemplate reportTemplate;
 
-    @Override
     public Long getID() {
         return this.ID;
     }
 
-    @Override
     public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrinterName() {
+        return printerName;
+    }
+
+    public void setPrinterName(String printerName) {
+        this.printerName = printerName;
+    }
+
+    public List<PrinterCfgAttribute> getCfgAttrs() {
+        return cfgAttrs;
+    }
+
+    public void setCfgAttrs(List<PrinterCfgAttribute> cfgAttrs) {
+        this.cfgAttrs = cfgAttrs;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public ReportTemplate getReportTemplate() {
+        return reportTemplate;
+    }
+
+    public void setReportTemplate(ReportTemplate reportTemplate) {
+        this.reportTemplate = reportTemplate;
     }
 }

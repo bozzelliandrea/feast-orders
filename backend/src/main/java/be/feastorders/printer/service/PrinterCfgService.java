@@ -1,6 +1,5 @@
 package be.feastorders.printer.service;
 
-import be.feastorders.core.service.BaseCRUDService;
 import be.feastorders.printer.dto.PrinterCfgDTO;
 import be.feastorders.printer.entity.*;
 import be.feastorders.printer.repository.PrinterAttrRepository;
@@ -8,6 +7,7 @@ import be.feastorders.printer.repository.PrinterCfgRepository;
 import be.feastorders.printer.repository.ReportTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import service.BaseCRUDService;
 
 import java.util.Objects;
 import java.util.Optional;

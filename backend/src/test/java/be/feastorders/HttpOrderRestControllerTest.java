@@ -1,6 +1,6 @@
 package be.feastorders;
 
-import be.feastorders.core.exception.FeastErrorResponse;
+import exception.FeastErrorResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

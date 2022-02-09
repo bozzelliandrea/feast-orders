@@ -4,8 +4,8 @@ import be.feastorders.category.dto.CategoryDTO;
 import be.feastorders.category.dto.CategoryProcessingZone;
 import be.feastorders.category.entity.Category;
 import be.feastorders.category.repository.CategoryRepository;
-import be.feastorders.core.service.BaseCRUDService;
 import org.springframework.stereotype.Service;
+import service.BaseCRUDService;
 
 @Service
 public class CategoryService extends BaseCRUDService<Category, Long> {

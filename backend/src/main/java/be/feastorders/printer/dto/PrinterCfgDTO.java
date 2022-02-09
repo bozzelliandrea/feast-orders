@@ -1,19 +1,12 @@
 package be.feastorders.printer.dto;
 
-import be.feastorders.core.dto.AbstractDTO;
 import be.feastorders.printer.entity.PrinterCfg;
 import be.feastorders.printer.entity.PrinterCfgAttribute;
-import lombok.*;
+import dto.AbstractDTO;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class PrinterCfgDTO extends AbstractDTO {
 
     private static final long serialVersionUID = 3209792370649310652L;
@@ -37,5 +30,45 @@ public class PrinterCfgDTO extends AbstractDTO {
         if (entity.getReportTemplate() != null) {
             this.reportTemplate = entity.getReportTemplate().getName();
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrinterName() {
+        return printerName;
+    }
+
+    public void setPrinterName(String printerName) {
+        this.printerName = printerName;
+    }
+
+    public Map<String, String> getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(Map<String, String> attrs) {
+        this.attrs = attrs;
+    }
+
+    public String getReportTemplate() {
+        return reportTemplate;
+    }
+
+    public void setReportTemplate(String reportTemplate) {
+        this.reportTemplate = reportTemplate;
     }
 }

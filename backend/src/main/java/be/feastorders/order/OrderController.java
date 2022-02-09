@@ -1,11 +1,11 @@
 package be.feastorders.order;
 
 import be.feastorders.category.service.CategoryService;
-import be.feastorders.core.dto.AbstractDTO;
 import be.feastorders.menuitem.service.MenuItemService;
 import be.feastorders.order.dto.OrderDTO;
 import be.feastorders.order.dto.OrderItemDetailDTO;
 import be.feastorders.order.service.OrderService;
+import dto.AbstractDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;

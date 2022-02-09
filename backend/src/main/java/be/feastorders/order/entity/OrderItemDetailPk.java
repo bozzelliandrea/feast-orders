@@ -1,18 +1,9 @@
 package be.feastorders.order.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Embeddable
 public class OrderItemDetailPk implements Serializable {
 
@@ -36,5 +27,21 @@ public class OrderItemDetailPk implements Serializable {
         hash = hash * prime + this.orderId.hashCode();
         hash = hash * prime + this.menuItemId.hashCode();
         return hash;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Long getMenuItemId() {
+        return menuItemId;
+    }
+
+    public void setMenuItemId(Long menuItemId) {
+        this.menuItemId = menuItemId;
     }
 }

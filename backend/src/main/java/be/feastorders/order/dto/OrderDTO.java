@@ -1,18 +1,10 @@
 package be.feastorders.order.dto;
 
-import be.feastorders.core.dto.AbstractDTO;
 import be.feastorders.order.entity.Order;
-import lombok.*;
+import dto.AbstractDTO;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OrderDTO extends AbstractDTO {
 
     private static final long serialVersionUID = 211770738996679270L;
@@ -36,5 +28,77 @@ public class OrderDTO extends AbstractDTO {
         this.cashier = entity.getCashier();
         this.total = entity.getTotal();
         this.takeAway = entity.getTakeAway();
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public Long getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(Long tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public Long getPlaceSettingNumber() {
+        return placeSettingNumber;
+    }
+
+    public void setPlaceSettingNumber(Long placeSettingNumber) {
+        this.placeSettingNumber = placeSettingNumber;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getCashier() {
+        return cashier;
+    }
+
+    public void setCashier(String cashier) {
+        this.cashier = cashier;
+    }
+
+    public Float getTotal() {
+        return total;
+    }
+
+    public void setTotal(Float total) {
+        this.total = total;
+    }
+
+    public Boolean getTakeAway() {
+        return takeAway;
+    }
+
+    public void setTakeAway(Boolean takeAway) {
+        this.takeAway = takeAway;
+    }
+
+    public List<OrderItemDetailDTO> getMenuItemList() {
+        return menuItemList;
+    }
+
+    public void setMenuItemList(List<OrderItemDetailDTO> menuItemList) {
+        this.menuItemList = menuItemList;
+    }
+
+    public Boolean getPrintOrder() {
+        return printOrder;
+    }
+
+    public void setPrintOrder(Boolean printOrder) {
+        this.printOrder = printOrder;
     }
 }
