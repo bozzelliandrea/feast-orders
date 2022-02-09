@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DEV-H2" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="be.feastorders.FeastOrdersApplication" />
-    <module name="feast-orders" />
+    <option name="MAIN_CLASS_NAME" value="FeastOrdersApplication" />
+    <module name="rest" />
     <option name="VM_PARAMETERS" value="-Dspring.profiles.active=devh2" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="be.feastorders.*" />
+        <option name="PATTERN" value=".*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
