@@ -1,6 +1,4 @@
-package entity;
-
-import enums.ERole;
+package security.entity;
 
 import javax.persistence.*;
 

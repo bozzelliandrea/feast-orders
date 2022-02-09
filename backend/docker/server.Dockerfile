@@ -1,7 +1,10 @@
 # Maven build
 FROM maven:3.8.2-jdk-11-slim AS build
 
-COPY ../src /home/app/src
+COPY ../arch /home/app/arch
+COPY ../atomic /home/app/atomic
+COPY ../business /home/app/business
+COPY ../rest /home/app/rest
 
 COPY ../pom.xml /home/app
 

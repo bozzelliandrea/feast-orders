@@ -1,4 +1,4 @@
-package enums;
+package security.entity;
 
 public enum ERole {
   ROLE_USER,

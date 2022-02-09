@@ -11,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = FeastOrdersApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = {"test"})
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 class HttpOrderRestControllerTest {

@@ -11,6 +11,8 @@ spring:
       enabled: always
   banner:
     location: ./banner.txt
+  main:
+    allow-bean-definition-overriding: true
 
 app:
   security:

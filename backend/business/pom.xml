@@ -22,11 +22,5 @@
             <artifactId>atomic</artifactId>
             <version>${revision}</version>
         </dependency>
-
-        <dependency>
-            <groupId>be</groupId>
-            <artifactId>arch</artifactId>
-            <version>${revision}</version>
-        </dependency>
     </dependencies>
 </project>

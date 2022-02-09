@@ -1,8 +1,5 @@
 package controller;
 
-import entity.Role;
-import entity.User;
-import enums.ERole;
 import exception.FeastErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import repository.RoleRepository;
-import repository.UserRepository;
 import security.dto.JwtResponse;
 import security.dto.LoginRequest;
 import security.dto.SignupRequest;
+import security.entity.*;
 import security.jwt.JwtUtils;
 import security.service.UserDetailsImpl;
 

@@ -21,12 +21,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication(scanBasePackages = {"service", "controller", "security"})
 @EnableAutoConfiguration
 @EnableConfigurationProperties
-@EnableJpaRepositories(basePackages = "repository")
+@EnableJpaRepositories(basePackages = {"repository", "security.entity", "entity"})
 @EnableJpaAuditing
 @EnableSwagger2
 @Configuration
 @Import({AspectConfig.class})
-@EntityScan(basePackages = "entity")
+@EntityScan(basePackages = {"entity", "security.entity"})
 public class FeastOrdersApplication {
 
     public static void main(String[] args) {

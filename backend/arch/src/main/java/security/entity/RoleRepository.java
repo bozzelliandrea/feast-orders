@@ -1,7 +1,5 @@
-package repository;
+package security.entity;
 
-import entity.Role;
-import enums.ERole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

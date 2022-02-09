@@ -1,4 +1,4 @@
-package entity;
+package security.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

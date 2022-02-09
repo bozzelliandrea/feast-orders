@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import repository.OrderRepository;
 import service.OrderService;
@@ -7,6 +8,7 @@ import service.OrderService;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = FeastOrdersApplication.class)
 public class MockOrderServiceTest extends AbstractJpaDataProvider {
 
     private OrderService orderService;
