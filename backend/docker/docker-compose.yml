@@ -4,7 +4,7 @@ services:
     container_name: feast-orders-backend
     image: feast-orders-server
     build:
-      context: ..
+      context: ./docker/
       dockerfile: server.Dockerfile
     ports:
       - "8081:8081"
@@ -16,7 +16,7 @@ services:
     container_name: bear-db-container
     image: bear-db
     build:
-      context: ..
+      context: ./docker/
       dockerfile: postgres.Dockerfile
     ports:
       - "5432:5432"

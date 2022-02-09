@@ -3,6 +3,7 @@ import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +18,15 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"service", "controller", "security"})
 @EnableAutoConfiguration
 @EnableConfigurationProperties
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "repository")
 @EnableJpaAuditing
 @EnableSwagger2
 @Configuration
 @Import({AspectConfig.class})
+@EntityScan(basePackages = "entity")
 public class FeastOrdersApplication {
 
     public static void main(String[] args) {

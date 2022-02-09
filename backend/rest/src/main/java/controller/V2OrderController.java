@@ -1,5 +1,6 @@
 package controller;
 
+import bean.OrderContent;
 import entity.V2Order;
 import enums.OrderStatus;
 import exception.errors.OrderNotFoundException;
@@ -37,6 +38,10 @@ public class V2OrderController {
 //                .less(List.of("salad"))
 //                .price(20.0)
 //                .build()));
+
+        order.setContent(List.of(
+                new OrderContent("itemId", "categoryId", 1, List.of("senape", "ketchup"), List.of("salad"), "", 20.0)
+        ));
 
         order.setTotal(20.0);
         order.setTableNumber((short) 2);

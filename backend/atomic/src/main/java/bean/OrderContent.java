@@ -15,6 +15,19 @@ public class OrderContent implements Serializable {
     private String info;
     private Double price;
 
+    public OrderContent() {
+    }
+
+    public OrderContent(String itemId, String categoryId, Integer qty, List<String> additions, List<String> less, String info, Double price) {
+        this.itemId = itemId;
+        this.categoryId = categoryId;
+        this.qty = qty;
+        this.additions = additions;
+        this.less = less;
+        this.info = info;
+        this.price = price;
+    }
+
     public String getItemId() {
         return itemId;
     }

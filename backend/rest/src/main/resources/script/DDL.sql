@@ -38,6 +38,7 @@ CREATE TABLE public.category (
 	color varchar(255) NULL,
 	description varchar(255) NULL,
 	"name" varchar(255) NOT NULL,
+	processing_zone varchar(255) NOT NULL,
 	CONSTRAINT category_pkey PRIMARY KEY (id)
 );
 
