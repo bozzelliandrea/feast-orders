@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>./arch</module>
-        <module>./business</module>
-        <module>./rest</module>
-        <module>./atomic</module>
+        <module>arch</module>
+        <module>business</module>
+        <module>rest</module>
+        <module>atomic</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
