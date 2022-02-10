@@ -1,9 +1,10 @@
+import atomic.entity.Order;
+import atomic.repository.OrderRepository;
+import business.service.OrderService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import repository.OrderRepository;
-import service.OrderService;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

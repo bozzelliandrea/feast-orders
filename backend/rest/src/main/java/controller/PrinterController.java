@@ -1,18 +1,18 @@
 package controller;
 
 
-import dto.PrinterCfgDTO;
-import entity.PrinterCfg;
-import entity.ReportTemplate;
+import atomic.entity.PrinterCfg;
+import atomic.entity.ReportTemplate;
+import business.dto.PrinterCfgDTO;
+import business.service.PrinterCfgService;
+import business.service.PrinterPOCService;
+import business.service.ReportService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import service.PrinterCfgService;
-import service.PrinterPOCService;
-import service.ReportService;
 
 import javax.print.PrintService;
 import java.util.List;

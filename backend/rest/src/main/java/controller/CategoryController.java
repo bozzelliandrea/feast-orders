@@ -1,12 +1,15 @@
 package controller;
 
-import dto.CategoryDTO;
-import dto.MenuItemDTO;
-import dto.PrinterCfgDTO;
-import entity.Category;
-import entity.MenuItem;
-import entity.PrinterCfg;
-import enums.CategoryProcessingZone;
+import atomic.entity.Category;
+import atomic.entity.MenuItem;
+import atomic.entity.PrinterCfg;
+import atomic.enums.CategoryProcessingZone;
+import business.dto.CategoryDTO;
+import business.dto.MenuItemDTO;
+import business.dto.PrinterCfgDTO;
+import business.service.CategoryService;
+import business.service.MenuItemService;
+import business.service.PrinterCfgService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -14,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import service.CategoryService;
-import service.MenuItemService;
-import service.PrinterCfgService;
 
 import java.util.ArrayList;
 import java.util.List;

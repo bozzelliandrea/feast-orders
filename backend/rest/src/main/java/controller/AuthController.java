@@ -1,6 +1,16 @@
 package controller;
 
-import exception.FeastErrorResponse;
+import arch.entity.ERole;
+import arch.entity.Role;
+import arch.entity.User;
+import arch.exception.FeastErrorResponse;
+import arch.repository.RoleRepository;
+import arch.repository.UserRepository;
+import arch.security.dto.JwtResponse;
+import arch.security.dto.LoginRequest;
+import arch.security.dto.SignupRequest;
+import arch.security.jwt.JwtUtils;
+import arch.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import security.dto.JwtResponse;
-import security.dto.LoginRequest;
-import security.dto.SignupRequest;
-import security.entity.*;
-import security.jwt.JwtUtils;
-import security.service.UserDetailsImpl;
 
 import javax.validation.Valid;
 import java.util.HashSet;
