@@ -1,13 +1,12 @@
 package business.validator;
 
 import arch.exception.errors.InvalidRequestException;
-import arch.validation.AbstractRESTValidator;
 import arch.validation.Validator;
 import business.dto.CategoryDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryValidator extends AbstractRESTValidator<CategoryDTO> implements Validator<CategoryDTO> {
+public class CategoryValidator implements Validator<CategoryDTO> {
 
     @Override
     public void create(CategoryDTO request) {

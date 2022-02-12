@@ -7,6 +7,18 @@ import java.util.Objects;
 
 public interface Validator<T> {
 
+    default void create(T request) {
+    }
+
+    default void update(T request) {
+    }
+
+    default void get(Long id) {
+    }
+
+    default void delete(Long id) {
+    }
+
     default void validateInstance(T obj) {
 
         if (obj == null) {

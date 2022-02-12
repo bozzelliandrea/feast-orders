@@ -1,5 +1,8 @@
 package arch.entity;
 
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,6 +18,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 public class User {
+    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +30,7 @@ public class User {
     @NotBlank
     @Size(max = 50)
     @Email
+    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
     private String email;
 
     @NotBlank
