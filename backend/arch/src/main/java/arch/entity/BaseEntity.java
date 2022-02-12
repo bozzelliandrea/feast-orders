@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
-public class BaseEntity extends Auditable<String> implements Serializable {
+public abstract class BaseEntity extends Auditable<String> implements Serializable {
 
     private static final long serialVersionUID = -3373920749628688771L;
 
@@ -17,6 +17,10 @@ public class BaseEntity extends Auditable<String> implements Serializable {
     @Column(name = "VERSION", nullable = false)
     @Version
     private Long version;
+
+    abstract public Long getId();
+
+    abstract public void setId(Long id);
 
     @PrePersist
     public void prePersist() {

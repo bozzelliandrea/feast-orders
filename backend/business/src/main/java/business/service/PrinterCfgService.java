@@ -54,7 +54,7 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
 
         cfgRepository.save(cfg);
 
-        PrinterCfgDTO dto = new PrinterCfgDTO(cfgRepository.getById(cfg.getID()));
+        PrinterCfgDTO dto = new PrinterCfgDTO(cfgRepository.getById(cfg.getId()));
         return dto;
     }
 
@@ -74,7 +74,7 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
                     PrinterAttribute attr = attrRepository.getById(key);
 
                     PrinterCfgAttribute printerCfgAttr = new PrinterCfgAttribute();
-                    printerCfgAttr.setPk(new PrinterCfgAttributePk(oldCfg.getID(), key));
+                    printerCfgAttr.setPk(new PrinterCfgAttributePk(oldCfg.getId(), key));
                     printerCfgAttr.setCfg(oldCfg);
                     printerCfgAttr.setAttr(attr);
                     printerCfgAttr.setValue(newCfgDTO.getAttrs().get(key));
@@ -92,7 +92,7 @@ public class PrinterCfgService extends BaseCRUDService<PrinterCfg, Long> {
 
         cfgRepository.save(oldCfg);
 
-        PrinterCfgDTO dto = new PrinterCfgDTO(cfgRepository.getById(oldCfg.getID()));
+        PrinterCfgDTO dto = new PrinterCfgDTO(cfgRepository.getById(oldCfg.getId()));
         return dto;
     }
 

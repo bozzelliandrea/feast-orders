@@ -1,11 +1,10 @@
 package controller;
 
-import arch.exception.errors.OrderNotFoundException;
-import arch.exception.errors.OrderUpdateException;
-import atomic.bean.OrderContent;
 import atomic.entity.V2Order;
 import atomic.enums.OrderStatus;
 import atomic.repository.V2OrderRepository;
+import business.exception.OrderNotFoundException;
+import business.exception.OrderUpdateException;
 import business.service.OrderHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,9 @@ public class V2OrderController {
     @PostMapping
     public String create() {
 
-        V2Order order = new V2Order();
+        throw new OrderUpdateException();
+
+//        V2Order order = new V2Order();
 
 //        order.setContent(List.of(OrderContent.builder()
 //                .itemId("itemId")
@@ -39,16 +40,16 @@ public class V2OrderController {
 //                .price(20.0)
 //                .build()));
 
-        order.setContent(List.of(
-                new OrderContent("itemId", "categoryId", 1, List.of("senape", "ketchup"), List.of("salad"), "", 20.0)
-        ));
-
-        order.setTotal(20.0);
-        order.setTableNumber((short) 2);
-        order.setPlaceSettingNumber((short) 4);
-        order.setNote("Ordine di prova");
-        repository.saveAndFlush(order);
-        return "Done";
+//        order.setContent(List.of(
+//                new OrderContent("itemId", "categoryId", 1, List.of("senape", "ketchup"), List.of("salad"), "", 20.0)
+//        ));
+//
+//        order.setTotal(20.0);
+//        order.setTableNumber((short) 2);
+//        order.setPlaceSettingNumber((short) 4);
+//        order.setNote("Ordine di prova");
+//        repository.saveAndFlush(order);
+//        return "Done";
     }
 
     @PatchMapping("/{id}")

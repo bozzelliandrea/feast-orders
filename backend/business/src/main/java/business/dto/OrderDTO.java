@@ -19,6 +19,10 @@ public class OrderDTO extends AbstractDTO {
     private List<OrderItemDetailDTO> menuItemList;
     private Boolean printOrder = false;
 
+    public OrderDTO() {
+
+    }
+
     public OrderDTO(Order entity) {
         super(entity);
         this.client = entity.getClient();

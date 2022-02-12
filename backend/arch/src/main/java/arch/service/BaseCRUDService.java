@@ -32,14 +32,13 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public E update(E entity) {
-//TODO: REFACTOR
-//        if (Objects.isNull(entity.getID())) {
-//            throw new IllegalArgumentException("Cannot update entity with null ID");
-//        }
+        if (Objects.isNull(entity.getId())) {
+            throw new IllegalArgumentException("Cannot update entity with null ID");
+        }
 
-//        if (Objects.isNull(entity.getVersion())) {
-//            throw new IllegalArgumentException(String.format("Version is required for entity with ID: %s", entity.getID()));
-//        }
+        if (Objects.isNull(entity.getVersion())) {
+            throw new IllegalArgumentException(String.format("Version is required for entity with ID: %s", entity.getId()));
+        }
 
         return repository.saveAndFlush(entity);
     }

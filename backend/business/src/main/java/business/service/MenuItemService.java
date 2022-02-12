@@ -5,6 +5,7 @@ import atomic.entity.Category;
 import atomic.entity.MenuItem;
 import atomic.entity.OrderItemDetail;
 import atomic.repository.MenuItemRepository;
+import business.converter.MenuItemConverter;
 import business.dto.MenuItemDTO;
 import business.dto.OrderItemDetailDTO;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,17 @@ import java.util.stream.Collectors;
 public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
 
     private final MenuItemRepository repository;
+    private final MenuItemConverter converter;
 
-    public MenuItemService(MenuItemRepository repository) {
+    public MenuItemService(MenuItemRepository repository, MenuItemConverter converter) {
         super(repository);
         this.repository = repository;
+        this.converter = converter;
+    }
+
+    public MenuItemDTO get(Long id) {
+//        validator.get(id);
+        return converter.convertEntity(super.read(id));
     }
 
     public void saveMenuItemDTOWithCategory(MenuItemDTO menuItemDTO, Category category) {
@@ -47,7 +55,7 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
         if (Objects.isNull(entityList) || CollectionUtils.isEmpty(entityList)) {
             return new ArrayList<>();
         } else {
-            return entityList.stream().map(MenuItemDTO::new).collect(Collectors.toList());
+            return entityList.stream().map(converter::convertEntity).collect(Collectors.toList());
         }
     }
 

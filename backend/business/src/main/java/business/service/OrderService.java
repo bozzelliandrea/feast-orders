@@ -49,10 +49,10 @@ public class OrderService extends BaseCRUDService<Order, Long> {
             detailEntity.setQuantity(detailDTO.getQuantity());
             detailEntity.setTotalPrice(detailDTO.getTotalPrice());
             MenuItem menuItem = menuItemService.read(detailDTO.getMenuItemId());
-            detailEntity.getPk().setMenuItemId(menuItem.getID());
+            detailEntity.getPk().setMenuItemId(menuItem.getId());
             detailEntity.setMenuItemName(menuItem.getName());
             detailEntity.setMenuItemPrice(menuItem.getPrice());
-            detailEntity.setMenuItemCategoryId(menuItem.getCategory().getID());
+            detailEntity.setMenuItemCategoryId(menuItem.getCategory().getId());
 
             entity.getOrderItemDetails().add(detailEntity);
         }
@@ -69,7 +69,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     }
 
     public OrderDTO updateEntityValues(OrderDTO dto) {
-        Order entity = super.read(dto.getID());
+        Order entity = super.read(dto.getId());
 
         if (Objects.nonNull(dto.getClient()))
             entity.setClient(dto.getClient());
@@ -109,10 +109,10 @@ public class OrderService extends BaseCRUDService<Order, Long> {
                         orderItemDetail.setQuantity(detailDTO.getQuantity());
                         orderItemDetail.setTotalPrice(detailDTO.getTotalPrice());
                         MenuItem menuItem = menuItemService.read(detailDTO.getMenuItemId());
-                        orderItemDetail.getPk().setMenuItemId(menuItem.getID());
+                        orderItemDetail.getPk().setMenuItemId(menuItem.getId());
                         orderItemDetail.setMenuItemName(menuItem.getName());
                         orderItemDetail.setMenuItemPrice(menuItem.getPrice());
-                        orderItemDetail.setMenuItemCategoryId(menuItem.getCategory().getID());
+                        orderItemDetail.setMenuItemCategoryId(menuItem.getCategory().getId());
                     }
 
                     orderItemDetailList.add(orderItemDetail);
@@ -134,7 +134,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     }
 
     public boolean printOrder(OrderDTO dto) {
-        Order order = super.read(dto.getID());
+        Order order = super.read(dto.getId());
 
         // print orchestration post creation, asynchronous
         Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);

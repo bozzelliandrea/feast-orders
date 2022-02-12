@@ -1,5 +1,6 @@
-package arch.exception.errors;
+package business.exception;
 
+import arch.exception.errors.HttpFeastServerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

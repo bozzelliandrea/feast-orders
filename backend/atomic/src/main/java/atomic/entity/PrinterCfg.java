@@ -41,11 +41,11 @@ public class PrinterCfg extends BaseEntity {
     @OneToOne
     private ReportTemplate reportTemplate;
 
-    public Long getID() {
+    public Long getId() {
         return this.ID;
     }
 
-    public void setID(Long ID) {
+    public void setId(Long ID) {
         this.ID = ID;
     }
 
