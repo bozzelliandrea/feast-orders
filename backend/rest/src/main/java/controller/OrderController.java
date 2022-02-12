@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(path = {"/order"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class OrderController {
@@ -68,11 +67,11 @@ public class OrderController {
     @ApiResponse(code = 200, message = "updated order", response = OrderDTO.class)
     @PutMapping("/{id}")
     public ResponseEntity<OrderDTO> update(@RequestBody OrderDTO dto, @PathVariable Long id) {
-        if (Objects.isNull(dto.getID())) {
+        if (Objects.isNull(dto.getId())) {
             if (Objects.isNull(id)) {
                 ResponseEntity.badRequest().build();
             } else {
-                dto.setID(id);
+                dto.setId(id);
             }
         }
 
@@ -108,11 +107,11 @@ public class OrderController {
     @ApiResponse(code = 200, message = "print successful", response = OrderDTO.class)
     @PostMapping("/{id}/print")
     public ResponseEntity<?> print(@RequestBody OrderDTO dto, @PathVariable Long id) {
-        if (Objects.isNull(dto.getID())) {
+        if (Objects.isNull(dto.getId())) {
             if (Objects.isNull(id)) {
                 ResponseEntity.badRequest().build();
             } else {
-                dto.setID(id);
+                dto.setId(id);
             }
         }
         if (orderService.printOrder(dto)) {

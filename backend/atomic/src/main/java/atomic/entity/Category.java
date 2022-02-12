@@ -35,7 +35,7 @@ public class Category extends BaseEntity {
     @NotNull
     @Column(name = "PROCESSING_ZONE")
     @Enumerated(EnumType.STRING)
-    private CategoryProcessingZone processingZone;
+    private CategoryProcessingZone processingZone = CategoryProcessingZone.standard();
 
     @OneToMany(mappedBy = "category",
             fetch = FetchType.LAZY,
@@ -97,11 +97,11 @@ public class Category extends BaseEntity {
         this.printerCfgs = printerCfgs;
     }
 
-    public Long getID() {
+    public Long getId() {
         return this.ID;
     }
 
-    public void setID(Long ID) {
+    public void setId(Long ID) {
         this.ID = ID;
     }
 }

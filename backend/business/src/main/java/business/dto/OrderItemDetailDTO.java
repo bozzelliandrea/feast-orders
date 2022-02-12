@@ -17,10 +17,13 @@ public class OrderItemDetailDTO implements Serializable {
     private Float totalPrice;
     private String note;
 
+    public OrderItemDetailDTO() {
+    }
+
     public OrderItemDetailDTO(OrderItemDetail entity) {
         this.quantity = entity.getQuantity();
         this.totalPrice = entity.getTotalPrice();
-        this.orderId = entity.getOrder().getID();
+        this.orderId = entity.getOrder().getId();
         this.menuItemId = entity.getPk().getMenuItemId();
         this.menuItemName = entity.getMenuItemName();
         this.menuItemPrice = entity.getMenuItemPrice();

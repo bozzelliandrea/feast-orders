@@ -36,11 +36,11 @@ public class MenuItem extends BaseEntity {
             foreignKey = @ForeignKey(name = "FK_CATEGORY"))
     private Category category;
 
-    public Long getID() {
+    public Long getId() {
         return this.ID;
     }
 
-    public void setID(Long ID) {
+    public void setId(Long ID) {
         this.ID = ID;
     }
 

@@ -27,11 +27,11 @@ public abstract class AbstractDTO implements Serializable {
     public AbstractDTO() {
     }
 
-    public Long getID() {
+    public Long getId() {
         return ID;
     }
 
-    public void setID(Long ID) {
+    public void setId(Long ID) {
         this.ID = ID;
     }
 

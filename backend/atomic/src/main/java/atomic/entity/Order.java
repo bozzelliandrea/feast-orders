@@ -48,11 +48,11 @@ public class Order extends BaseEntity {
     @JsonIgnore
     private List<OrderItemDetail> orderItemDetails;
 
-    public Long getID() {
+    public Long getId() {
         return this.ID;
     }
 
-    public void setID(Long ID) {
+    public void setId(Long ID) {
         this.ID = ID;
     }
 

@@ -1,11 +1,9 @@
 package business.dto;
 
 import arch.dto.AbstractDTO;
-import atomic.entity.Category;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoryDTO extends AbstractDTO {
 
@@ -17,20 +15,6 @@ public class CategoryDTO extends AbstractDTO {
     private String processingZone;
     private List<MenuItemDTO> menuItemList = new ArrayList<>();
     private List<PrinterCfgDTO> printerCfgList = new ArrayList<>();
-
-
-    public CategoryDTO(Category entity) {
-        super(entity);
-        this.name = entity.getName();
-        this.description = entity.getDescription();
-        this.color = entity.getColor();
-
-        if (entity.getPrinterCfgs() != null && !entity.getPrinterCfgs().isEmpty()) {
-            this.printerCfgList = entity.getPrinterCfgs().stream()
-                    .map(PrinterCfgDTO::new)
-                    .collect(Collectors.toList());
-        }
-    }
 
     public String getName() {
         return name;

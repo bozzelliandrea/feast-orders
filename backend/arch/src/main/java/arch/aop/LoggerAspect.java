@@ -24,12 +24,7 @@ public class LoggerAspect {
     public void springBeanPointcut() {
     }
 
-    @Pointcut("within(be.feastorders..*)")
-    public void feastBearPointcut() {
-    }
-
-
-    @AfterThrowing(pointcut = "feastBearPointcut() && springBeanPointcut()", throwing = "e")
+    @AfterThrowing(pointcut = "springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         final Logger logger = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
 
