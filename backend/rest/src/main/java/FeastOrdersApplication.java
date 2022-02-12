@@ -18,7 +18,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication(scanBasePackages = {"business/service", "controller", "arch/security"})
+@SpringBootApplication(scanBasePackages = {"business", "controller", "arch"})
 @EnableAutoConfiguration
 @EnableConfigurationProperties
 @EnableJpaRepositories(basePackages = {"atomic/repository", "arch/repository"})
