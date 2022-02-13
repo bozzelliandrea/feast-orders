@@ -1,6 +1,7 @@
 package controller;
 
 
+import arch.security.annotation.Admin;
 import atomic.entity.PrinterCfg;
 import atomic.entity.ReportTemplate;
 import business.dto.PrinterCfgDTO;
@@ -11,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.PrintService;
@@ -56,7 +56,7 @@ public class PrinterController {
     @ApiOperation("create a printer configuration")
     @ApiResponse(code = 200, message = "printer configuration created", response = PrinterCfgDTO.class)
     @PostMapping("/cfg")
-    @PreAuthorize("hasRole('ADMIN')")
+    @Admin
     public ResponseEntity<PrinterCfgDTO> createPrinterCfg(@RequestBody PrinterCfgDTO printerCfgDTO) {
         PrinterCfgDTO printerCfg = printerCfgService.savePrinterCfgWithAttrs(printerCfgDTO);
         return ResponseEntity.ok(printerCfg);
@@ -74,7 +74,7 @@ public class PrinterController {
     @ApiOperation("update a printer configuration")
     @ApiResponse(code = 200, message = "printer configuration updated", response = PrinterCfgDTO.class)
     @PutMapping("/cfg/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @Admin
     public ResponseEntity<PrinterCfgDTO> updatePrinterCfg(@PathVariable Long id, @RequestBody PrinterCfgDTO printerCfgDTO) {
         PrinterCfg cfg = printerCfgService.read(id);
         printerCfgDTO = printerCfgService.updatePrinterCfg(cfg, printerCfgDTO);
@@ -84,7 +84,7 @@ public class PrinterController {
     @ApiOperation("delete a printer configuration")
     @ApiResponse(code = 200, message = "printer configuration deleted", response = PrinterCfgDTO.class)
     @DeleteMapping("/cfg/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @Admin
     public ResponseEntity<PrinterCfgDTO> deletePrinterCfg(@PathVariable Long id) {
         PrinterCfg cfg = printerCfgService.read(id);
         boolean result = printerCfgService.delete(id);

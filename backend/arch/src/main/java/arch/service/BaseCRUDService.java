@@ -32,6 +32,8 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public E update(E entity) {
+        Objects.requireNonNull(entity, "Entity cannot be null!");
+
         if (Objects.isNull(entity.getId())) {
             throw new IllegalArgumentException("Cannot update entity with null ID");
         }

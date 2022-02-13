@@ -1,7 +1,6 @@
 import arch.aop.AspectConfig;
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,7 +18,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(scanBasePackages = {"business", "controller", "arch"})
-@EnableAutoConfiguration
 @EnableConfigurationProperties
 @EnableJpaRepositories(basePackages = {"atomic/repository", "arch/repository"})
 @EnableJpaAuditing

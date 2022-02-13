@@ -8,7 +8,6 @@ import atomic.repository.CategoryRepository;
 import business.converter.CategoryConverter;
 import business.dto.CategoryDTO;
 import business.dto.PrinterCfgDTO;
-import business.validator.CategoryValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,16 +19,13 @@ import java.util.stream.Collectors;
 public class CategoryService extends BaseCRUDService<Category, Long> {
 
     private final CategoryConverter converter;
-    private final CategoryValidator validator;
     private final PrinterCfgService printerCfgService;
 
     public CategoryService(CategoryRepository repository,
                            CategoryConverter converter,
-                           CategoryValidator validator,
                            PrinterCfgService printerCfgService) {
         super(repository);
         this.converter = converter;
-        this.validator = validator;
         this.printerCfgService = printerCfgService;
     }
 
@@ -38,12 +34,10 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
     }
 
     public CategoryDTO get(Long id) {
-        validator.get(id);
         return converter.convertEntity(super.read(id));
     }
 
     public CategoryDTO create(CategoryDTO dto) {
-        validator.create(dto);
         Category category = converter.convertDTO(dto);
 
         if (dto.getPrinterCfgList() != null && !dto.getPrinterCfgList().isEmpty()) {
@@ -59,7 +53,6 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
     }
 
     public CategoryDTO update(CategoryDTO dto) {
-        validator.update(dto);
         Category savedCategory = super.read(dto.getId());
         savedCategory.setName(dto.getName());
         savedCategory.setColor(dto.getColor());
@@ -86,7 +79,6 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
     }
 
     public CategoryDTO remove(Long id) {
-        validator.delete(id);
         super.delete(id);
         return new CategoryDTO();
     }
