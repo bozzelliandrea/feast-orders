@@ -1,13 +1,18 @@
 package arch.security.dto;
 
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
+
 import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
 
     @NotBlank
+    @Required(RequiredMethod.CREATE)
     private String username;
 
     @NotBlank
+    @Required(RequiredMethod.CREATE)
     private String password;
 
     public String getUsername() {

@@ -1,6 +1,8 @@
 package arch.dto;
 
 import arch.entity.BaseEntity;
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,11 +11,16 @@ public abstract class AbstractDTO implements Serializable {
 
     private static final long serialVersionUID = 1666141927066453744L;
 
+    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
     private Long ID;
+
     private Date creationTimestamp;
     private String creationUser;
+
     private Date updateTimestamp;
     private String updateUser;
+
+    @Required({RequiredMethod.UPDATE})
     private Long version;
 
     public AbstractDTO(BaseEntity entity) {

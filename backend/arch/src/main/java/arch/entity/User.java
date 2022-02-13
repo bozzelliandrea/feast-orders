@@ -1,8 +1,5 @@
 package arch.entity;
 
-import arch.validation.Required;
-import arch.validation.RequiredMethod;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,23 +18,19 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
     private Long id;
 
     @NotBlank
     @Size(max = 20)
-    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String username;
 
     @NotBlank
     @Size(max = 50)
     @Email
-    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String email;
 
     @NotBlank
     @Size(max = 120)
-    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

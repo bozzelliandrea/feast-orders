@@ -1,6 +1,8 @@
 package business.dto;
 
 import arch.dto.AbstractDTO;
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ public class CategoryDTO extends AbstractDTO {
 
     private static final long serialVersionUID = -4011189514121354875L;
 
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String name;
     private String description;
     private String color;
