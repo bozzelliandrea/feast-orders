@@ -13,4 +13,8 @@ public class AspectConfig {
         return new LoggerAspect();
     }
 
+    @Bean
+    public ControllerAspect controllerAspect() {
+        return new ControllerAspect();
+    }
 }

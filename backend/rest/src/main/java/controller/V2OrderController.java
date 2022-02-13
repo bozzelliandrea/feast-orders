@@ -1,5 +1,6 @@
 package controller;
 
+import arch.entity.User;
 import atomic.entity.V2Order;
 import atomic.enums.OrderStatus;
 import atomic.repository.V2OrderRepository;
@@ -23,6 +24,11 @@ public class V2OrderController {
 
     @Autowired
     private OrderHistoryService orderHistoryService;
+
+    @PostMapping("/test")
+    public String test(@RequestBody User user) {
+        return "Test";
+    }
 
     @PostMapping
     public String create() {
