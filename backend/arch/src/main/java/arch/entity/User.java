@@ -18,23 +18,26 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 public class User {
-    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
     private Long id;
 
     @NotBlank
     @Size(max = 20)
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String username;
 
     @NotBlank
     @Size(max = 50)
     @Email
-    @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String email;
 
     @NotBlank
     @Size(max = 120)
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

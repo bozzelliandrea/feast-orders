@@ -33,7 +33,14 @@ public class ControllerAspect {
 
                 RequiredMethod rm = RequiredMethod.getByAnnotation(annotation.annotationType());
                 Object[] request = joinPoint.getArgs();
-                RequiredSupport.validate(request, rm);
+
+                for (Object o : request) {
+                    if (RequiredSupport.isPrimitiveWrapper(o.getClass())) {
+                        RequiredSupport.validate(o, method);
+                    } else {
+                        RequiredSupport.validate(o, rm);
+                    }
+                }
             }
         }
     }
