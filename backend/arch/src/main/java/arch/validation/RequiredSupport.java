@@ -30,7 +30,7 @@ public final class RequiredSupport {
                 }
                 if (a.annotationType().equals(Required.class) && (primitive == null
                         || primitive.equals("''")
-                        || Strings.isBlank((String) primitive))) {
+                        || (primitive instanceof String && Strings.isBlank((String) primitive)))) {
                     errorMessage = "Missing required path parameter";
                 }
             }
