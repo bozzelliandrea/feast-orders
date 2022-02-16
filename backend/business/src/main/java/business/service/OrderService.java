@@ -71,24 +71,6 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     public OrderDTO updateEntityValues(OrderDTO dto) {
         Order entity = super.read(dto.getId());
 
-        if (Objects.nonNull(dto.getClient()))
-            entity.setClient(dto.getClient());
-
-        if (Objects.nonNull(dto.getTableNumber()))
-            entity.setTableNumber(dto.getTableNumber());
-
-        if (Objects.nonNull(dto.getPlaceSettingNumber()))
-            entity.setPlaceSettingNumber(dto.getPlaceSettingNumber());
-
-        if (Objects.nonNull(dto.getCashier()))
-            entity.setCashier(dto.getCashier());
-
-        if (Objects.nonNull(dto.getNote()))
-            entity.setNote(dto.getNote());
-
-        if (Objects.nonNull(dto.getTotal()))
-            entity.setTotal(dto.getTotal());
-
         List<OrderItemDetail> orderItemDetailList = new ArrayList<>();
         if (dto.getMenuItemList() != null) {
             if (!dto.getMenuItemList().isEmpty()) {

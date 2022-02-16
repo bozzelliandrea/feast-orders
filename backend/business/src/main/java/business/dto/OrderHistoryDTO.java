@@ -1,39 +1,16 @@
-package atomic.entity;
+package business.dto;
 
 import atomic.bean.OrderContent;
-import atomic.type.JsonOrderContentConverter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "ORDER_HISTORY")
-public class OrderHistory implements Serializable {
+public class OrderHistoryDTO implements Serializable {
 
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
     private Long id;
-
-    @Column(name = "content", columnDefinition = "jsonb")
-    @Convert(converter = JsonOrderContentConverter.class)
     private List<OrderContent> content;
-
-    @NotNull
-    @Column(name = "TOTAL")
     private Double total;
-
-    @NotNull
-    @Basic
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @Temporal(TemporalType.DATE)
     private Date date;
 
     public Long getId() {
