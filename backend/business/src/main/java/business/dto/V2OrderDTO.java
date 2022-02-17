@@ -6,7 +6,8 @@ public class V2OrderDTO extends AbstractDTO {
 
     private Integer tableNumber;
     private Integer placeSettingNumber;
-    private String note;
+    private String client;
+    private Boolean takeAway = false;
     private Double total;
 
     public Integer getTableNumber() {
@@ -25,12 +26,20 @@ public class V2OrderDTO extends AbstractDTO {
         this.placeSettingNumber = placeSettingNumber;
     }
 
-    public String getNote() {
-        return note;
+    public String getClient() {
+        return client;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public Boolean getTakeAway() {
+        return takeAway;
+    }
+
+    public void setTakeAway(Boolean takeAway) {
+        this.takeAway = takeAway;
     }
 
     public Double getTotal() {

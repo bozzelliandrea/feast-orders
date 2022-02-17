@@ -20,7 +20,7 @@ public class Order extends BaseEntity {
     private Long ID;
 
     @NotNull
-    @Column(name = "CLIENT", nullable = false)
+    @Column(name = "CLIENT")
     private String client;
 
     @NotNull
