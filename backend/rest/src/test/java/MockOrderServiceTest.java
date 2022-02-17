@@ -1,6 +1,6 @@
 import atomic.entity.Order;
 import atomic.repository.OrderRepository;
-import business.service.OrderService;
+import business.order.service.OrderService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;

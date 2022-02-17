@@ -61,6 +61,9 @@ public class V2Order extends BaseEntity {
     @Column(name = "CLIENT")
     private String client;
 
+    @Column(name = "DISCOUNT")
+    private Integer discount;
+
     public Long getId() {
         return id;
     }
@@ -155,5 +158,13 @@ public class V2Order extends BaseEntity {
 
     public void setClient(String client) {
         this.client = client;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 }
