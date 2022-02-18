@@ -2,9 +2,9 @@ package controller;
 
 import arch.dto.AbstractPagination;
 import atomic.enums.OrderStatus;
-import business.exception.OrderUpdateException;
-import business.service.OrderHistoryService;
-import business.service.V2OrderService;
+import business.order.exception.OrderUpdateException;
+import business.order.service.OrderHistoryService;
+import business.order.service.V2OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,13 +59,18 @@ public class V2OrderController {
     }
 
     @GetMapping(params = {"page", "size", "status"})
-    public ResponseEntity<AbstractPagination<? extends Serializable>> findAll(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                                              @RequestParam(value = "size", defaultValue = "10") int size,
-                                                                              @RequestParam(value = "status") String status) {
+    public ResponseEntity<AbstractPagination<? extends Serializable>> findAll(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                              @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                                                              @RequestParam(value = "status", required = false) String status) {
         if (status != null && OrderStatus.valueOf(status).isClosed()) {
             return ResponseEntity.ok(orderHistoryService.findAllWithPagination(page, size));
         } else {
             return ResponseEntity.ok(orderService.findAllWithPagination(page, size));
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<AbstractPagination<? extends Serializable>> search(@RequestParam(value = "query", required = false) String query) {
+        return ResponseEntity.ok(orderService.searchOrders(query));
     }
 }
