@@ -1,6 +1,7 @@
 package controller;
 
 import arch.security.dto.LoginRequest;
+import arch.security.dto.ResetPasswordRequest;
 import arch.security.dto.SignupRequest;
 import arch.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         return ResponseEntity.ok(authService.register(signUpRequest));
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return ResponseEntity.ok(authService.reset(resetPasswordRequest));
     }
 }

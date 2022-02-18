@@ -4,10 +4,13 @@ import arch.entity.ERole;
 import arch.entity.Role;
 import arch.entity.User;
 import arch.exception.errors.RegisterFailedException;
+import arch.exception.errors.UserNotFoundException;
+import arch.exception.errors.WrongPasswordException;
 import arch.repository.RoleRepository;
 import arch.repository.UserRepository;
 import arch.security.dto.JwtResponse;
 import arch.security.dto.LoginRequest;
+import arch.security.dto.ResetPasswordRequest;
 import arch.security.dto.SignupRequest;
 import arch.security.jwt.JwtUtils;
 import arch.security.service.UserDetailsImpl;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -103,6 +107,30 @@ public class AuthService {
         userRepository.save(user);
 
         return "User registered successfully!";
+    }
+
+    public String reset(ResetPasswordRequest resetPasswordRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(resetPasswordRequest.getUsername(), resetPasswordRequest.getOldPassword()));
+
+        if (authentication.isAuthenticated()) {
+
+            Optional<User> userOpt = userRepository.findByUsername(resetPasswordRequest.getUsername());
+
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
+                userRepository.saveAndFlush(user);
+            } else {
+                throw new UserNotFoundException("User not found with the selected username");
+            }
+
+        } else {
+            throw new WrongPasswordException("Password is not correct");
+        }
+
+        return "Password changed successfully";
     }
 
 }
