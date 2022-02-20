@@ -1,5 +1,4 @@
 import 'package:commons/abstract_model.dart';
-import 'package:commons/env_config.dart';
 import 'package:http/http.dart' as http;
 
 /// Api Service
@@ -7,7 +6,7 @@ import 'package:http/http.dart' as http;
 ///
 /// Usage:
 /// get a new instance of the service
-/// ApiService service = await ApiService.instance
+/// ApiService service = ApiService.getInstance("http://localhost:8081")
 ///
 /// call rest api
 /// - api without parameter:
@@ -32,23 +31,22 @@ import 'package:http/http.dart' as http;
 /// result -> $HOST/api/auth/reset/3
 /// payload {"name" = "test"}
 class ApiService {
+  static late final String baseUrl;
+
   // private constructor
   ApiService._();
 
   // public
   _Resource api = _Resource();
 
-  static Future<ApiService> get instance async {
-    if (!EnvConfig.ready) {
-      await EnvConfig.init();
-    }
-
+  static ApiService getInstance(String baseUrl) {
+    ApiService.baseUrl = baseUrl;
     return ApiService._();
   }
 
   static Future<http.Response>? _execute(_InternalApiModel invoker,
       {Map<String, String>? urlParameters, AbstractModel? dto}) {
-    String uri = EnvConfig.serverUri + invoker._endpoint;
+    String uri = baseUrl + invoker._endpoint;
 
     if (urlParameters != null && urlParameters.isNotEmpty) {
       uri = _resolveUriParameters(uri, urlParameters);
@@ -94,6 +92,7 @@ class ApiService {
 }
 
 class _Resource {
+
   _AuthApi auth = _AuthApi();
   _PrinterApi printer = _PrinterApi();
   _CategoryApi category = _CategoryApi();
