@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:commons/commons.dart';
 import 'package:flutter/material.dart';
 import 'package:orders/routes/router.gr.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  final ApiService _apiService = ApiService.getInstance('');
 
   @override
   Widget build(BuildContext context) {
