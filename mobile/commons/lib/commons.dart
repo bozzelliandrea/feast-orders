@@ -1,3 +1,3 @@
 library commons;
 
-export 'src/api_service.dart';
+export 'src/core/api_service.dart';

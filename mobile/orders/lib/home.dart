@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:commons/commons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orders/blocs/authentication_event.dart';
 import 'package:orders/routes/router.gr.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import 'blocs/authentication_bloc.dart';
+
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-
-  final ApiService _apiService = ApiService.getInstance('');
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,14 @@ class HomePage extends StatelessWidget {
         title: const Text('Feast Bear Orders'),
         centerTitle: true,
         leading: const AutoBackButton(),
+        actions: <Widget>[
+          IconButton(
+          icon: const Icon(Icons.logout),
+          tooltip: 'Logout',
+          onPressed: () {
+            BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
+          }),
+        ],
       ),
       routes: const [
         ExploreRouter(),

@@ -1,4 +1,4 @@
-import 'package:commons/src/abstract_model.dart';
+import 'package:commons/src/core/abstract_model.dart';
 import 'package:http/http.dart' as http;
 
 /// Api Service
