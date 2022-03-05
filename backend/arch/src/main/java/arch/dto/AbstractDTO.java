@@ -12,7 +12,7 @@ public abstract class AbstractDTO implements Serializable {
     private static final long serialVersionUID = 1666141927066453744L;
 
     @Required({RequiredMethod.READ, RequiredMethod.DELETE, RequiredMethod.UPDATE})
-    private Long ID;
+    private Long id;
 
     private Date creationTimestamp;
     private String creationUser;
@@ -23,7 +23,17 @@ public abstract class AbstractDTO implements Serializable {
     @Required({RequiredMethod.UPDATE})
     private Long version;
 
+    public AbstractDTO(AbstractDTO dto) {
+        this.id = dto.getId();
+        this.creationTimestamp = dto.getCreationTimestamp();
+        this.creationUser = dto.getCreationUser();
+        this.updateTimestamp = dto.getUpdateTimestamp();
+        this.updateUser = dto.getUpdateUser();
+        this.version = dto.getVersion();
+    }
+
     public AbstractDTO(BaseEntity entity) {
+        this.id = entity.getId();
         this.creationTimestamp = entity.getCreationTimestamp();
         this.creationUser = entity.getCreationUser();
         this.updateTimestamp = entity.getUpdateTimestamp();
@@ -35,11 +45,11 @@ public abstract class AbstractDTO implements Serializable {
     }
 
     public Long getId() {
-        return ID;
+        return id;
     }
 
     public void setId(Long ID) {
-        this.ID = ID;
+        this.id = ID;
     }
 
     public Date getCreationTimestamp() {

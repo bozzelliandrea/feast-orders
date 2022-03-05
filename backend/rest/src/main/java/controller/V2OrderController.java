@@ -2,7 +2,7 @@ package controller;
 
 import arch.dto.AbstractPagination;
 import atomic.enums.OrderStatus;
-import business.order.exception.OrderUpdateException;
+import business.order.dto.DetailedOrderDTO;
 import business.order.service.OrderHistoryService;
 import business.order.service.V2OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +26,13 @@ public class V2OrderController {
 
 
     @PostMapping
-    public String create() {
+    public ResponseEntity<DetailedOrderDTO> create(@RequestBody DetailedOrderDTO dto) {
+        return ResponseEntity.ok(orderService.createOrder(dto));
+    }
 
-        throw new OrderUpdateException();
-
-//        V2Order order = new V2Order();
-
-//        order.setContent(List.of(OrderContent.builder()
-//                .itemId("itemId")
-//                .categoryId("categoryId")
-//                .qty(1)
-//                .additions(List.of("senape", "ketchup"))
-//                .less(List.of("salad"))
-//                .price(20.0)
-//                .build()));
-
-//        order.setContent(List.of(
-//                new OrderContent("itemId", "categoryId", 1, List.of("senape", "ketchup"), List.of("salad"), "", 20.0)
-//        ));
-//
-//        order.setTotal(20.0);
-//        order.setTableNumber((short) 2);
-//        order.setPlaceSettingNumber((short) 4);
-//        order.setNote("Ordine di prova");
-//        repository.saveAndFlush(order);
-//        return "Done";
+    @PutMapping
+    public ResponseEntity<DetailedOrderDTO> update(@RequestBody DetailedOrderDTO dto) {
+        return ResponseEntity.ok(orderService.updateOrder(dto));
     }
 
     @PatchMapping("/{id}")
