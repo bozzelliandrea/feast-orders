@@ -1,6 +1,8 @@
 package business.order.dto;
 
 import arch.dto.AbstractDTO;
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
 
 public class V2OrderDTO extends AbstractDTO {
 
@@ -8,7 +10,22 @@ public class V2OrderDTO extends AbstractDTO {
     private Integer placeSettingNumber;
     private String client;
     private Boolean takeAway = false;
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private Double total;
+    private Integer discount;
+
+    public V2OrderDTO() {
+    }
+
+    public V2OrderDTO(V2OrderDTO dto) {
+        super(dto);
+        this.tableNumber = dto.getTableNumber();
+        this.placeSettingNumber = dto.getPlaceSettingNumber();
+        this.client = dto.getClient();
+        this.takeAway = dto.getTakeAway();
+        this.total = dto.getTotal();
+        this.discount = dto.getDiscount();
+    }
 
     public Integer getTableNumber() {
         return tableNumber;
@@ -48,5 +65,13 @@ public class V2OrderDTO extends AbstractDTO {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 }

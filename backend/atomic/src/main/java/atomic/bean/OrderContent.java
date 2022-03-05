@@ -8,7 +8,7 @@ public class OrderContent implements Serializable {
     private static final long serialVersionUID = -1990103258206178473L;
 
     private String itemId;
-    private String categoryId;
+    private Long categoryId;
     private Integer qty;
     private List<String> additions;
     private List<String> less;
@@ -18,7 +18,7 @@ public class OrderContent implements Serializable {
     public OrderContent() {
     }
 
-    public OrderContent(String itemId, String categoryId, Integer qty, List<String> additions, List<String> less, String info, Double price) {
+    public OrderContent(String itemId, Long categoryId, Integer qty, List<String> additions, List<String> less, String info, Double price) {
         this.itemId = itemId;
         this.categoryId = categoryId;
         this.qty = qty;
@@ -36,11 +36,11 @@ public class OrderContent implements Serializable {
         this.itemId = itemId;
     }
 
-    public String getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
