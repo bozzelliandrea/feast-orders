@@ -1,7 +1,7 @@
 package business.order;
 
 import arch.search.SearchCriteria;
-import atomic.entity.V2Order;
+import atomic.entity.Order;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -9,7 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class OrderSpecification implements Specification<V2Order> {
+public class OrderSpecification implements Specification<Order> {
 
     private final SearchCriteria criteria;
 
@@ -18,7 +18,7 @@ public class OrderSpecification implements Specification<V2Order> {
     }
 
     @Override
-    public Predicate toPredicate(Root<V2Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
         switch (criteria.getOperation()) {
             case EQUALITY:
                 return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());

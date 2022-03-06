@@ -6,14 +6,14 @@ import atomic.bean.OrderContent;
 
 import java.util.List;
 
-public class DetailedOrderDTO extends V2OrderDTO {
+public class DetailedOrderDTO extends OrderDTO {
 
     @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private List<OrderContent> content;
     private Boolean printOrder = false;
     private String note;
 
-    public DetailedOrderDTO(V2OrderDTO dto) {
+    public DetailedOrderDTO(OrderDTO dto) {
         super(dto);
     }
 

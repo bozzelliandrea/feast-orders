@@ -1,13 +1,14 @@
 package business.printer.service;
 
-import atomic.entity.*;
+import atomic.bean.OrderContent;
+import atomic.entity.Category;
+import atomic.entity.Order;
+import atomic.entity.PrinterCfg;
+import atomic.entity.PrinterCfgAttribute;
 import business.category.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +38,11 @@ public class PrinterAsyncService {
         // split orders in suborders based on print configurations
         Map<PrinterCfg, Order> printerCfgOrderMap = new HashMap<>();
 
-        for (OrderItemDetail detail: order.getOrderItemDetails()) {
-            Long categoryId = detail.getMenuItemCategoryId();
+        for (OrderContent detail : order.getContent()) {
+            Long categoryId = detail.getCategoryId();
             Category category = categoryService.read(categoryId);
 
-            for (PrinterCfg printerCfg: category.getPrinterCfgs()) {
+            for (PrinterCfg printerCfg : category.getPrinterCfgs()) {
                 if (!printerCfgOrderMap.containsKey(printerCfg)) {
                     Order subOrder = new Order();
                     subOrder.setId(order.getId());
@@ -49,21 +50,18 @@ public class PrinterAsyncService {
                     subOrder.setTableNumber(order.getTableNumber());
                     subOrder.setClient(order.getClient());
                     subOrder.setPlaceSettingNumber(order.getPlaceSettingNumber());
-                    subOrder.setCashier(order.getCashier());
                     subOrder.setNote(order.getNote() != null ? order.getNote() : "");
                     subOrder.setTakeAway(order.getTakeAway());
-                    ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(order.getCreationTimestamp().toInstant(),
-                            ZoneId.systemDefault());
-                    subOrder.setZonedDateTime(zonedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-                    List<OrderItemDetail> details = new ArrayList<>();
+                    subOrder.setCreationTimestamp(order.getCreationTimestamp());
+                    List<OrderContent> details = new ArrayList<>();
                     details.add(detail);
-                    subOrder.setOrderItemDetails(details);
+                    subOrder.setContent(details);
 
                     printerCfgOrderMap.put(printerCfg, subOrder);
                 } else {
                     // update the entry details
                     Order subOrder = printerCfgOrderMap.get(printerCfg);
-                    subOrder.getOrderItemDetails().add(detail);
+                    subOrder.getContent().add(detail);
 
                     printerCfgOrderMap.replace(printerCfg, subOrder);
                 }

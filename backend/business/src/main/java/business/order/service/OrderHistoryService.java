@@ -1,7 +1,7 @@
 package business.order.service;
 
+import atomic.entity.Order;
 import atomic.entity.OrderHistory;
-import atomic.entity.V2Order;
 import atomic.repository.OrderHistoryRepository;
 import business.order.converter.OrderHistoryConverter;
 import business.order.dto.PagedOrderHistoryDTO;
@@ -29,7 +29,7 @@ public class OrderHistoryService {
         return true;
     }
 
-    public boolean create(V2Order order) {
+    public boolean create(Order order) {
         OrderHistory orderHistory = new OrderHistory();
         orderHistory.setContent(order.getContent());
         orderHistory.setTotal(order.getTotal());

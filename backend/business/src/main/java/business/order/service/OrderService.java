@@ -1,124 +1,163 @@
 package business.order.service;
 
+import arch.search.QueryOperator;
 import arch.service.BaseCRUDService;
-import atomic.entity.MenuItem;
+import atomic.bean.OrderContent;
 import atomic.entity.Order;
-import atomic.entity.OrderItemDetail;
 import atomic.entity.PrinterCfg;
+import atomic.enums.CategoryProcessingZone;
+import atomic.enums.OrderStatus;
 import atomic.repository.OrderRepository;
-import business.menuitem.service.MenuItemService;
-import business.order.dto.OrderDTO;
-import business.order.dto.OrderItemDetailDTO;
+import business.category.dto.CategoryDTO;
+import business.category.service.CategoryService;
+import business.order.OrderSpecificationBuilder;
+import business.order.converter.OrderConverter;
+import business.order.dto.DetailedOrderDTO;
+import business.order.dto.PagedOrderDTO;
+import business.order.exception.OrderNotFoundException;
+import business.order.exception.OrderUpdateException;
 import business.printer.service.PrinterAsyncService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService extends BaseCRUDService<Order, Long> {
 
-    @Autowired
-    private MenuItemService menuItemService;
+    private final static Logger _LOGGER = LoggerFactory.getLogger(OrderService.class);
 
-    @Autowired
-    private PrinterAsyncService printerAsyncService;
+    private final OrderHistoryService orderHistoryService;
+    private final OrderRepository repository;
+    private final OrderConverter converter;
+    private final CategoryService categoryService;
+    private final PrinterAsyncService printerAsyncService;
+    private final Map<Long, CategoryDTO> cachedCategory = new HashMap<>();
 
-    public OrderService(OrderRepository repository) {
+    public OrderService(OrderRepository repository,
+                        OrderHistoryService orderHistoryService,
+                        OrderConverter converter,
+                        CategoryService categoryService,
+                        PrinterAsyncService printerAsyncService) {
         super(repository);
+        this.repository = repository;
+        this.orderHistoryService = orderHistoryService;
+        this.converter = converter;
+        this.categoryService = categoryService;
+        this.printerAsyncService = printerAsyncService;
     }
 
-    public OrderDTO createEntity(OrderDTO dto) {
-
-        Order entity = new Order();
-        //TODO: REFACTOR
-//        Order entity = Order.builder()
-//                .client(dto.getClient())
-//                .tableNumber(dto.getTableNumber())
-//                .placeSettingNumber(dto.getPlaceSettingNumber())
-//                .note(dto.getNote())
-//                .cashier(dto.getCashier())
-//                .takeAway(dto.getTakeAway())
-//                .total(dto.getTotal())
-//                .orderItemDetails(new ArrayList<>())
-//                .build();
-
-
-        for (OrderItemDetailDTO detailDTO : dto.getMenuItemList()) {
-            OrderItemDetail detailEntity = new OrderItemDetail();
-
-            detailEntity.setOrder(entity);
-            detailEntity.setQuantity(detailDTO.getQuantity());
-            detailEntity.setTotalPrice(detailDTO.getTotalPrice());
-            MenuItem menuItem = menuItemService.read(detailDTO.getMenuItemId());
-            detailEntity.getPk().setMenuItemId(menuItem.getId());
-            detailEntity.setMenuItemName(menuItem.getName());
-            detailEntity.setMenuItemPrice(menuItem.getPrice());
-            detailEntity.setMenuItemCategoryId(menuItem.getCategory().getId());
-
-            entity.getOrderItemDetails().add(detailEntity);
-        }
-
-        Order order = super.create(entity);
-
-        if (dto.getPrintOrder()) {
-            // print orchestration post creation, asynchronous
-            Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
-            printerAsyncService.executePrintTasks(printerCfgOrderMap);
-        }
-
-        return new OrderDTO(order);
+    public DetailedOrderDTO getDetailedOrder(Long id) {
+        return converter.convertEntityDetailed(super.read(id));
     }
 
-    public OrderDTO updateEntityValues(OrderDTO dto) {
-        Order entity = super.read(dto.getId());
+    public DetailedOrderDTO createOrder(DetailedOrderDTO request) {
+        Order entity = converter.convertDTO(request);
+        _setOrderProcessingZone(request, entity);
+        //TODO se flag print = true, mandare in stampa l'ordine
+        Order result = super.create(entity);
+        return converter.convertEntityDetailed(result);
+    }
 
-        List<OrderItemDetail> orderItemDetailList = new ArrayList<>();
-        if (dto.getMenuItemList() != null) {
-            if (!dto.getMenuItemList().isEmpty()) {
-                for (OrderItemDetailDTO detailDTO : dto.getMenuItemList()) {
-                    Optional<OrderItemDetail> orderItemDetailOptional = entity.getOrderItemDetails().stream().filter(orderItemDetail -> {
-                        return Objects.equals(orderItemDetail.getPk().getOrderId(), detailDTO.getOrderId()) &&
-                                Objects.equals(orderItemDetail.getPk().getMenuItemId(), detailDTO.getMenuItemId());
-                    }).findFirst();
-                    OrderItemDetail orderItemDetail;
-                    if (orderItemDetailOptional.isPresent()) {
-                        orderItemDetail = orderItemDetailOptional.get();
-                        orderItemDetail.setQuantity(detailDTO.getQuantity());
-                        orderItemDetail.setTotalPrice(detailDTO.getTotalPrice());
-                        orderItemDetail.setNote(detailDTO.getNote());
-                    } else {
-                        orderItemDetail = new OrderItemDetail();
-                        orderItemDetail.setOrder(entity);
-                        orderItemDetail.setQuantity(detailDTO.getQuantity());
-                        orderItemDetail.setTotalPrice(detailDTO.getTotalPrice());
-                        MenuItem menuItem = menuItemService.read(detailDTO.getMenuItemId());
-                        orderItemDetail.getPk().setMenuItemId(menuItem.getId());
-                        orderItemDetail.setMenuItemName(menuItem.getName());
-                        orderItemDetail.setMenuItemPrice(menuItem.getPrice());
-                        orderItemDetail.setMenuItemCategoryId(menuItem.getCategory().getId());
-                    }
+    public DetailedOrderDTO updateOrder(DetailedOrderDTO request) {
+        Order savedEntity = super.read(request.getId());
+        _setOrderProcessingZone(request, savedEntity);
 
-                    orderItemDetailList.add(orderItemDetail);
-                }
+        savedEntity.setNote(request.getNote());
+        savedEntity.setContent(request.getContent());
+        savedEntity.setClient(request.getClient());
+        savedEntity.setPlaceSettingNumber(request.getPlaceSettingNumber().shortValue());
+        savedEntity.setTableNumber(request.getTableNumber().shortValue());
+        savedEntity.setTotal(request.getTotal());
+        savedEntity.setDiscount(request.getDiscount());
+
+        Order result = super.update(savedEntity);
+        return converter.convertEntityDetailed(result);
+    }
+
+    public String patchStatus(Long id, String newStatus) {
+        OrderStatus status = OrderStatus.valueOf(newStatus);
+        Optional<Order> orderOpt = repository.findById(id);
+
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+
+            if (order.getStatus() == status) {
+                throw new OrderUpdateException("The selected order already have this status.");
             }
+
+            if (status.isClosed()) {
+                boolean result = orderHistoryService.create(order);
+                if (result)
+                    repository.deleteById(id);
+            } else {
+                order.setStatus(status);
+                repository.saveAndFlush(order);
+            }
+
+            return "Order saved with status: " + status.name();
+
+        } else {
+            throw new OrderNotFoundException("The selected order does not exist in the database.");
         }
-
-        entity.setOrderItemDetails(orderItemDetailList);
-
-        Order order = super.update(entity);
-
-        if (dto.getPrintOrder()) {
-            // print orchestration post creation, asynchronous
-            Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
-            printerAsyncService.executePrintTasks(printerCfgOrderMap);
-        }
-
-        return new OrderDTO(order);
     }
 
-    public boolean printOrder(OrderDTO dto) {
-        Order order = super.read(dto.getId());
+    public PagedOrderDTO findAllWithPagination(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        Page<Order> orderPage = repository.findAll(paging);
+
+        PagedOrderDTO response = new PagedOrderDTO();
+        response.setPageSize(orderPage.getSize());
+        response.setPageNumber(orderPage.getNumber());
+        response.setTotalPages(orderPage.getTotalPages());
+        response.setTotalElements(orderPage.getTotalElements());
+        response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
+
+        return response;
+    }
+
+    public PagedOrderDTO searchOrders(String query) {
+        if (query != null) {
+            OrderSpecificationBuilder builder = new OrderSpecificationBuilder();
+
+            String operationSetExper = String.join("|", QueryOperator.SIMPLE_OPERATION_SET);
+            Pattern pattern = Pattern.compile("(\\p{Punct}?)(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),");
+            Matcher matcher = pattern.matcher(query + ",");
+            Pageable paging = PageRequest.of(0, 10);
+            while (matcher.find()) {
+                builder.with(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(5), matcher.group(4), matcher.group(6));
+            }
+            Specification<Order> spec = builder.build();
+
+            //TODO UNIRE PAGINAZIONE E RICERCA CON UN SERVIZIO UNICO
+            Page<Order> orderPage = repository.findAll(spec, paging);
+            PagedOrderDTO response = new PagedOrderDTO();
+            response.setPageSize(orderPage.getSize());
+            response.setPageNumber(orderPage.getNumber());
+            response.setTotalPages(orderPage.getTotalPages());
+            response.setTotalElements(orderPage.getTotalElements());
+            response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
+
+            return response;
+        } else {
+            return findAllWithPagination(0, 10);
+        }
+
+    }
+
+    public boolean printOrder(Long id) {
+        Order order = super.read(id);
 
         // print orchestration post creation, asynchronous
         Map<PrinterCfg, Order> printerCfgOrderMap = printerAsyncService.splitOrder(order);
@@ -126,4 +165,37 @@ public class OrderService extends BaseCRUDService<Order, Long> {
 
         return true;
     }
+
+    private void _setOrderProcessingZone(DetailedOrderDTO order, Order entity) {
+
+        for (OrderContent content : order.getContent()) {
+            if (cachedCategory.containsKey(content.getCategoryId())) {
+                _flagProcessingZone(entity, cachedCategory.get(content.getCategoryId()).getProcessingZone());
+            } else {
+                CategoryDTO category = categoryService.get(content.getCategoryId());
+                cachedCategory.put(category.getId(), category);
+                _flagProcessingZone(entity, category.getProcessingZone());
+            }
+        }
+    }
+
+    private void _flagProcessingZone(Order entity, String zone) {
+        CategoryProcessingZone pz = CategoryProcessingZone.valueOf(zone);
+
+        switch (pz) {
+            case BAR:
+                entity.setBarArea(true);
+                break;
+            case PLATE:
+                entity.setPlateArea(true);
+                break;
+            case KITCHEN:
+                entity.setKitchenArea(true);
+                break;
+            default:
+                _LOGGER.warn("Selected processing zone does not exists!");
+                break;
+        }
+    }
+
 }

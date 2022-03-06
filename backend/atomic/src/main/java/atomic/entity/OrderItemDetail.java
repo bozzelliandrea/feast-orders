@@ -1,9 +1,11 @@
 package atomic.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
@@ -36,12 +38,6 @@ public class OrderItemDetail implements Serializable {
 
     @Column(name = "NOTE")
     private String note;
-
-    @MapsId("orderId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderId", referencedColumnName = "ID")
-    @JsonIgnore
-    private Order order;
 
     public OrderItemDetailPk getPk() {
         return pk;
@@ -97,13 +93,5 @@ public class OrderItemDetail implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 }

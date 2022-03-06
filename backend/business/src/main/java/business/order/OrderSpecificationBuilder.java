@@ -1,7 +1,7 @@
 package business.order;
 
 import arch.search.SearchCriteria;
-import atomic.entity.V2Order;
+import atomic.entity.Order;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -42,9 +42,9 @@ public class OrderSpecificationBuilder {
         return this;
     }
 
-    public Specification<V2Order> build() {
+    public Specification<Order> build() {
         if (params.size() == 0) return null;
-        Specification<V2Order> result = new OrderSpecification(params.get(0));
+        Specification<Order> result = new OrderSpecification(params.get(0));
         for (int i = 1; i < params.size(); i++) {
             result =
                     params.get(i).isOrPredicate()
