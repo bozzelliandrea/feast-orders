@@ -1,94 +1,74 @@
 package controller;
 
-import arch.dto.AbstractDTO;
+import arch.dto.AbstractPagination;
 import arch.security.annotation.Admin;
 import arch.validation.Required;
-import business.category.service.CategoryService;
-import business.menuitem.service.MenuItemService;
-import business.order.dto.OrderDTO;
-import business.order.dto.OrderItemDetailDTO;
+import atomic.enums.OrderStatus;
+import business.order.dto.DetailedOrderDTO;
+import business.order.service.OrderHistoryService;
 import business.order.service.OrderService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.io.Serializable;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = {"/order"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/order", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
     @Autowired
-    private MenuItemService menuItemService;
+    private OrderHistoryService orderHistoryService;
 
-    @Autowired
-    private CategoryService categoryService;
-
-    @ApiOperation("Get all saved orders")
-    @ApiResponse(code = 200, message = "return a list of orders", response = List.class)
-    @GetMapping
-    public ResponseEntity<List<OrderDTO>> findAll() {
-
-        return ResponseEntity
-                .ok(orderService.findAll().stream().map(OrderDTO::new)
-                        .sorted(Comparator.comparing(AbstractDTO::getCreationTimestamp).reversed())
-                        .collect(Collectors.toList()));
-    }
-
-    @ApiOperation("Get order by ID")
-    @ApiResponse(code = 200, message = "return the selected order", response = OrderDTO.class)
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getById(@Required @PathVariable Long id) {
-
-        return Optional.ofNullable(orderService.read(id))
-                .map(OrderDTO::new)
-                .map(dto -> ResponseEntity.ok().body(dto))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<DetailedOrderDTO> getById(@Required @PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getDetailedOrder(id));
     }
 
-    @ApiOperation("Add a new order")
-    @ApiResponse(code = 200, message = "created the order", response = OrderDTO.class)
     @PostMapping
-    public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO dto) {
-        return ResponseEntity.ok(orderService.createEntity(dto));
+    public ResponseEntity<DetailedOrderDTO> create(@RequestBody DetailedOrderDTO dto) {
+        return ResponseEntity.ok(orderService.createOrder(dto));
     }
 
-    @ApiOperation("Update an existing order")
-    @ApiResponse(code = 200, message = "updated order", response = OrderDTO.class)
     @PutMapping
-    public ResponseEntity<OrderDTO> update(@RequestBody OrderDTO dto) {
-        return ResponseEntity.ok(orderService.updateEntityValues(dto));
+    public ResponseEntity<DetailedOrderDTO> update(@RequestBody DetailedOrderDTO dto) {
+        return ResponseEntity.ok(orderService.updateOrder(dto));
     }
 
-    @ApiOperation("Delete an existing order")
-    @ApiResponse(code = 200, message = "the delete order result", response = ResponseEntity.class)
     @DeleteMapping("/{id}")
     @Admin
-    public ResponseEntity<?> delete(@PathVariable @Required Long id) {
+    public ResponseEntity<Boolean> delete(@PathVariable @Required Long id) {
         return ResponseEntity.ok(orderService.delete(id));
     }
 
-    @ApiOperation("Get all menu items in the selected order")
-    @ApiResponse(code = 200, message = "return the menu item list", response = ResponseEntity.class)
-    @GetMapping("/{id}/menuitem")
-    public ResponseEntity<List<OrderItemDetailDTO>> getAllMenuItemByOrderId(@PathVariable("id") @Required Long orderID) {
-        return ResponseEntity.ok(menuItemService.findAllMenuItemByOrderId(orderID));
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> patchStatus(@PathVariable Long id, @RequestParam(value = "status") String newStatus) {
+        return ResponseEntity.ok(orderService.patchStatus(id, newStatus));
     }
 
-    @ApiOperation("Print an order")
-    @ApiResponse(code = 200, message = "print successful", response = OrderDTO.class)
+    @GetMapping(params = {"page", "size", "status"})
+    public ResponseEntity<AbstractPagination<? extends Serializable>> findAll(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                              @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                                                              @RequestParam(value = "status", required = false) String status) {
+        if (status != null && OrderStatus.valueOf(status).isClosed()) {
+            return ResponseEntity.ok(orderHistoryService.findAllWithPagination(page, size));
+        } else {
+            return ResponseEntity.ok(orderService.findAllWithPagination(page, size));
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<AbstractPagination<? extends Serializable>> search(@RequestParam(value = "query", required = false) String query) {
+        return ResponseEntity.ok(orderService.searchOrders(query));
+    }
+
     @PostMapping("/{id}/print")
-    public ResponseEntity<?> print(@RequestBody OrderDTO dto, @Required @PathVariable Long id) {
-        return ResponseEntity.ok(orderService.printOrder(dto));
+    public ResponseEntity<Boolean> print(@Required @PathVariable Long id) {
+        return ResponseEntity.ok(orderService.printOrder(id));
     }
 }

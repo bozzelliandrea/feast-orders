@@ -1,37 +1,46 @@
 package business.order.dto;
 
 import arch.dto.AbstractDTO;
-import atomic.entity.Order;
-
-import java.util.List;
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
 
 public class OrderDTO extends AbstractDTO {
 
-    private static final long serialVersionUID = 211770738996679270L;
-
+    private Integer tableNumber;
+    private Integer placeSettingNumber;
     private String client;
-    private Long tableNumber;
-    private Long placeSettingNumber;
-    private String note;
-    private String cashier;
-    private Float total;
     private Boolean takeAway = false;
-    private List<OrderItemDetailDTO> menuItemList;
-    private Boolean printOrder = false;
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
+    private Double total;
+    private Integer discount;
 
     public OrderDTO() {
-
     }
 
-    public OrderDTO(Order entity) {
-        super(entity);
-        this.client = entity.getClient();
-        this.tableNumber = entity.getTableNumber();
-        this.placeSettingNumber = entity.getPlaceSettingNumber();
-        this.note = entity.getNote();
-        this.cashier = entity.getCashier();
-        this.total = entity.getTotal();
-        this.takeAway = entity.getTakeAway();
+    public OrderDTO(OrderDTO dto) {
+        super(dto);
+        this.tableNumber = dto.getTableNumber();
+        this.placeSettingNumber = dto.getPlaceSettingNumber();
+        this.client = dto.getClient();
+        this.takeAway = dto.getTakeAway();
+        this.total = dto.getTotal();
+        this.discount = dto.getDiscount();
+    }
+
+    public Integer getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(Integer tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public Integer getPlaceSettingNumber() {
+        return placeSettingNumber;
+    }
+
+    public void setPlaceSettingNumber(Integer placeSettingNumber) {
+        this.placeSettingNumber = placeSettingNumber;
     }
 
     public String getClient() {
@@ -42,46 +51,6 @@ public class OrderDTO extends AbstractDTO {
         this.client = client;
     }
 
-    public Long getTableNumber() {
-        return tableNumber;
-    }
-
-    public void setTableNumber(Long tableNumber) {
-        this.tableNumber = tableNumber;
-    }
-
-    public Long getPlaceSettingNumber() {
-        return placeSettingNumber;
-    }
-
-    public void setPlaceSettingNumber(Long placeSettingNumber) {
-        this.placeSettingNumber = placeSettingNumber;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public String getCashier() {
-        return cashier;
-    }
-
-    public void setCashier(String cashier) {
-        this.cashier = cashier;
-    }
-
-    public Float getTotal() {
-        return total;
-    }
-
-    public void setTotal(Float total) {
-        this.total = total;
-    }
-
     public Boolean getTakeAway() {
         return takeAway;
     }
@@ -90,19 +59,19 @@ public class OrderDTO extends AbstractDTO {
         this.takeAway = takeAway;
     }
 
-    public List<OrderItemDetailDTO> getMenuItemList() {
-        return menuItemList;
+    public Double getTotal() {
+        return total;
     }
 
-    public void setMenuItemList(List<OrderItemDetailDTO> menuItemList) {
-        this.menuItemList = menuItemList;
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
-    public Boolean getPrintOrder() {
-        return printOrder;
+    public Integer getDiscount() {
+        return discount;
     }
 
-    public void setPrintOrder(Boolean printOrder) {
-        this.printOrder = printOrder;
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 }

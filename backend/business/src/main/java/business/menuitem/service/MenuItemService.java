@@ -3,11 +3,9 @@ package business.menuitem.service;
 import arch.service.BaseCRUDService;
 import atomic.entity.Category;
 import atomic.entity.MenuItem;
-import atomic.entity.OrderItemDetail;
 import atomic.repository.MenuItemRepository;
 import business.menuitem.converter.MenuItemConverter;
 import business.menuitem.dto.MenuItemDTO;
-import business.order.dto.OrderItemDetailDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -29,7 +27,6 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
     }
 
     public MenuItemDTO get(Long id) {
-//        validator.get(id);
         return converter.convertEntity(super.read(id));
     }
 
@@ -101,18 +98,4 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
 
         return entity;
     }
-
-    public List<OrderItemDetailDTO> findAllMenuItemByOrderId(Long orderID) {
-
-        Objects.requireNonNull(orderID, "Order ID param cannot be null!");
-
-        List<OrderItemDetail> entityList = repository.findMenuItemsByOrderId(orderID);
-
-        if (Objects.isNull(entityList) || CollectionUtils.isEmpty(entityList)) {
-            return new ArrayList<>();
-        } else {
-            return entityList.stream().map(OrderItemDetailDTO::new).collect(Collectors.toList());
-        }
-    }
-
 }

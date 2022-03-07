@@ -2,17 +2,17 @@ package business.order.converter;
 
 import arch.component.AbstractConverter;
 import arch.component.Converter;
-import atomic.entity.V2Order;
+import atomic.entity.Order;
 import business.order.dto.DetailedOrderDTO;
-import business.order.dto.V2OrderDTO;
+import business.order.dto.OrderDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderConverter extends AbstractConverter<V2Order, V2OrderDTO> implements Converter {
+public class OrderConverter extends AbstractConverter<Order, OrderDTO> implements Converter {
 
     @Override
-    public V2OrderDTO convertEntity(V2Order entity) {
-        V2OrderDTO dto = new V2OrderDTO();
+    public OrderDTO convertEntity(Order entity) {
+        OrderDTO dto = new OrderDTO();
         convertEntity2DTO(entity, dto);
         dto.setClient(entity.getClient());
         dto.setPlaceSettingNumber((int) entity.getPlaceSettingNumber());
@@ -22,8 +22,8 @@ public class OrderConverter extends AbstractConverter<V2Order, V2OrderDTO> imple
         return dto;
     }
 
-    public DetailedOrderDTO convertEntityDetailed(V2Order entity) {
-        V2OrderDTO dto = convertEntity(entity);
+    public DetailedOrderDTO convertEntityDetailed(Order entity) {
+        OrderDTO dto = convertEntity(entity);
 
         DetailedOrderDTO detailedOrderDTO = new DetailedOrderDTO(dto);
         detailedOrderDTO.setNote(entity.getNote());
@@ -32,8 +32,8 @@ public class OrderConverter extends AbstractConverter<V2Order, V2OrderDTO> imple
     }
 
     @Override
-    public V2Order convertDTO(V2OrderDTO dto) {
-        V2Order entity = new V2Order();
+    public Order convertDTO(OrderDTO dto) {
+        Order entity = new Order();
         convertDTO2BaseEntity(dto, entity);
 
         if (dto instanceof DetailedOrderDTO) {

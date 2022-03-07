@@ -1,107 +1,140 @@
 package atomic.entity;
 
+
 import arch.entity.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
+import atomic.bean.OrderContent;
+import atomic.enums.OrderStatus;
+import atomic.type.JsonOrderContentConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "APP_ORDER")
+@Table(name = "ORDER")
 public class Order extends BaseEntity {
 
-    private static final long serialVersionUID = 419715887508011992L;
 
     @Id
     @Column(name = "ID")
     @SequenceGenerator(name = "APP_ORDER_GEN", sequenceName = "APP_ORDER_GEN_SQ", allocationSize = 1)
     @GeneratedValue(generator = "APP_ORDER_GEN", strategy = GenerationType.SEQUENCE)
-    private Long ID;
+    private Long id;
 
     @NotNull
-    @Column(name = "CLIENT")
-    private String client;
+    @Column(name = "content", columnDefinition = "jsonb")
+    @Convert(converter = JsonOrderContentConverter.class)
+    private List<OrderContent> content;
+
+    @Column(name = "KITCHEN")
+    private boolean kitchenArea;
+
+    @Column(name = "BAR")
+    private boolean barArea;
+
+    @Column(name = "PLATE")
+    private boolean plateArea;
+
+    @NotNull
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.TODO;
+
+    @NotNull
+    @Column(name = "TOTAL")
+    private Double total;
 
     @NotNull
     @Column(name = "TABLE_NUMBER", nullable = false)
-    private Long tableNumber;
+    private short tableNumber;
 
     @NotNull
     @Column(name = "PLACE_SETTING_NUMBER", nullable = false)
-    private Long placeSettingNumber;
-
-    @Column(name = "NOTE")
-    private String note;
-
-    @Column(name = "CASHIER")
-    private String cashier;
-
-    @NotNull
-    @Column(name = "TOTAL", nullable = false)
-    private Float total;
+    private short placeSettingNumber;
 
     @Column(name = "TAKEAWAY")
     private Boolean takeAway;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<OrderItemDetail> orderItemDetails;
+    @Column(name = "NOTE")
+    private String note;
+
+    @Column(name = "CLIENT")
+    private String client;
+
+    @Column(name = "DISCOUNT")
+    private Integer discount;
 
     public Long getId() {
-        return this.ID;
+        return id;
     }
 
-    public void setId(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getClient() {
-        return client;
+    public List<OrderContent> getContent() {
+        return content != null ? content : new ArrayList<>();
     }
 
-    public void setClient(String client) {
-        this.client = client;
+    public void setContent(List<OrderContent> content) {
+        this.content = content;
     }
 
-    public Long getTableNumber() {
-        return tableNumber;
+    public boolean isKitchenArea() {
+        return kitchenArea;
     }
 
-    public void setTableNumber(Long tableNumber) {
-        this.tableNumber = tableNumber;
+    public void setKitchenArea(boolean kitchenArea) {
+        this.kitchenArea = kitchenArea;
     }
 
-    public Long getPlaceSettingNumber() {
-        return placeSettingNumber;
+    public boolean isBarArea() {
+        return barArea;
     }
 
-    public void setPlaceSettingNumber(Long placeSettingNumber) {
-        this.placeSettingNumber = placeSettingNumber;
+    public void setBarArea(boolean barArea) {
+        this.barArea = barArea;
     }
 
-    public String getNote() {
-        return note;
+    public boolean isPlateArea() {
+        return plateArea;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setPlateArea(boolean plateArea) {
+        this.plateArea = plateArea;
     }
 
-    public String getCashier() {
-        return cashier;
+    public OrderStatus getStatus() {
+        return status;
     }
 
-    public void setCashier(String cashier) {
-        this.cashier = cashier;
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
-    public Float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Float total) {
+    public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public short getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(short tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public short getPlaceSettingNumber() {
+        return placeSettingNumber;
+    }
+
+    public void setPlaceSettingNumber(short placeSettingNumber) {
+        this.placeSettingNumber = placeSettingNumber;
     }
 
     public Boolean getTakeAway() {
@@ -112,22 +145,27 @@ public class Order extends BaseEntity {
         this.takeAway = takeAway;
     }
 
-    public List<OrderItemDetail> getOrderItemDetails() {
-        return orderItemDetails;
+    public String getNote() {
+        return note;
     }
 
-    public void setOrderItemDetails(List<OrderItemDetail> orderItemDetails) {
-        this.orderItemDetails = orderItemDetails;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public String getZonedDateTime() {
-        return zonedDateTime;
+    public String getClient() {
+        return client;
     }
 
-    public void setZonedDateTime(String zonedDateTime) {
-        this.zonedDateTime = zonedDateTime;
+    public void setClient(String client) {
+        this.client = client;
     }
 
-    @Transient
-    private String zonedDateTime;
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
+    }
 }

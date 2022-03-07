@@ -68,8 +68,7 @@
     </thead>
     <tbody>
     <tr>
-        <td th:text="'Cassiere ' + ${order.cashier}"/>
-        <td th:text="'' + ${order.zonedDateTime}"/>
+        <td th:text="'' + ${#dates.format(order.creationTimestamp, 'dd-MM-yyyy HH:mm')}"/>
         <td>COPIA CLIENTE</td>
     </tr>
     </tbody>
