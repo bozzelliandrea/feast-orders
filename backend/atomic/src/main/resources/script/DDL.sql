@@ -11,13 +11,18 @@ CREATE TABLE public.app_order (
 	update_timestamp timestamp NULL,
 	update_user varchar(255) NULL,
 	"version" int8 NOT NULL,
-	cashier varchar(255) NULL,
-	client varchar(255) NOT NULL,
+	bar bool NULL,
+	client varchar(255) NULL,
+	"content" jsonb NOT NULL,
+	discount int4 NULL,
+	kitchen bool NULL,
 	note varchar(255) NULL,
-	place_setting_number int8 NOT NULL,
-	table_number int8 NOT NULL,
+	place_setting_number int2 NOT NULL,
+	plate bool NULL,
+	status varchar(255) NOT NULL,
+	table_number int2 NOT NULL,
 	takeaway bool NULL,
-	total float4 NOT NULL,
+	total float8 NOT NULL,
 	CONSTRAINT app_order_pkey PRIMARY KEY (id)
 );
 
@@ -59,40 +64,6 @@ CREATE TABLE public.error_tracking (
 	"type" varchar(255) NULL,
 	CONSTRAINT error_tracking_pkey PRIMARY KEY (id)
 );
-
-
--- public.order_new definition
-
--- Drop table
-
--- DROP TABLE public.order_new;
-
--- public.order_new definition
-
--- Drop table
-
--- DROP TABLE public.order_new;
-
-CREATE TABLE public.order_new (
-	id bigserial NOT NULL,
-	"content" jsonb NULL,
-	bar bool NULL,
-	kitchen bool NULL,
-	note varchar(255) NULL,
-	plate bool NULL,
-	takeaway bool NULL,
-	status varchar NULL,
-	total double precision NULL,
-	table_number smallint NULL,
-	place_setting_number smallint NULL,
-	creation_timestamp timestamp NULL,
-	creation_user varchar(255) NULL,
-	update_timestamp timestamp NULL,
-	update_user varchar(255) NULL,
-	"version" int8 NULL,
-	CONSTRAINT order_new_pkey PRIMARY KEY (id)
-);
-
 
 -- public.printerattr definition
 
@@ -172,27 +143,6 @@ CREATE TABLE public.menu_item (
 	CONSTRAINT menu_item_pkey PRIMARY KEY (id),
 	CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES public.category(id)
 );
-
-
--- public.orderitem definition
-
--- Drop table
-
--- DROP TABLE public.orderitem;
-
-CREATE TABLE public.orderitem (
-	menu_item_id int8 NOT NULL,
-	order_id int8 NOT NULL,
-	menu_item_cat_id int8 NULL,
-	menu_item_name varchar(255) NOT NULL,
-	menu_item_price float4 NOT NULL,
-	note varchar(255) NULL,
-	quantity int8 NOT NULL,
-	total_price float4 NOT NULL,
-	CONSTRAINT orderitem_pkey PRIMARY KEY (menu_item_id, order_id),
-	CONSTRAINT fkndnur7pxi4br02k4fckatnfur FOREIGN KEY (order_id) REFERENCES public.app_order(id)
-);
-
 
 -- public.printercfg definition
 
@@ -337,20 +287,6 @@ CREATE SEQUENCE IF NOT EXISTS public.order_history_id_seq
 	START 1
 	CACHE 1
 	NO CYCLE;
-
-
--- public.order_new_id_seq definition
-
--- DROP SEQUENCE public.order_new_id_seq;
-
-CREATE SEQUENCE IF NOT EXISTS public.order_new_id_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
 
 -- public.printer_cfg_gen_sq definition
 
