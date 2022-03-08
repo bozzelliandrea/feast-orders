@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "APP_ORDER")
 public class Order extends BaseEntity {
 
 
