@@ -3,19 +3,21 @@ package arch.validation;
 import arch.exception.errors.HttpFeastServerException;
 import arch.exception.errors.InvalidRequestException;
 import org.apache.logging.log4j.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.el.PropertyNotFoundException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class RequiredSupport {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(RequiredSupport.class);
 
     private static final Set<Class<?>> _WRAPPER_TYPES = _getWrapperTypes();
 
@@ -48,7 +50,13 @@ public final class RequiredSupport {
             for (PropertyDescriptor pd : Introspector.getBeanInfo(o.getClass()).getPropertyDescriptors()) {
                 if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
 
-                    Field field = o.getClass().getDeclaredField(pd.getName());
+                    List<Field> classFields = getFullDeclaredFields(new ArrayList<>(), o.getClass());
+                    Field field = getFieldByName(classFields, pd.getName());
+                    if (field == null) {
+                        LOGGER.error("Field with name {} not found in class {}", pd.getName(), o.getClass().getName());
+                        throw new PropertyNotFoundException("Field not found or not exist");
+                    }
+
                     if (field.isAnnotationPresent(Required.class)) {
                         Required annotation = field.getAnnotation(Required.class);
                         Object value = pd.getReadMethod().invoke(o);
@@ -61,7 +69,9 @@ public final class RequiredSupport {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception exception) {
+            LOGGER.error(exception.getMessage());
+            exception.printStackTrace();
             throw new HttpFeastServerException("Failed request validation: Internal error process");
         }
 
@@ -88,5 +98,24 @@ public final class RequiredSupport {
         ret.add(Void.class);
         ret.add(String.class);
         return ret;
+    }
+
+    private static Field getFieldByName(List<Field> fields, String fieldName) {
+        for (Field field : fields) {
+            if (field.getName().equals(fieldName)) {
+                return field;
+            }
+        }
+        return null;
+    }
+
+    private static List<Field> getFullDeclaredFields(List<Field> fields, Class<?> type) {
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
+
+        if (type.getSuperclass() != null) {
+            getFullDeclaredFields(fields, type.getSuperclass());
+        }
+
+        return fields;
     }
 }

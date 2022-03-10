@@ -2,6 +2,7 @@ package business.order;
 
 import arch.search.SearchCriteria;
 import atomic.entity.Order;
+import atomic.enums.OrderStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,6 +20,10 @@ public class OrderSpecification implements Specification<Order> {
 
     @Override
     public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+        if (criteria.getKey().equals("status")) {
+            criteria.setValue(OrderStatus.valueOf((String) criteria.getValue()));
+        }
+
         switch (criteria.getOperation()) {
             case EQUALITY:
                 return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
