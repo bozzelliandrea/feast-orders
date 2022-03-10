@@ -12,6 +12,6 @@ RUN cp /DDL.sql /docker-entrypoint-initdb.d/init.sql
 
 RUN echo 'load init data'
 COPY atomic/src/main/resources/script/DML.sql /
-RUN cat /script-dml.sql >> /docker-entrypoint-initdb.d/init.sql
+RUN cat /DML.sql >> /docker-entrypoint-initdb.d/init.sql
 
 EXPOSE 5432

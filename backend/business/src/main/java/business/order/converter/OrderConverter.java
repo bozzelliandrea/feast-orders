@@ -42,8 +42,8 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO> implement
         }
 
         entity.setClient(dto.getClient());
-        entity.setPlaceSettingNumber(dto.getPlaceSettingNumber().shortValue());
-        entity.setTableNumber(dto.getTableNumber().shortValue());
+        entity.setPlaceSettingNumber(dto.getPlaceSettingNumber() != null ? dto.getPlaceSettingNumber().shortValue() : 0);
+        entity.setTableNumber(dto.getTableNumber() != null ? dto.getTableNumber().shortValue() : 0);
         entity.setTotal(dto.getTotal());
         entity.setDiscount(dto.getDiscount());
         return entity;

@@ -6,6 +6,7 @@ import arch.entity.BaseEntity;
 public interface Converter {
 
     default void convertDTO2BaseEntity(AbstractDTO dto, BaseEntity entity) {
+        entity.setId(dto.getId());
         entity.setCreationTimestamp(dto.getCreationTimestamp());
         entity.setCreationUser(dto.getCreationUser());
         entity.setUpdateTimestamp(dto.getUpdateTimestamp());
@@ -14,6 +15,7 @@ public interface Converter {
     }
 
     default void convertEntity2DTO(BaseEntity entity, AbstractDTO dto) {
+        dto.setId(entity.getId());
         dto.setCreationTimestamp(entity.getCreationTimestamp());
         dto.setCreationUser(entity.getCreationUser());
         dto.setUpdateTimestamp(entity.getUpdateTimestamp());
