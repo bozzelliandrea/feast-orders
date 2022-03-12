@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:commons/src/core/abstract_model.dart';
+import 'package:commons/src/http/auth_token_interceptor.dart';
+import 'package:commons/src/http/logging_interceptor.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_interceptor/http/http.dart';
 
 /// Api Service
 /// basic class for invoke rest api expose by feast order backend.
@@ -51,19 +56,32 @@ class ApiService {
     if (urlParameters != null && urlParameters.isNotEmpty) {
       uri = _resolveUriParameters(uri, urlParameters);
     }
+    
+    InterceptedHttp http = InterceptedHttp.build(
+      interceptors: [LoggingInterceptor(), AuthTokenInterceptor()]
+    );
 
     switch (invoker._method) {
       case _RestMethod.get:
         return http.get(Uri.parse(uri));
       case _RestMethod.post:
-        return http.post(Uri.parse(uri),
-            headers: _headers(), body: dto?.toJson());
+        return http.post(
+          Uri.parse(uri),
+          headers: _headers(),
+          body: jsonEncode(dto?.toJson())
+        );
       case _RestMethod.put:
-        return http.put(Uri.parse(uri),
-            headers: _headers(), body: dto?.toJson());
+        return http.put(
+          Uri.parse(uri),
+          headers: _headers(),
+          body: jsonEncode(dto?.toJson())
+        );
       case _RestMethod.patch:
-        return http.patch(Uri.parse(uri),
-            headers: _headers(), body: dto?.toJson());
+        return http.patch(
+          Uri.parse(uri),
+          headers: _headers(),
+          body: jsonEncode(dto?.toJson())
+        );
       case _RestMethod.delete:
         return http.delete(Uri.parse(uri));
       default:
@@ -185,7 +203,8 @@ class _InternalApiModel {
 
   Future<http.Response>? execute(
       {Map<String, String>? urlParameters, AbstractModel? dto}) {
-    ApiService._execute(this, urlParameters: urlParameters, dto: dto);
+    Future<http.Response>? response = ApiService._execute(this, urlParameters: urlParameters, dto: dto);
+    return response;
   }
 }
 

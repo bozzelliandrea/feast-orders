@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.4
+  http_interceptor: ^1.0.2
+  equatable: ^2.0.3
+  flutter_secure_storage: ^5.0.2
 
 dev_dependencies:
   flutter_test:
