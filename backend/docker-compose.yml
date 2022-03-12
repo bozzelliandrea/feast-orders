@@ -10,6 +10,13 @@ services:
       - "8081:8081"
     depends_on:
       - postgres
+    environment:
+      - PROFILE=devpst
+      - PST_URL=bear-db-container
+      - PST_USERNAME=postgres
+      - PST_PASSWORD=password
+      - PST_DB=postgres
+      - PST_PORT=5432
     networks:
       - feast-bear
   postgres:

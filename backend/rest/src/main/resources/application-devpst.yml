@@ -9,7 +9,7 @@ spring:
       data-source-properties: stringtype=unspecified
       connection-timeout: 20000
       maximum-pool-size: 5
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://${PST_URL:localhost}:${PST_PORT:5432}/${PST_DB:postgres}
     username: postgres
     password: password
   jpa:

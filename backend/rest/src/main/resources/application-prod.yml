@@ -1,6 +1,6 @@
 logging:
   level:
-    root: WARN
+    root: INFO
 
 spring:
   profiles: prod
@@ -9,9 +9,9 @@ spring:
       data-source-properties: stringtype=unspecified
       connection-timeout: 20000
       maximum-pool-size: 5
-    url: ${PSTURL}
-    username: ${PSTUSERNAME}
-    password: ${PSTPASSWORD}
+    url: jdbc:postgresql://${PST_URL}:${PST_PORT}/${PST_DB}
+    username: ${PST_USERNAME}
+    password: ${PST_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
