@@ -13,12 +13,13 @@ spring:
     location: ./banner.txt
   main:
     allow-bean-definition-overriding: true
+  jpa:
+    open-in-view: false
 
 app:
   security:
     jwtSecret: feastBearSecretKey
     jwtExpirationMs: 86400000
-
 
 application:
   title: Feast Bear Server

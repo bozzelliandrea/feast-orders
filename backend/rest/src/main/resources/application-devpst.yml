@@ -3,7 +3,10 @@ logging:
     root: INFO
 
 spring:
-  profiles: devpst
+  spring:
+    config:
+      activate:
+        on-profile: devpst
   datasource:
     hikari:
       data-source-properties: stringtype=unspecified
