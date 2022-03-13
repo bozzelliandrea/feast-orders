@@ -12,6 +12,7 @@ dependencies:
   google_fonts: ^2.2.0
   auto_route: ^2.4.2
   flutter_bloc: ^8.0.1
+  http: ^0.13.4
   equatable: ^2.0.3
   salomon_bottom_bar: ^3.2.0
   commons:

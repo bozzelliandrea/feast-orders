@@ -9,9 +9,13 @@ class AppStarted extends AuthenticationEvent {
 }
 
 class LogIn extends AuthenticationEvent {
+  final String username;
+  final String password;
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [username];
+
+  LogIn(this.username, this.password);
 }
 
 class LogOut extends AuthenticationEvent {

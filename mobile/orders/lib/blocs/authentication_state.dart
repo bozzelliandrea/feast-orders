@@ -28,9 +28,13 @@ class LoggingIn extends AuthenticationState {
 }
 
 class LoggedIn extends AuthenticationState {
+  final String? username;
+  final String? email;
+
+  LoggedIn(this.username, this.email);
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [username];
 }
 
 
