@@ -37,7 +37,7 @@ public class FeastOrdersApplication {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("be.feastorders"))
+                .apis(RequestHandlerSelectors.basePackage("controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
