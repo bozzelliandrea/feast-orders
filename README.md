@@ -22,7 +22,8 @@ Backend | [![Spring Boot Backend CI](https://github.com/bozzaccio/feast-orders/a
 # API Swagger
 
 SNAPSHOT Locale: http://localhost:8081/api/swagger-ui/
-RELEASE: https://bozzelliandrea.github.io/feast-orders-swagger/
+<br/>
+<b>RELEASE</b>: https://bozzelliandrea.github.io/feast-orders-swagger/
 
 # H2 Database
 
