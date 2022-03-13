@@ -1,5 +1,6 @@
 package business.category.service;
 
+import arch.cache.CacheElementNotFoundException;
 import arch.service.BaseCRUDService;
 import atomic.entity.Category;
 import atomic.entity.PrinterCfg;
@@ -21,21 +22,39 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
 
     private final CategoryConverter converter;
     private final PrinterCfgService printerCfgService;
+    private final CategoryAbstractCacheService categoryCacheService;
 
     public CategoryService(CategoryRepository repository,
                            CategoryConverter converter,
-                           PrinterCfgService printerCfgService) {
+                           PrinterCfgService printerCfgService,
+                           CategoryAbstractCacheService categoryCacheService) {
         super(repository);
         this.converter = converter;
         this.printerCfgService = printerCfgService;
+        this.categoryCacheService = categoryCacheService;
     }
 
     public List<CategoryDTO> getAll() {
-        return super.findAll().stream().map(converter::convertEntity).collect(Collectors.toList());
+        if (categoryCacheService.count() == 0) {
+            List<CategoryDTO> categories = super.findAll().stream().map(converter::convertEntity).collect(Collectors.toList());
+            categoryCacheService.loadCategories(categories);
+            return categories;
+        } else {
+            return categoryCacheService.getAll();
+        }
     }
 
     public CategoryDTO get(Long id) {
-        return converter.convertEntity(super.read(id));
+        CategoryDTO dto;
+
+        try {
+            dto = categoryCacheService.getCacheData(id);
+        } catch (CacheElementNotFoundException e) {
+            Category category = super.read(id);
+            dto = converter.convertEntity(category);
+            categoryCacheService.putCacheData(dto.getId(), dto);
+        }
+        return dto;
     }
 
     public CategoryDTO create(CategoryDTO dto) {
@@ -50,7 +69,9 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
         }
 
         Category savedEntity = super.create(category);
-        return converter.convertEntity(savedEntity);
+        CategoryDTO newDto = converter.convertEntity(savedEntity);
+        categoryCacheService.putCacheData(newDto.getId(), newDto);
+        return newDto;
     }
 
     public CategoryDTO update(CategoryDTO dto) {
@@ -76,10 +97,13 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
         savedCategory.setPrinterCfgs(printerCfgList);
 
         Category updatedCategory = super.update(savedCategory);
-        return converter.convertEntity(updatedCategory);
+        CategoryDTO newDto = converter.convertEntity(updatedCategory);
+        categoryCacheService.putCacheData(newDto.getId(), newDto);
+        return newDto;
     }
 
     public CategoryDTO remove(Long id) {
+        categoryCacheService.removeCacheData(id);
         super.delete(id);
         return new CategoryDTO();
     }

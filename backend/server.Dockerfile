@@ -15,6 +15,7 @@ FROM openjdk:11
 
 COPY --from=build rest/target/*.jar /usr/local/lib/microservice.jar
 
-EXPOSE 8081
+ENV JAVA_OPT="--add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
 
-ENTRYPOINT ["java","-jar","/usr/local/lib/microservice.jar"]
+EXPOSE 8081
+ENTRYPOINT exec java $JAVA_OPT -jar /usr/local/lib/microservice.jar

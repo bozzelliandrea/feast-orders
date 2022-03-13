@@ -3,7 +3,10 @@ logging:
     root: INFO
 
 spring:
-  profiles: devh2
+  spring:
+    config:
+      activate:
+        on-profile: devh2
   datasource:
     driver-class-name: org.h2.Driver
     username: dev
