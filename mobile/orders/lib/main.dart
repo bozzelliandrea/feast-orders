@@ -38,6 +38,9 @@ class FeastOrdersApp extends StatelessWidget {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
               title: 'Feast Bear Orders',
+              theme: ThemeData(
+                fontFamily: 'Montserrat',
+              ),
               routerDelegate: AutoRouterDelegate.declarative(
                 _appRouter,
                 routes: (_) => [
