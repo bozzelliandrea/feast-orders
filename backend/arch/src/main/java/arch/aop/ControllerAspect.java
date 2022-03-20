@@ -7,14 +7,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 @Aspect
-@Component
 public class ControllerAspect {
 
     @Pointcut("execution(@(@org.springframework.web.bind.annotation.RequestMapping *) * *(..))")
@@ -22,7 +22,9 @@ public class ControllerAspect {
     }
 
     @Before("requestMappingAnnotations()")
-    public void requestInterceptor(JoinPoint joinPoint) {
+    public void requestInterceptor(JoinPoint joinPoint) throws Exception {
+
+        final Logger logger = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
@@ -30,6 +32,11 @@ public class ControllerAspect {
 
         for (Annotation annotation : annotations) {
             if (annotation.annotationType().isAnnotationPresent(RequestMapping.class)) {
+                Object api = annotation.getClass().getMethod("value").invoke(annotation);
+                if (((String[]) api).length == 0)
+                    logger.info("Receive {} request type", annotation.annotationType().getSimpleName());
+                else
+                    logger.info("Receive {} request type for url {}", annotation.annotationType().getSimpleName(), api);
 
                 RequiredMethod rm = RequiredMethod.getByAnnotation(annotation.annotationType());
                 Object[] request = joinPoint.getArgs();
@@ -44,5 +51,4 @@ public class ControllerAspect {
             }
         }
     }
-
 }

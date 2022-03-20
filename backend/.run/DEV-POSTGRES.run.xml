@@ -2,7 +2,8 @@
   <configuration default="false" name="DEV-POSTGRES" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="FeastOrdersApplication" />
     <module name="rest" />
-    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=devpst" />
+    <option name="VM_PARAMETERS"
+            value="-Dspring.profiles.active=devpst --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"/>
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value=".*" />

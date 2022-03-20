@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -77,6 +78,6 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<E> findAll() {
-        return repository.findAll();
+        return repository.count() > 0 ? repository.findAll() : new ArrayList<>();
     }
 }

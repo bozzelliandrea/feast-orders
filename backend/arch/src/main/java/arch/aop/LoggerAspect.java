@@ -8,19 +8,18 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Aspect
-@Component
 public class LoggerAspect {
 
-    @Autowired
-    private ErrorRepository errorRepository;
+    private final ErrorRepository errorRepository;
+
+    public LoggerAspect(ErrorRepository errorRepository) {
+        this.errorRepository = errorRepository;
+    }
 
     @Pointcut("within(@org.springframework.stereotype.Repository *)" +
-            " || within(@org.springframework.stereotype.Service *)" +
-            " || within(@org.springframework.web.bind.annotation.RestController *)")
+            " || within(@org.springframework.stereotype.Service *)")
     public void springBeanPointcut() {
     }
 
