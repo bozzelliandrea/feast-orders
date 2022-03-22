@@ -2,14 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:commons/commons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orders/blocs/authentication_bloc.dart';
-import 'package:orders/blocs/authentication_event.dart';
+import 'package:orders/auth_module/blocs/authentication_bloc.dart';
+import 'package:orders/auth_module/blocs/authentication_event.dart';
+import 'package:orders/auth_module/blocs/authentication_state.dart';
 import 'package:orders/configuration.dart';
 import 'package:orders/repositories/repository_bundle.dart';
 import 'package:orders/root_provider.dart';
 import 'package:orders/routes/router.gr.dart';
-
-import 'blocs/authentication_state.dart';
 
 void main() {
   runApp(FeastOrdersApp());
@@ -59,12 +58,6 @@ class FeastOrdersApp extends StatelessWidget {
           },
         ),
       ),
-
-    //   MaterialApp.router(
-    //   debugShowCheckedModeBanner: false,
-    //   title: 'Feast Bear Orders',
-    //   routerDelegate: _appRouter.delegate(),
-    //   routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }

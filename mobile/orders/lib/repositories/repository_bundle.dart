@@ -1,8 +1,8 @@
 import 'package:commons/commons.dart';
 import 'package:flutter/material.dart';
-import 'package:orders/data/auth_base_service.dart';
-import 'package:orders/data/auth_service.dart';
-import 'package:orders/data/mock/mock_auth_service.dart';
+import 'package:orders/auth_module/data/auth_base_service.dart';
+import 'package:orders/auth_module/data/auth_service.dart';
+import 'package:orders/auth_module/data/mock/mock_auth_service.dart';
 
 @immutable
 class RepositoryBundle {

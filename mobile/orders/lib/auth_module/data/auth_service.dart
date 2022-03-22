@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:commons/commons.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:orders/data/auth_base_service.dart';
-import 'package:orders/models/auth.dart';
-import 'package:orders/models/auth_response.dart';
+import 'package:orders/auth_module/data/auth_base_service.dart';
+import 'package:orders/auth_module/models/auth.dart';
+import 'package:orders/auth_module/models/auth_response.dart';
 
 @immutable
 class AuthService extends AuthBaseService {

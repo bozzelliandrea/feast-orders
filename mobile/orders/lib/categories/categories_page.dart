@@ -1,9 +1,8 @@
-import 'package:commons/commons.dart';
-import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orders/blocs/authentication_bloc.dart';
-import 'package:orders/blocs/authentication_state.dart';
+import 'package:orders/auth_module/blocs/authentication_bloc.dart';
+import 'package:orders/auth_module/blocs/authentication_state.dart';
 import 'package:orders/routes/router.gr.dart';
 
 import 'category_item.dart';

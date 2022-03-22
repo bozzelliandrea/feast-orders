@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orders/blocs/authentication_event.dart';
+import 'package:orders/auth_module/blocs/authentication_bloc.dart';
+import 'package:orders/auth_module/blocs/authentication_event.dart';
 import 'package:orders/routes/router.gr.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
-import 'blocs/authentication_bloc.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -65,57 +64,5 @@ class HomePage extends StatelessWidget {
         );
       },
     );
-    // return AutoTabsRouter(
-    //   // list of your tab routes
-    //   // routes used here must be declared as children
-    //   // routes of /dashboard
-    //   routes: const [
-    //     ExploreRouter(),
-    //     OrdersRouter(),
-    //     SettingsRouter()
-    //   ],
-    //   builder: (context, child, animation) {
-    //     // obtain the scoped TabsRouter controller using context
-    //     final tabsRouter = AutoTabsRouter.of(context);
-    //     // Here we're building our Scaffold inside of AutoTabsRouter
-    //     // to access the tabsRouter controller provided in this context
-    //     //
-    //     //alterntivly you could use a global key
-    //     return Scaffold(
-    //         appBar: AppBar(
-    //           backgroundColor: Colors.deepOrange,
-    //           title: const Text('Feast Bear Orders'),
-    //           centerTitle: true,
-    //           leading: const AutoBackButton(),
-    //         ),
-    //         body: FadeTransition(
-    //           opacity: animation,
-    //           // the passed child is techinaclly our animated selected-tab page
-    //           child: child,
-    //         ),
-    //         bottomNavigationBar: BottomNavigationBar(
-    //           currentIndex: tabsRouter.activeIndex,
-    //           selectedItemColor: Colors.deepOrange,
-    //           onTap: (index) {
-    //             // here we switch between tabs
-    //             tabsRouter.setActiveIndex(index);
-    //           },
-    //           items: const [
-    //             BottomNavigationBarItem(
-    //               icon: Icon(Icons.search),
-    //               label: 'Explore',
-    //             ),
-    //             BottomNavigationBarItem(
-    //               icon: Icon(Icons.shopping_cart_outlined),
-    //               label: 'Orders',
-    //             ),
-    //             BottomNavigationBarItem(
-    //               icon: Icon(Icons.settings_outlined),
-    //               label: 'Settings',
-    //             ),
-    //           ],
-    //         ));
-    //   },
-    // );
   }
 }
