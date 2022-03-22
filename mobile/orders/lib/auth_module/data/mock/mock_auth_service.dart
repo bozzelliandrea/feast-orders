@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orders/configuration.dart';
-import 'package:orders/data/auth_base_service.dart';
-import 'package:orders/models/auth.dart';
-import 'package:orders/models/auth_response.dart';
+import 'package:orders/auth_module/data/auth_base_service.dart';
+import 'package:orders/auth_module/models/auth.dart';
+import 'package:orders/auth_module/models/auth_response.dart';
 
 @immutable
 class MockAuthService extends AuthBaseService {

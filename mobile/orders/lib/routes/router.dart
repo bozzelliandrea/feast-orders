@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:orders/categories/categories_page.dart';
 import 'package:orders/categories/category_page.dart';
-import 'package:orders/login/login_page.dart';
-import 'package:orders/login/login_wrapper_page.dart';
-import 'package:orders/login/register_page.dart';
+import 'package:orders/auth_module/screens/login_page.dart';
+import 'package:orders/auth_module/screens/login_wrapper_page.dart';
+import 'package:orders/auth_module/screens/change_password_page.dart';
 import 'package:orders/orders/order_page.dart';
 import 'package:orders/orders/orders_page.dart';
 import 'package:orders/settings/printers_setup_page.dart';
 import 'package:orders/settings/settings_page.dart';
+import 'package:orders/settings/users_setup_page.dart';
 import '../home.dart';
 
 @MaterialAutoRouter(
@@ -22,27 +23,12 @@ import '../home.dart';
             page: LoginPage,
           ),
           AutoRoute(
-            path: 'register',
-            page: RegisterPage,
+            path: 'changepassword',
+            page: ChangePasswordPage,
           ),
         ]
     ),
     AutoRoute(path: '/', page: HomePage, children: [
-      // AutoRoute(
-      //   path: 'login',
-      //   name: 'LoginRouter',
-      //   page: EmptyRouterPage,
-      //   children: [
-      //     AutoRoute(
-      //       path: '',
-      //       page: LoginPage,
-      //     ),
-      //     AutoRoute(
-      //       path: 'register',
-      //       page: RegisterPage,
-      //     ),
-      //   ]
-      // ),
       AutoRoute(
         path: 'explore',
         name: 'ExploreRouter',
@@ -85,6 +71,10 @@ import '../home.dart';
           AutoRoute(
             path: 'printers',
             page: PrintersSetupPage,
+          ),
+          AutoRoute(
+            path: 'users',
+            page: UsersSetupPage,
           ),
         ],
       ),

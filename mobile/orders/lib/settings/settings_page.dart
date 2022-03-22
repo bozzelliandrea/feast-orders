@@ -17,6 +17,12 @@ class SettingsPage extends StatelessWidget {
             const PrintersSetupRoute(),
           ),
         ),
+        SettingsItem(
+          name: 'Users Setup',
+          onTap: () => context.router.push(
+            const UsersSetupRoute(),
+          ),
+        ),
       ],
     );
   }

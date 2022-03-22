@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Background extends StatelessWidget {
+class AuthPageWrapper extends StatelessWidget {
   final Widget child;
 
-  const Background({
+  const AuthPageWrapper({
     Key? key,
     required this.child,
   }) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orders/blocs/authentication_bloc.dart';
-import 'package:orders/blocs/authentication_event.dart';
-import 'package:orders/components/background.dart';
+import 'package:orders/auth_module/blocs/authentication_bloc.dart';
+import 'package:orders/auth_module/blocs/authentication_event.dart';
+import 'package:orders/auth_module/components/auth_page_wrapper.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Form(
         key: _formKey,
-        child: Background(
+        child: AuthPageWrapper(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
