@@ -1,39 +1,30 @@
 package arch.cache;
 
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.map.IMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractCache<K, T> {
 
-    private final static String NULL_KEY = "[Cache Manager] Key is null!";
+    private final static String NULL_KEY = "Key is null!";
     private static final Logger _LOGGER = LoggerFactory.getLogger(AbstractCache.class);
 
-    private final HazelcastInstance hazelcastInstance;
-    private final String mapName;
-    private final IMap<K, T> cacheMap;
+    private final ConcurrentHashMap<K, T> cacheMap;
 
-    public AbstractCache(HazelcastInstance hazelcastInstance, String mapName) {
-        this.hazelcastInstance = hazelcastInstance;
-        this.mapName = mapName;
-        this.cacheMap = hazelcastInstance.getMap(mapName);
-    }
-
-    public AbstractCache(String mapName) {
-        this.hazelcastInstance = Hazelcast.newHazelcastInstance();
-        this.mapName = mapName;
-        this.cacheMap = hazelcastInstance.getMap(mapName);
+    @SuppressWarnings("all")
+    public AbstractCache() {
+        this.cacheMap = new ConcurrentHashMap<>();
+        CacheConfigRepository cacheConfigRepository = CacheConfigRepository.getInstance();
+        cacheConfigRepository.register(this.getClass());
     }
 
     public void putCacheData(K key, T value) {
         putCacheData(key, value, true);
     }
 
-    public void putCacheData(K key, T value, boolean log) {
+    public synchronized void putCacheData(K key, T value, boolean log) {
         Objects.requireNonNull(key, NULL_KEY);
         if (log)
             _LOGGER.info("Upsert cache data..");
@@ -51,7 +42,7 @@ public abstract class AbstractCache<K, T> {
         return obj;
     }
 
-    public void removeCacheData(K key) {
+    public synchronized void removeCacheData(K key) {
         Objects.requireNonNull(key, NULL_KEY);
         _LOGGER.info("Removing cache data..");
         cacheMap.remove(key);
