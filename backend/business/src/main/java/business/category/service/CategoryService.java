@@ -1,6 +1,6 @@
 package business.category.service;
 
-import arch.cache.CacheElementNotFoundException;
+import arch.cache.exception.CacheElementNotFoundException;
 import arch.service.BaseCRUDService;
 import atomic.entity.Category;
 import atomic.entity.PrinterCfg;

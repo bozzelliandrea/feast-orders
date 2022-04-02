@@ -64,7 +64,6 @@ public class AuthService {
         return new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
                 roles);
     }
 
@@ -73,13 +72,8 @@ public class AuthService {
             throw new RegisterFailedException("Error: Username is already taken!");
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new RegisterFailedException("Error: Email is already in use!");
-        }
-
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();

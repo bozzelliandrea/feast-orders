@@ -3,22 +3,16 @@ package arch.security.dto;
 import arch.validation.Required;
 import arch.validation.RequiredMethod;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class SignupRequest {
+
     @NotBlank
     @Size(min = 3, max = 20)
     @Required(RequiredMethod.CREATE)
     private String username;
-
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    @Required(RequiredMethod.CREATE)
-    private String email;
 
     private Set<String> role;
 
@@ -33,14 +27,6 @@ public class SignupRequest {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Set<String> getRole() {

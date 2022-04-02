@@ -1,4 +1,4 @@
-package arch.cache;
+package arch.cache.exception;
 
 public class CacheElementNotFoundException extends Exception {
 

@@ -24,9 +24,6 @@
         <!--   RELEASE VERSION OF FEAST BEAR BACKEND -->
         <revision>1.0.0-SNAPSHOT</revision>
 
-        <!--   SWAGGER     -->
-        <swagger.spingfox>3.0.0</swagger.spingfox>
-
         <!--   UTILITIES     -->
         <thymeleaf>3.0.11.RELEASE</thymeleaf>
         <pdfbox>2.0.22</pdfbox>
@@ -48,21 +45,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.spingfox}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.spingfox}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${swagger.spingfox}</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>

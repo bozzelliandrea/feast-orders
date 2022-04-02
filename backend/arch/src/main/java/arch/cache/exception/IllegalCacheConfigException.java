@@ -1,4 +1,4 @@
-package arch.cache;
+package arch.cache.exception;
 
 public class IllegalCacheConfigException extends RuntimeException {
     public IllegalCacheConfigException() {
