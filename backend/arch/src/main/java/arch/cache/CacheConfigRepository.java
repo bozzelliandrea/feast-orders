@@ -44,10 +44,16 @@ public final class CacheConfigRepository implements InitializingBean {
 
             switch (config.policy()) {
                 case REFRESH:
-                    exec.scheduleAtFixedRate(new RefreshThread(name, clazz, appContext), 0, config.minutes(), TimeUnit.MINUTES);
+                    exec.scheduleAtFixedRate(new RefreshThread(name, clazz, appContext),
+                            config.minutes(),
+                            config.minutes(),
+                            TimeUnit.MINUTES);
                     break;
                 case CLEAR:
-                    exec.scheduleAtFixedRate(new ClearThread(name, clazz, appContext), 0, config.minutes(), TimeUnit.MINUTES);
+                    exec.scheduleAtFixedRate(new ClearThread(name, clazz, appContext),
+                            config.minutes(),
+                            config.minutes(),
+                            TimeUnit.MINUTES);
                     break;
                 default:
                     _LOGGER.warn("No policy found for configured cache named: {}", name);

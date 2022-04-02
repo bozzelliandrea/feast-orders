@@ -112,48 +112,26 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         }
     }
 
-    public PagedOrderDTO findAllWithPagination(int page, int size) {
-        Pageable paging = PageRequest.of(page, size);
-
-        Page<Order> orderPage = repository.findAll(paging);
-
-        PagedOrderDTO response = new PagedOrderDTO();
-        response.setPageSize(orderPage.getSize());
-        response.setPageNumber(orderPage.getNumber());
-        response.setTotalPages(orderPage.getTotalPages());
-        response.setTotalElements(orderPage.getTotalElements());
-        response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
-
-        return response;
-    }
-
-    public PagedOrderDTO searchOrders(String query) {
+    public PagedOrderDTO findAllWithPaginationAndQuery(int page, int size, String query) {
         if (query != null) {
-            OrderSpecificationBuilder builder = new OrderSpecificationBuilder();
+            Pageable paging = PageRequest.of(page, size);
 
+            OrderSpecificationBuilder builder = new OrderSpecificationBuilder();
             String operationSetExper = String.join("|", QueryOperator.SIMPLE_OPERATION_SET);
             Pattern pattern = Pattern.compile("(\\p{Punct}?)(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),");
             Matcher matcher = pattern.matcher(query + ",");
-            Pageable paging = PageRequest.of(0, 10);
             while (matcher.find()) {
                 builder.with(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(5), matcher.group(4), matcher.group(6));
             }
             Specification<Order> spec = builder.build();
 
-            //TODO UNIRE PAGINAZIONE E RICERCA CON UN SERVIZIO UNICO
             Page<Order> orderPage = repository.findAll(spec, paging);
-            PagedOrderDTO response = new PagedOrderDTO();
-            response.setPageSize(orderPage.getSize());
-            response.setPageNumber(orderPage.getNumber());
-            response.setTotalPages(orderPage.getTotalPages());
-            response.setTotalElements(orderPage.getTotalElements());
-            response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
-
-            return response;
+            return _buildPagedOrderDTO(orderPage);
         } else {
-            return findAllWithPagination(0, 10);
+            Pageable paging = PageRequest.of(page, size);
+            Page<Order> orderPage = repository.findAll(paging);
+            return _buildPagedOrderDTO(orderPage);
         }
-
     }
 
     public boolean printOrder(Long id) {
@@ -198,4 +176,14 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         }
     }
 
+    private PagedOrderDTO _buildPagedOrderDTO(Page<Order> orderPage) {
+        PagedOrderDTO response = new PagedOrderDTO();
+        response.setPageSize(orderPage.getSize());
+        response.setPageNumber(orderPage.getNumber());
+        response.setTotalPages(orderPage.getTotalPages());
+        response.setTotalElements(orderPage.getTotalElements());
+        response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
+
+        return response;
+    }
 }

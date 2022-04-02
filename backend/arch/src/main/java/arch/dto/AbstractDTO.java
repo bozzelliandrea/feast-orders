@@ -33,7 +33,7 @@ public abstract class AbstractDTO implements Serializable {
     }
 
     public AbstractDTO(BaseEntity entity) {
-        this.id = entity.getId();
+        this.id = entity.getID();
         this.creationTimestamp = entity.getCreationTimestamp();
         this.creationUser = entity.getCreationUser();
         this.updateTimestamp = entity.getUpdateTimestamp();
