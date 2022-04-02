@@ -116,6 +116,7 @@ CREATE TABLE public.users (
 	email varchar(50) NULL,
 	"password" varchar(120) NULL,
 	username varchar(20) NULL,
+	active bool NOT NULL DEFAULT false,
 	CONSTRAINT uk6dotkott2kjsp8vw4d0m25fb7 UNIQUE (email),
 	CONSTRAINT ukr43af9ap4edm43mmtq01oddj6 UNIQUE (username),
 	CONSTRAINT users_pkey PRIMARY KEY (id)

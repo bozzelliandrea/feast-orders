@@ -33,6 +33,9 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @Column(nullable = false)
+    private boolean active = false;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -46,14 +49,6 @@ public class User {
     }
 
     public User() {
-    }
-
-    public User(Long id, String username, String email, String password, Set<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
     }
 
     public Long getId() {
@@ -94,6 +89,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

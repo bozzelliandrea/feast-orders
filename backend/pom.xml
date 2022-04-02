@@ -32,7 +32,6 @@
         <pdfbox>2.0.22</pdfbox>
         <html-render>9.1.20</html-render>
         <jwt>0.9.1</jwt>
-        <hazelcast>4.2.4</hazelcast>
 
         <java.version>11</java.version>
     </properties>
@@ -84,11 +83,6 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jwt}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-spring</artifactId>
-            <version>${hazelcast}</version>
         </dependency>
 
         <!--	RUNTIME DEPENDENCIES	-->

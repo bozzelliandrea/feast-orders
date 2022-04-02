@@ -120,6 +120,9 @@ public class AuthService {
 
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
+                if (!user.isActive()) {
+                    user.setActive(true);
+                }
                 user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
                 userRepository.saveAndFlush(user);
             } else {

@@ -22,12 +22,12 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
 
     private final CategoryConverter converter;
     private final PrinterCfgService printerCfgService;
-    private final CategoryAbstractCacheService categoryCacheService;
+    private final CategoryCacheService categoryCacheService;
 
     public CategoryService(CategoryRepository repository,
                            CategoryConverter converter,
                            PrinterCfgService printerCfgService,
-                           CategoryAbstractCacheService categoryCacheService) {
+                           CategoryCacheService categoryCacheService) {
         super(repository);
         this.converter = converter;
         this.printerCfgService = printerCfgService;
