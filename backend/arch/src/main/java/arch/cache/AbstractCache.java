@@ -1,5 +1,6 @@
 package arch.cache;
 
+import arch.cache.exception.CacheElementNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
