@@ -14,7 +14,6 @@ public abstract class AbstractCache<K, T> {
 
     private final ConcurrentHashMap<K, T> cacheMap;
 
-    @SuppressWarnings("all")
     public AbstractCache() {
         this.cacheMap = new ConcurrentHashMap<>();
         CacheConfigRepository cacheConfigRepository = CacheConfigRepository.getInstance();

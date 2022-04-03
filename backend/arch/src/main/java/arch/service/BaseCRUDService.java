@@ -35,12 +35,12 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     public E update(E entity) {
         Objects.requireNonNull(entity, "Entity cannot be null!");
 
-        if (Objects.isNull(entity.getId())) {
+        if (Objects.isNull(entity.getID())) {
             throw new IllegalArgumentException("Cannot update entity with null ID");
         }
 
         if (Objects.isNull(entity.getVersion())) {
-            throw new IllegalArgumentException(String.format("Version is required for entity with ID: %s", entity.getId()));
+            throw new IllegalArgumentException(String.format("Version is required for entity with ID: %s", entity.getID()));
         }
 
         return repository.saveAndFlush(entity);

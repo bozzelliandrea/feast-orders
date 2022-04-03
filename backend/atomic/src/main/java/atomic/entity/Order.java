@@ -65,12 +65,12 @@ public class Order extends BaseEntity {
     @Column(name = "DISCOUNT")
     private Integer discount;
 
-    public Long getId() {
+    public Long getID() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setID(Long ID) {
+        this.id = ID;
     }
 
     public List<OrderContent> getContent() {

@@ -36,11 +36,17 @@ public class MenuItem extends BaseEntity {
             foreignKey = @ForeignKey(name = "FK_CATEGORY"))
     private Category category;
 
-    public Long getId() {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stock_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "FK_STOCK"))
+    private Stock stock;
+
+    public Long getID() {
         return this.ID;
     }
 
-    public void setId(Long ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 
@@ -82,5 +88,13 @@ public class MenuItem extends BaseEntity {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 }

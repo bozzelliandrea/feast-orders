@@ -1,10 +1,4 @@
--- public.app_order definition
-
--- Drop table
-
--- DROP TABLE public.app_order;
-
-CREATE TABLE public.app_order (
+create TABLE public.app_order (
 	id int8 NOT NULL,
 	creation_timestamp timestamp NULL,
 	creation_user varchar(255) NULL,
@@ -26,14 +20,7 @@ CREATE TABLE public.app_order (
 	CONSTRAINT app_order_pkey PRIMARY KEY (id)
 );
 
-
--- public.category definition
-
--- Drop table
-
--- DROP TABLE public.category;
-
-CREATE TABLE public.category (
+create TABLE public.category (
 	id int8 NOT NULL,
 	creation_timestamp timestamp NULL,
 	creation_user varchar(255) NULL,
@@ -47,14 +34,7 @@ CREATE TABLE public.category (
 	CONSTRAINT category_pkey PRIMARY KEY (id)
 );
 
-
--- public.error_tracking definition
-
--- Drop table
-
--- DROP TABLE public.error_tracking;
-
-CREATE TABLE public.error_tracking (
+create TABLE public.error_tracking (
 	id int8 NOT NULL,
 	creation_timestamp timestamp NULL,
 	creation_user varchar(255) NULL,
@@ -65,53 +45,26 @@ CREATE TABLE public.error_tracking (
 	CONSTRAINT error_tracking_pkey PRIMARY KEY (id)
 );
 
--- public.printerattr definition
-
--- Drop table
-
--- DROP TABLE public.printerattr;
-
-CREATE TABLE public.printerattr (
+create TABLE public.printerattr (
 	"name" varchar(255) NOT NULL,
 	"type" varchar(255) NOT NULL,
 	CONSTRAINT printerattr_pkey PRIMARY KEY (name)
 );
 
-
--- public.reporttemplate definition
-
--- Drop table
-
--- DROP TABLE public.reporttemplate;
-
-CREATE TABLE public.reporttemplate (
+create TABLE public.reporttemplate (
 	"name" varchar(255) NOT NULL,
 	description varchar(255) NULL,
 	filepath varchar(255) NOT NULL,
 	CONSTRAINT reporttemplate_pkey PRIMARY KEY (name)
 );
 
-
--- public.roles definition
-
--- Drop table
-
--- DROP TABLE public.roles;
-
-CREATE TABLE public.roles (
+create TABLE public.roles (
 	id serial4 NOT NULL,
 	"name" varchar(20) NULL,
 	CONSTRAINT roles_pkey PRIMARY KEY (id)
 );
 
-
--- public.users definition
-
--- Drop table
-
--- DROP TABLE public.users;
-
-CREATE TABLE public.users (
+create TABLE public.users (
 	id bigserial NOT NULL,
 	"password" varchar(120) NULL,
 	username varchar(20) NULL,
@@ -120,14 +73,7 @@ CREATE TABLE public.users (
 	CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
-
--- public.menu_item definition
-
--- Drop table
-
--- DROP TABLE public.menu_item;
-
-CREATE TABLE public.menu_item (
+create TABLE public.menu_item (
 	id int8 NOT NULL,
 	creation_timestamp timestamp NULL,
 	creation_user varchar(255) NULL,
@@ -139,17 +85,11 @@ CREATE TABLE public.menu_item (
 	"name" varchar(255) NOT NULL,
 	price float4 NULL,
 	category_id int8 NOT NULL,
-	CONSTRAINT menu_item_pkey PRIMARY KEY (id),
-	CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES public.category(id)
+	stock_id int8 NULL,
+	CONSTRAINT menu_item_pkey PRIMARY KEY (id)
 );
 
--- public.printercfg definition
-
--- Drop table
-
--- DROP TABLE public.printercfg;
-
-CREATE TABLE public.printercfg (
+create TABLE public.printercfg (
 	id int8 NOT NULL,
 	creation_timestamp timestamp NULL,
 	creation_user varchar(255) NULL,
@@ -164,14 +104,7 @@ CREATE TABLE public.printercfg (
 	CONSTRAINT fksb6cq86195w6xyibxafhshkth FOREIGN KEY (report_template_name) REFERENCES public.reporttemplate("name")
 );
 
-
--- public.printercfgattrs definition
-
--- Drop table
-
--- DROP TABLE public.printercfgattrs;
-
-CREATE TABLE public.printercfgattrs (
+create TABLE public.printercfgattrs (
 	attr_id varchar(255) NOT NULL,
 	cfg_id int8 NOT NULL,
 	value varchar(255) NULL,
@@ -180,14 +113,7 @@ CREATE TABLE public.printercfgattrs (
 	CONSTRAINT fkm9fc6kfdw4rn5oqpqgkg9n6ke FOREIGN KEY (cfg_id) REFERENCES public.printercfg(id)
 );
 
-
--- public.user_roles definition
-
--- Drop table
-
--- DROP TABLE public.user_roles;
-
-CREATE TABLE public.user_roles (
+create TABLE public.user_roles (
 	user_id int8 NOT NULL,
 	role_id int4 NOT NULL,
 	CONSTRAINT user_roles_pkey PRIMARY KEY (user_id, role_id),
@@ -195,27 +121,25 @@ CREATE TABLE public.user_roles (
 	CONSTRAINT fkhfh9dx7w3ubf1co1vdev94g3f FOREIGN KEY (user_id) REFERENCES public.users(id)
 );
 
+create TABLE public.stock (
+	id int8 NOT NULL,
+	creation_timestamp timestamp NULL,
+	creation_user varchar(255) NULL,
+	update_timestamp timestamp NULL,
+	update_user varchar(255) NULL,
+	"version" int8 NOT NULL,
+	quantity int8 NOT NULL,
+	CONSTRAINT stock_pkey PRIMARY KEY (id)
+);
 
--- public.category_printercfg definition
-
--- Drop table
-
--- DROP TABLE public.category_printercfg;
-
-CREATE TABLE public.category_printercfg (
+create TABLE public.category_printercfg (
 	category_id int8 NOT NULL,
 	printercfg_id int8 NOT NULL,
 	CONSTRAINT fkd7pl092hsk0yfvvm7g0pnq30t FOREIGN KEY (printercfg_id) REFERENCES public.printercfg(id),
 	CONSTRAINT fkmqb4egd393dfen67x7b1rc2f1 FOREIGN KEY (category_id) REFERENCES public.category(id)
 );
 
--- public.order_history definition
-
--- Drop table
-
--- DROP TABLE public.order_history;
-
-CREATE TABLE public.order_history (
+create TABLE public.order_history (
 	id bigserial NOT NULL,
 	"content" jsonb NULL,
 	"date" date NOT NULL,
@@ -223,11 +147,7 @@ CREATE TABLE public.order_history (
 	CONSTRAINT order_history_pkey PRIMARY KEY (id)
 );
 
--- public.app_order_gen_sq definition
-
--- DROP SEQUENCE public.app_order_gen_sq;
-
-CREATE SEQUENCE IF NOT EXISTS public.app_order_gen_sq
+create sequence IF NOT EXISTS public.app_order_gen_sq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
@@ -235,12 +155,7 @@ CREATE SEQUENCE IF NOT EXISTS public.app_order_gen_sq
 	CACHE 1
 	NO CYCLE;
 
-
--- public.category_gen_sq definition
-
--- DROP SEQUENCE public.category_gen_sq;
-
-CREATE SEQUENCE IF NOT EXISTS public.category_gen_sq
+create sequence IF NOT EXISTS public.category_gen_sq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
@@ -248,12 +163,7 @@ CREATE SEQUENCE IF NOT EXISTS public.category_gen_sq
 	CACHE 1
 	NO CYCLE;
 
-
--- public.err_track_gen_sq definition
-
--- DROP SEQUENCE public.err_track_gen_sq;
-
-CREATE SEQUENCE IF NOT EXISTS public.err_track_gen_sq
+create sequence IF NOT EXISTS public.err_track_gen_sq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
@@ -261,12 +171,7 @@ CREATE SEQUENCE IF NOT EXISTS public.err_track_gen_sq
 	CACHE 1
 	NO CYCLE;
 
-
--- public.menu_item_gen_sq definition
-
--- DROP SEQUENCE public.menu_item_gen_sq;
-
-CREATE SEQUENCE IF NOT EXISTS public.menu_item_gen_sq
+create sequence IF NOT EXISTS public.menu_item_gen_sq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
@@ -274,12 +179,7 @@ CREATE SEQUENCE IF NOT EXISTS public.menu_item_gen_sq
 	CACHE 1
 	NO CYCLE;
 
-
--- public.order_history_id_seq definition
-
--- DROP SEQUENCE public.order_history_id_seq;
-
-CREATE SEQUENCE IF NOT EXISTS public.order_history_id_seq
+create sequence IF NOT EXISTS public.order_history_id_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
@@ -287,11 +187,7 @@ CREATE SEQUENCE IF NOT EXISTS public.order_history_id_seq
 	CACHE 1
 	NO CYCLE;
 
--- public.printer_cfg_gen_sq definition
-
--- DROP SEQUENCE public.printer_cfg_gen_sq;
-
-CREATE SEQUENCE IF NOT EXISTS public.printer_cfg_gen_sq
+create sequence IF NOT EXISTS public.printer_cfg_gen_sq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
@@ -299,12 +195,7 @@ CREATE SEQUENCE IF NOT EXISTS public.printer_cfg_gen_sq
 	CACHE 1
 	NO CYCLE;
 
-
--- public.roles_id_seq definition
-
--- DROP SEQUENCE public.roles_id_seq;
-
-CREATE SEQUENCE IF NOT EXISTS public.roles_id_seq
+create sequence IF NOT EXISTS public.roles_id_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -312,15 +203,22 @@ CREATE SEQUENCE IF NOT EXISTS public.roles_id_seq
 	CACHE 1
 	NO CYCLE;
 
-
--- public.users_id_seq definition
-
--- DROP SEQUENCE public.users_id_seq;
-
-CREATE SEQUENCE IF NOT EXISTS public.users_id_seq
+create sequence IF NOT EXISTS public.users_id_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 9223372036854775807
 	START 1
 	CACHE 1
 	NO CYCLE;
+
+create sequence public.stock_gen_sq
+	increment by 1
+	minvalue 1
+	maxvalue 9223372036854775807
+	start 1
+	cache 1
+	NO CYCLE;
+
+
+alter table public.menu_item add CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES public.category(id);
+alter table public.menu_item add CONSTRAINT fk_stock FOREIGN KEY (stock_id) REFERENCES public.stock(id);

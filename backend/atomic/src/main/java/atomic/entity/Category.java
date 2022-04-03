@@ -97,11 +97,11 @@ public class Category extends BaseEntity {
         this.printerCfgs = printerCfgs;
     }
 
-    public Long getId() {
+    public Long getID() {
         return this.ID;
     }
 
-    public void setId(Long ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 }
