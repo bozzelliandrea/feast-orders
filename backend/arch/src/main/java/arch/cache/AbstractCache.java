@@ -12,12 +12,11 @@ public abstract class AbstractCache<K, T> {
     private final static String NULL_KEY = "Key is null!";
     private static final Logger _LOGGER = LoggerFactory.getLogger(AbstractCache.class);
 
-    private final ConcurrentHashMap<K, T> cacheMap;
+    protected final ConcurrentHashMap<K, T> cacheMap;
 
     public AbstractCache() {
         this.cacheMap = new ConcurrentHashMap<>();
-        CacheConfigRepository cacheConfigRepository = CacheConfigRepository.getInstance();
-        cacheConfigRepository.register(this.getClass());
+        CacheConfigRepository.getInstance().register(this.getClass());
     }
 
     public void putCacheData(K key, T value) {

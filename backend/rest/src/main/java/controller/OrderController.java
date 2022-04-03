@@ -7,7 +7,6 @@ import atomic.enums.OrderStatus;
 import business.order.dto.DetailedOrderDTO;
 import business.order.service.OrderHistoryService;
 import business.order.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +15,16 @@ import java.io.Serializable;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/order", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/order", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
+    private final OrderHistoryService orderHistoryService;
 
-    @Autowired
-    private OrderHistoryService orderHistoryService;
+    public OrderController(OrderService orderService, OrderHistoryService orderHistoryService) {
+        this.orderService = orderService;
+        this.orderHistoryService = orderHistoryService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<DetailedOrderDTO> getById(@Required @PathVariable Long id) {

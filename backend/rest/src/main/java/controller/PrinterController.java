@@ -8,7 +8,6 @@ import business.printer.dto.PrinterCfgDTO;
 import business.printer.service.PrinterCfgService;
 import business.printer.service.PrinterPOCService;
 import business.printer.service.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +22,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = {"/printer"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class PrinterController {
 
-    @Autowired
-    private PrinterPOCService pocService;
+    private final PrinterPOCService pocService;
+    private final PrinterCfgService printerCfgService;
+    private final ReportService reportService;
 
-    @Autowired
-    private PrinterCfgService printerCfgService;
-
-    @Autowired
-    private ReportService reportService;
+    public PrinterController(PrinterPOCService pocService, PrinterCfgService printerCfgService, ReportService reportService) {
+        this.pocService = pocService;
+        this.printerCfgService = printerCfgService;
+        this.reportService = reportService;
+    }
 
     @GetMapping("/list")
     public ResponseEntity<List<String>> getPrinters() {

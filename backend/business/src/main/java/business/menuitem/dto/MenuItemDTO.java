@@ -1,12 +1,15 @@
 package business.menuitem.dto;
 
 import arch.dto.AbstractDTO;
+import arch.validation.Required;
+import arch.validation.RequiredMethod;
 import business.category.dto.CategoryDTO;
 
 public class MenuItemDTO extends AbstractDTO {
 
     private static final long serialVersionUID = -2173740007398550320L;
 
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String name;
     private String description;
     private String color;

@@ -1,7 +1,7 @@
 package arch.cache;
 
 import arch.cache.exception.IllegalCacheConfigException;
-import arch.exception.errors.HttpFeastServerException;
+import arch.exception.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -80,9 +80,9 @@ public final class CacheConfigRepository implements InitializingBean {
         private final Class<?> clazz;
         private final ApplicationContext appContext;
 
-        public RefreshThread(String n, Class<?> p, ApplicationContext appContext) {
-            name = n;
-            clazz = p;
+        public RefreshThread(String n, Class<?> clazz, ApplicationContext appContext) {
+            this.name = n;
+            this.clazz = clazz;
             this.appContext = appContext;
             if (!RechargeableCache.class.isAssignableFrom(clazz)) {
                 throw new IllegalCacheConfigException("Manager class did not implement rechargeable cache");
@@ -97,7 +97,7 @@ public final class CacheConfigRepository implements InitializingBean {
                 Method cleanMethod = clazz.getMethod("reload");
                 cleanMethod.invoke(instance);
             } catch (Exception e) {
-                throw new HttpFeastServerException(e);
+                SneakyThrows.execute(e);
             }
         }
     }
@@ -108,9 +108,9 @@ public final class CacheConfigRepository implements InitializingBean {
         private final Class<?> clazz;
         private final ApplicationContext appContext;
 
-        public ClearThread(String n, Class<?> p, ApplicationContext appContext) {
-            name = n;
-            clazz = p;
+        public ClearThread(String n, Class<?> clazz, ApplicationContext appContext) {
+            this.name = n;
+            this.clazz = clazz;
             this.appContext = appContext;
             if (!CleanableCache.class.isAssignableFrom(clazz)) {
                 throw new IllegalCacheConfigException("Manager class did not implement cleanable cache");
@@ -125,7 +125,7 @@ public final class CacheConfigRepository implements InitializingBean {
                 Method cleanMethod = clazz.getMethod("clean");
                 cleanMethod.invoke(instance);
             } catch (Exception e) {
-                throw new HttpFeastServerException(e);
+                SneakyThrows.execute(e);
             }
         }
     }

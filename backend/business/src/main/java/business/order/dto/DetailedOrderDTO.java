@@ -8,6 +8,8 @@ import java.util.List;
 
 public class DetailedOrderDTO extends OrderDTO {
 
+    private static final long serialVersionUID = 1716504002734811237L;
+
     @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private List<OrderContent> content;
     private Boolean printOrder = false;

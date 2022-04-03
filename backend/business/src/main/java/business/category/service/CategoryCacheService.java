@@ -40,6 +40,7 @@ public class CategoryCacheService extends AbstractCache<Long, CategoryDTO> imple
 
     @Override
     public void reload() {
+        cacheMap.clear();
         List<CategoryDTO> categories = categoryRepository.findAll()
                 .stream()
                 .map(converter::convertEntity)
