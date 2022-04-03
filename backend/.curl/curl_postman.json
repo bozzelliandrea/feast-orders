@@ -1,0 +1,407 @@
+{
+  "info": {
+    "_postman_id": "208cd50c-ee91-4fa0-93bb-41a0f30ac964",
+    "name": "Fest Bear",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "http://localhost:8081/api/order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\": [{\n        \"categoryId\": 1,\n        \"qty\": 2,\n        \"price\": 5.0\n    }],\n    \"total\": 10.0,\n    \"tableNumber\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/order",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/order?page=0&size=10&status=TODO",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/order?page=0&size=10&status=TODO",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "order"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "TODO"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/order/1?status=PROGRESS",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "DONE",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/order/1?status=PROGRESS",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "order",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PROGRESS"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/order/1",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/order/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "order",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/order/search?query=status:PROGRESS",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/order/search?query=status:TODO",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "order",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "status:TODO"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "http://localhost:8081/api/category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDE3MzYyNDYsImV4cCI6MTY0MTczNjI3Niwic3ViIjoiNjFkNDE0NGVlODJhNWMxOGUzODBlOGY0IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCIsImp0aSI6IjRhNGRhN2EwLWViZWYtNDRiZC04ODljLTJkMWIwNmQ2ZGNlMSJ9.a_ksIwUH2K2fY2ld4QaAcLWGnFeEwRjcbOja9uMnCRo",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": 3,\n    \"creationTimestamp\": \"2022-03-12T14:35:24.983+00:00\",\n    \"creationUser\": null,\n    \"updateTimestamp\": \"2022-03-12T14:35:24.983+00:00\",\n    \"updateUser\": null,\n    \"version\": 0,\n    \"name\": \"terzi\",\n    \"description\": null,\n    \"color\": null,\n    \"processingZone\": \"KITCHEN\",\n    \"menuItemList\": [],\n    \"printerCfgList\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/category",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "category"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/category",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "category"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Primi\",\n    \"processingZone\": \"KITCHEN\"\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/category",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "category"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Menu Item",
+      "item": [
+        {
+          "name": "http://localhost:8081/api/category/1/menuitem",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/category/1/menuitem",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "category",
+                "1",
+                "menuitem"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/category/1/menuitem Copy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"PASTARAGU\",\n    \"description\": \"Pasta al ragù\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/category/1/menuitem",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "category",
+                "1",
+                "menuitem"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "item": [
+        {
+          "name": "http://localhost:8081/api/stock",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"itemId\": 1,\n    \"qty\": 10\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/stock",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "stock"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8081/api/stock",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/stock",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "stock"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

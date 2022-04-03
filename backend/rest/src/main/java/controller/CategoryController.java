@@ -7,7 +7,6 @@ import business.category.dto.CategoryDTO;
 import business.category.service.CategoryService;
 import business.menuitem.dto.MenuItemDTO;
 import business.menuitem.service.MenuItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +18,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = {"/category"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+    private final MenuItemService menuItemService;
 
-    @Autowired
-    private MenuItemService menuItemService;
+    public CategoryController(CategoryService categoryService, MenuItemService menuItemService) {
+        this.categoryService = categoryService;
+        this.menuItemService = menuItemService;
+    }
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getCategories() {

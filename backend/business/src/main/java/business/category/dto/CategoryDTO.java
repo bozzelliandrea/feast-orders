@@ -17,6 +17,7 @@ public class CategoryDTO extends AbstractDTO {
     private String name;
     private String description;
     private String color;
+    @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private String processingZone;
     private List<MenuItemDTO> menuItemList = new ArrayList<>();
     private List<PrinterCfgDTO> printerCfgList = new ArrayList<>();

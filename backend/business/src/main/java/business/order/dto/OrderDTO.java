@@ -6,6 +6,8 @@ import arch.validation.RequiredMethod;
 
 public class OrderDTO extends AbstractDTO {
 
+    private static final long serialVersionUID = 4189036589187538080L;
+
     private Integer tableNumber;
     private Integer placeSettingNumber;
     private String client;

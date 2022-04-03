@@ -17,6 +17,7 @@ import business.order.dto.PagedOrderDTO;
 import business.order.exception.OrderNotFoundException;
 import business.order.exception.OrderUpdateException;
 import business.printer.service.PrinterAsyncService;
+import business.stock.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -42,19 +42,21 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     private final OrderConverter converter;
     private final CategoryService categoryService;
     private final PrinterAsyncService printerAsyncService;
-    private final Map<Long, CategoryDTO> cachedCategory = new HashMap<>();
+    private final StockService stockService;
 
     public OrderService(OrderRepository repository,
                         OrderHistoryService orderHistoryService,
                         OrderConverter converter,
                         CategoryService categoryService,
-                        PrinterAsyncService printerAsyncService) {
+                        PrinterAsyncService printerAsyncService,
+                        StockService stockService) {
         super(repository);
         this.repository = repository;
         this.orderHistoryService = orderHistoryService;
         this.converter = converter;
         this.categoryService = categoryService;
         this.printerAsyncService = printerAsyncService;
+        this.stockService = stockService;
     }
 
     public DetailedOrderDTO getDetailedOrder(Long id) {
@@ -64,6 +66,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     public DetailedOrderDTO createOrder(DetailedOrderDTO request) {
         Order entity = converter.convertDTO(request);
         _setOrderProcessingZone(request, entity);
+        _manageStockOnOrder(request);
         //TODO se flag print = true, mandare in stampa l'ordine
         Order result = super.create(entity);
         return converter.convertEntityDetailed(result);
@@ -72,7 +75,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     public DetailedOrderDTO updateOrder(DetailedOrderDTO request) {
         Order savedEntity = super.read(request.getId());
         _setOrderProcessingZone(request, savedEntity);
-
+        _manageStockOnOrder(request);
         savedEntity.setNote(request.getNote());
         savedEntity.setContent(request.getContent());
         savedEntity.setClient(request.getClient());
@@ -144,16 +147,17 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         return true;
     }
 
+    private void _manageStockOnOrder(DetailedOrderDTO order) {
+        for (OrderContent content : order.getContent()) {
+            stockService.reduceByMenuItemId(Long.valueOf(content.getItemId()), content.getQty());
+        }
+    }
+
     private void _setOrderProcessingZone(DetailedOrderDTO order, Order entity) {
 
         for (OrderContent content : order.getContent()) {
-            if (cachedCategory.containsKey(content.getCategoryId())) {
-                _flagProcessingZone(entity, cachedCategory.get(content.getCategoryId()).getProcessingZone());
-            } else {
-                CategoryDTO category = categoryService.get(content.getCategoryId());
-                cachedCategory.put(category.getId(), category);
-                _flagProcessingZone(entity, category.getProcessingZone());
-            }
+            CategoryDTO category = categoryService.get(content.getCategoryId());
+            _flagProcessingZone(entity, category.getProcessingZone());
         }
     }
 

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = {"business", "controller", "arch"})
 @EnableConfigurationProperties
@@ -19,6 +20,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @Import({AspectConfig.class})
 @EntityScan(basePackages = {"atomic/entity", "arch/entity"})
+@EnableTransactionManagement
 public class FeastOrdersApplication {
 
     public static void main(String[] args) {

@@ -17,7 +17,7 @@ public class Stock extends BaseEntity {
 
     @NotNull
     @Column(name = "QUANTITY")
-    private Long quantity;
+    private Long quantity = 0L;
 
     @OneToOne(mappedBy = "stock")
     private MenuItem item;
@@ -30,5 +30,21 @@ public class Stock extends BaseEntity {
     @Override
     public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
+    public MenuItem getItem() {
+        return item;
+    }
+
+    public void setItem(MenuItem item) {
+        this.item = item;
     }
 }
