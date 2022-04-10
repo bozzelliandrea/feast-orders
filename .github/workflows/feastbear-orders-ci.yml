@@ -36,6 +36,7 @@ jobs:
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
         
       - run: flutter pub get
+      # test disabled temporarly 
       # - run: flutter test
       - run: flutter build apk
       - run: flutter build appbundle
