@@ -4,6 +4,7 @@ import 'package:orders/categories/category_page.dart';
 import 'package:orders/auth_module/screens/login_page.dart';
 import 'package:orders/auth_module/screens/login_wrapper_page.dart';
 import 'package:orders/auth_module/screens/change_password_page.dart';
+import 'package:orders/categories/menu_item_page.dart';
 import 'package:orders/orders/order_page.dart';
 import 'package:orders/orders/orders_page.dart';
 import 'package:orders/settings/printers_setup_page.dart';
@@ -15,18 +16,18 @@ import '../home.dart';
   replaceInRouteName: 'Page,Route',
   routes: [
     AutoRoute(
-        path: '/login',
-        page: LoginWrapperPage,
-        children: [
-          AutoRoute(
-            path: '',
-            page: LoginPage,
-          ),
-          AutoRoute(
-            path: 'changepassword',
-            page: ChangePasswordPage,
-          ),
-        ]
+      path: '/login',
+      page: LoginWrapperPage,
+      children: [
+        AutoRoute(
+          path: '',
+          page: LoginPage,
+        ),
+        AutoRoute(
+          path: 'changepassword',
+          page: ChangePasswordPage,
+        ),
+      ]
     ),
     AutoRoute(path: '/', page: HomePage, children: [
       AutoRoute(
@@ -40,7 +41,11 @@ import '../home.dart';
           ),
           AutoRoute(
             path: ':categoryId',
-            page: CategoryPage,
+            page: CategoryPage
+          ),
+          AutoRoute(
+            path: 'menuitems/:menuItemId',
+            page: MenuItemPage,
           ),
         ],
       ),

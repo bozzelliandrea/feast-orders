@@ -5,22 +5,23 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i13;
+import 'package:flutter/material.dart' as _i14;
 
 import '../auth_module/screens/change_password_page.dart' as _i4;
 import '../auth_module/screens/login_page.dart' as _i3;
 import '../auth_module/screens/login_wrapper_page.dart' as _i1;
 import '../categories/categories_page.dart' as _i6;
 import '../categories/category_page.dart' as _i7;
+import '../categories/menu_item_page.dart' as _i8;
 import '../home.dart' as _i2;
-import '../orders/order_page.dart' as _i9;
-import '../orders/orders_page.dart' as _i8;
-import '../settings/printers_setup_page.dart' as _i11;
-import '../settings/settings_page.dart' as _i10;
-import '../settings/users_setup_page.dart' as _i12;
+import '../orders/order_page.dart' as _i10;
+import '../orders/orders_page.dart' as _i9;
+import '../settings/printers_setup_page.dart' as _i12;
+import '../settings/settings_page.dart' as _i11;
+import '../settings/users_setup_page.dart' as _i13;
 
 class AppRouter extends _i5.RootStackRouter {
-  AppRouter([_i13.GlobalKey<_i13.NavigatorState>? navigatorKey])
+  AppRouter([_i14.GlobalKey<_i14.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -70,9 +71,18 @@ class AppRouter extends _i5.RootStackRouter {
           routeData: routeData,
           child: _i7.CategoryPage(key: args.key, categoryId: args.categoryId));
     },
+    MenuItemRoute.name: (routeData) {
+      final pathParams = routeData.pathParams;
+      final args = routeData.argsAs<MenuItemRouteArgs>(
+          orElse: () =>
+              MenuItemRouteArgs(menuItemId: pathParams.getInt('menuItemId')));
+      return _i5.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i8.MenuItemPage(key: args.key, menuItemId: args.menuItemId));
+    },
     OrdersRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.OrdersPage());
+          routeData: routeData, child: const _i9.OrdersPage());
     },
     OrderRoute.name: (routeData) {
       final pathParams = routeData.pathParams;
@@ -80,19 +90,19 @@ class AppRouter extends _i5.RootStackRouter {
           orElse: () => OrderRouteArgs(orderId: pathParams.getInt('orderId')));
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i9.OrderPage(key: args.key, orderId: args.orderId));
+          child: _i10.OrderPage(key: args.key, orderId: args.orderId));
     },
     SettingsRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i10.SettingsPage());
+          routeData: routeData, child: const _i11.SettingsPage());
     },
     PrintersSetupRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.PrintersSetupPage());
+          routeData: routeData, child: const _i12.PrintersSetupPage());
     },
     UsersSetupRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i12.UsersSetupPage());
+          routeData: routeData, child: const _i13.UsersSetupPage());
     }
   };
 
@@ -105,7 +115,8 @@ class AppRouter extends _i5.RootStackRouter {
         _i5.RouteConfig(HomeRoute.name, path: '/', children: [
           _i5.RouteConfig(ExploreRouter.name, path: 'explore', children: [
             _i5.RouteConfig(CategoriesRoute.name, path: ''),
-            _i5.RouteConfig(CategoryRoute.name, path: ':categoryId')
+            _i5.RouteConfig(CategoryRoute.name, path: ':categoryId'),
+            _i5.RouteConfig(MenuItemRoute.name, path: 'menuitems/:menuItemId')
           ]),
           _i5.RouteConfig(OrdersRouter.name, path: 'orders', children: [
             _i5.RouteConfig(OrdersRoute.name, path: ''),
@@ -123,7 +134,7 @@ class AppRouter extends _i5.RootStackRouter {
 /// generated route for [_i1.LoginWrapperPage]
 class LoginWrapperRoute extends _i5.PageRouteInfo<LoginWrapperRouteArgs> {
   LoginWrapperRoute(
-      {_i13.Key? key,
+      {_i14.Key? key,
       required dynamic Function(bool) onLogin,
       List<_i5.PageRouteInfo>? children})
       : super(name,
@@ -137,14 +148,14 @@ class LoginWrapperRoute extends _i5.PageRouteInfo<LoginWrapperRouteArgs> {
 class LoginWrapperRouteArgs {
   const LoginWrapperRouteArgs({this.key, required this.onLogin});
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final dynamic Function(bool) onLogin;
 }
 
 /// generated route for [_i2.HomePage]
 class HomeRoute extends _i5.PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({_i13.Key? key, List<_i5.PageRouteInfo>? children})
+  HomeRoute({_i14.Key? key, List<_i5.PageRouteInfo>? children})
       : super(name,
             path: '/',
             args: HomeRouteArgs(key: key),
@@ -156,7 +167,7 @@ class HomeRoute extends _i5.PageRouteInfo<HomeRouteArgs> {
 class HomeRouteArgs {
   const HomeRouteArgs({this.key});
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 }
 
 /// generated route for [_i3.LoginPage]
@@ -206,7 +217,7 @@ class CategoriesRoute extends _i5.PageRouteInfo<void> {
 
 /// generated route for [_i7.CategoryPage]
 class CategoryRoute extends _i5.PageRouteInfo<CategoryRouteArgs> {
-  CategoryRoute({_i13.Key? key, required int categoryId})
+  CategoryRoute({_i14.Key? key, required int categoryId})
       : super(name,
             path: ':categoryId',
             args: CategoryRouteArgs(key: key, categoryId: categoryId),
@@ -218,21 +229,40 @@ class CategoryRoute extends _i5.PageRouteInfo<CategoryRouteArgs> {
 class CategoryRouteArgs {
   const CategoryRouteArgs({this.key, required this.categoryId});
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final int categoryId;
 }
 
-/// generated route for [_i8.OrdersPage]
+/// generated route for [_i8.MenuItemPage]
+class MenuItemRoute extends _i5.PageRouteInfo<MenuItemRouteArgs> {
+  MenuItemRoute({_i14.Key? key, required int menuItemId})
+      : super(name,
+            path: 'menuitems/:menuItemId',
+            args: MenuItemRouteArgs(key: key, menuItemId: menuItemId),
+            rawPathParams: {'menuItemId': menuItemId});
+
+  static const String name = 'MenuItemRoute';
+}
+
+class MenuItemRouteArgs {
+  const MenuItemRouteArgs({this.key, required this.menuItemId});
+
+  final _i14.Key? key;
+
+  final int menuItemId;
+}
+
+/// generated route for [_i9.OrdersPage]
 class OrdersRoute extends _i5.PageRouteInfo<void> {
   const OrdersRoute() : super(name, path: '');
 
   static const String name = 'OrdersRoute';
 }
 
-/// generated route for [_i9.OrderPage]
+/// generated route for [_i10.OrderPage]
 class OrderRoute extends _i5.PageRouteInfo<OrderRouteArgs> {
-  OrderRoute({_i13.Key? key, required int orderId})
+  OrderRoute({_i14.Key? key, required int orderId})
       : super(name,
             path: ':orderId',
             args: OrderRouteArgs(key: key, orderId: orderId),
@@ -244,26 +274,26 @@ class OrderRoute extends _i5.PageRouteInfo<OrderRouteArgs> {
 class OrderRouteArgs {
   const OrderRouteArgs({this.key, required this.orderId});
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final int orderId;
 }
 
-/// generated route for [_i10.SettingsPage]
+/// generated route for [_i11.SettingsPage]
 class SettingsRoute extends _i5.PageRouteInfo<void> {
   const SettingsRoute() : super(name, path: '');
 
   static const String name = 'SettingsRoute';
 }
 
-/// generated route for [_i11.PrintersSetupPage]
+/// generated route for [_i12.PrintersSetupPage]
 class PrintersSetupRoute extends _i5.PageRouteInfo<void> {
   const PrintersSetupRoute() : super(name, path: 'printers');
 
   static const String name = 'PrintersSetupRoute';
 }
 
-/// generated route for [_i12.UsersSetupPage]
+/// generated route for [_i13.UsersSetupPage]
 class UsersSetupRoute extends _i5.PageRouteInfo<void> {
   const UsersSetupRoute() : super(name, path: 'users');
 

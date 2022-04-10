@@ -30,12 +30,12 @@ class CategoriesPage extends StatelessWidget {
           ),
           const Text('Categories Page'),
           CategoryItem(
-            name: 'Primi',
-            description: 'Contiene il menu dei primi',
+            name: 'Panini',
+            description: 'Contiene il menu dei panini',
             color: Colors.orangeAccent,
             onTap: () => context.router.push(
               CategoryRoute(
-                categoryId: 1,
+                categoryId: 1, // fixme
               ),
             ),
           ),
