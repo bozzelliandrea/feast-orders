@@ -51,4 +51,13 @@ public class ErrorTracking extends Auditable<String> {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String[] toStringArray(){
+        return new String[] {
+                this.id.toString(),
+                this.message,
+                this.type,
+                this.getCreationTimestamp().toString()
+        };
+    }
 }

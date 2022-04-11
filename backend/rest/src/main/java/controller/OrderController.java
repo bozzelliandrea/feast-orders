@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 
+import static arch.component.PaginationUtils.DEFAULT_PAGE_SIZE;
+import static arch.component.PaginationUtils.DEFAULT_PAGE_START;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -52,9 +54,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.patchStatus(id, newStatus));
     }
 
-    @GetMapping(params = {"page", "size", "status"})
-    public ResponseEntity<AbstractPagination<? extends Serializable>> findAll(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                              @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+    @GetMapping
+    public ResponseEntity<AbstractPagination<? extends Serializable>> findAll(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE_START, required = false) int page,
+                                                                              @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE, required = false) int size,
                                                                               @RequestParam(value = "status", required = false) String status,
                                                                               @RequestParam(value = "query", required = false) String query) {
         if (status != null && OrderStatus.valueOf(status).isClosed()) {

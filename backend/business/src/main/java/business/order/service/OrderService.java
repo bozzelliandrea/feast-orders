@@ -1,5 +1,6 @@
 package business.order.service;
 
+import arch.component.PaginationUtils;
 import arch.search.QueryOperator;
 import arch.service.BaseCRUDService;
 import atomic.bean.OrderContent;
@@ -182,10 +183,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
 
     private PagedOrderDTO _buildPagedOrderDTO(Page<Order> orderPage) {
         PagedOrderDTO response = new PagedOrderDTO();
-        response.setPageSize(orderPage.getSize());
-        response.setPageNumber(orderPage.getNumber());
-        response.setTotalPages(orderPage.getTotalPages());
-        response.setTotalElements(orderPage.getTotalElements());
+        PaginationUtils.setResponsePagination(orderPage, response);
         response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
 
         return response;

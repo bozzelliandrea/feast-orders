@@ -22,3 +22,9 @@ application:
   security:
     jwtSecret: feastBearSecretKey
     jwtExpirationMs: 86400000
+  task:
+    errors:
+      cron: 0 0 * * * *
+      size: 500
+      export: true
+      path:

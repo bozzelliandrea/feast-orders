@@ -1,5 +1,6 @@
 package business.order.service;
 
+import arch.component.PaginationUtils;
 import atomic.entity.Order;
 import atomic.entity.OrderHistory;
 import atomic.repository.OrderHistoryRepository;
@@ -45,10 +46,7 @@ public class OrderHistoryService {
         Page<OrderHistory> orderPage = repository.findAll(paging);
 
         PagedOrderHistoryDTO response = new PagedOrderHistoryDTO();
-        response.setPageSize(orderPage.getSize());
-        response.setPageNumber(orderPage.getNumber());
-        response.setTotalPages(orderPage.getTotalPages());
-        response.setTotalElements(orderPage.getTotalElements());
+        PaginationUtils.setResponsePagination(orderPage, response);
         response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
 
         return response;

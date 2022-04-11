@@ -1,17 +1,24 @@
 package arch.security.service;
 
+import arch.component.PaginationUtils;
 import arch.entity.ERole;
 import arch.entity.Role;
 import arch.entity.User;
 import arch.exception.errors.RoleNotFoundException;
 import arch.repository.RoleRepository;
 import arch.repository.UserRepository;
+import arch.security.dto.PagedUserDTO;
 import arch.security.dto.UserDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -48,9 +55,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         user.getRoles().add(userRole);
-        userRepository.saveAndFlush(user);
+        User savedUser = userRepository.saveAndFlush(user);
 
-        return new UserDTO(request.getUsername());
+        return new UserDTO(savedUser.getUsername());
     }
 
     public UserDTO deleteUser(UserDTO request) {
@@ -60,5 +67,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userRepository.delete(user);
 
         return new UserDTO();
+    }
+
+    public PagedUserDTO findAllWithPagination(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        Page<User> userPage = userRepository.findAll(paging);
+
+        PagedUserDTO response = new PagedUserDTO();
+        PaginationUtils.setResponsePagination(userPage, response);
+        response.setData(userPage.getContent().stream().map(UserDTO::new).collect(Collectors.toList()));
+
+        return response;
     }
 }
