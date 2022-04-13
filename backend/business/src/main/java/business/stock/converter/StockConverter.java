@@ -24,7 +24,7 @@ public class StockConverter extends AbstractConverter<Stock, StockDTO> implement
         stock.setQuantity(dto.getQty());
         convertDTO2BaseEntity(dto, stock);
         stock.setItem(new MenuItem());
-        stock.getItem().setID(dto.getItemId());
+        stock.getItem().setId(dto.getItemId());
         return stock;
     }
 }

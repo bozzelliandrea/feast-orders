@@ -39,7 +39,7 @@ public class StockService {
         item.setStock(savedStock);
         menuItemRepository.saveAndFlush(item);
 
-        return stockConverter.convertEntity(stockRepository.getById(savedStock.getID()));
+        return stockConverter.convertEntity(stockRepository.getById(savedStock.getId()));
     }
 
     @Transactional

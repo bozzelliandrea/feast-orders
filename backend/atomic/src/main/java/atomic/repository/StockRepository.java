@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-    @Query("SELECT s FROM Stock s LEFT OUTER JOIN s.item m WHERE m.ID = :menuItemId")
+    @Query("SELECT s FROM Stock s LEFT OUTER JOIN s.item m WHERE m.id = :menuItemId")
     Stock getByMenuItemId(@Param("menuItemId") Long menuItemId);
 }

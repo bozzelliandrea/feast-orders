@@ -15,7 +15,7 @@ public class MenuItem extends BaseEntity {
     @Column(name = "ID")
     @SequenceGenerator(name = "MENU_ITEM_GEN", sequenceName = "MENU_ITEM_GEN_SQ", allocationSize = 1)
     @GeneratedValue(generator = "MENU_ITEM_GEN", strategy = GenerationType.SEQUENCE)
-    private Long ID;
+    private Long id;
 
     @NotNull
     @Column(name = "NAME", nullable = false)
@@ -42,12 +42,12 @@ public class MenuItem extends BaseEntity {
             foreignKey = @ForeignKey(name = "FK_STOCK"))
     private Stock stock;
 
-    public Long getID() {
-        return this.ID;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

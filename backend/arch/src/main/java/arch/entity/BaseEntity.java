@@ -18,9 +18,9 @@ public abstract class BaseEntity extends Auditable<String> implements Serializab
     @Version
     private Long version;
 
-    abstract public Long getID();
+    abstract public Long getId();
 
-    abstract public void setID(Long ID);
+    abstract public void setId(Long id);
 
     @PrePersist
     public void prePersist() {

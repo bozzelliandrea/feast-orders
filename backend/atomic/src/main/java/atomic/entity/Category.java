@@ -20,7 +20,7 @@ public class Category extends BaseEntity {
     @Column(name = "ID")
     @SequenceGenerator(name = "CATEGORY_GEN", sequenceName = "CATEGORY_GEN_SQ", allocationSize = 1)
     @GeneratedValue(generator = "CATEGORY_GEN", strategy = GenerationType.SEQUENCE)
-    private Long ID;
+    private Long id;
 
     @NotNull
     @Column(name = "NAME", nullable = false)
@@ -48,6 +48,9 @@ public class Category extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "PRINTERCFG_ID")
     )
     private List<PrinterCfg> printerCfgs = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private List<Discount> discounts = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -97,11 +100,19 @@ public class Category extends BaseEntity {
         this.printerCfgs = printerCfgs;
     }
 
-    public Long getID() {
-        return this.ID;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(List<Discount> discounts) {
+        this.discounts = discounts;
     }
 }

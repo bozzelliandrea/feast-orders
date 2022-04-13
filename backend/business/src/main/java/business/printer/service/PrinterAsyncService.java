@@ -45,7 +45,7 @@ public class PrinterAsyncService {
             for (PrinterCfg printerCfg : category.getPrinterCfgs()) {
                 if (!printerCfgOrderMap.containsKey(printerCfg)) {
                     Order subOrder = new Order();
-                    subOrder.setID(order.getID());
+                    subOrder.setId(order.getId());
                     subOrder.setTotal(order.getTotal());
                     subOrder.setTableNumber(order.getTableNumber());
                     subOrder.setClient(order.getClient());
@@ -77,7 +77,7 @@ public class PrinterAsyncService {
                 TimeUnit.MILLISECONDS.sleep(1000);
                 Order order = printerCfgOrderMap.get(printerCfg);
                 String orderPdfFilePath = reportService.createPdf(order, printerCfg);
-                System.out.println("Callable task, order: " + order.getID() + ", created PDF for " + printerCfg.getReportTemplate().getName());
+                System.out.println("Callable task, order: " + order.getId() + ", created PDF for " + printerCfg.getReportTemplate().getName());
 
                 Map<String, String> printerAttrs = new HashMap<>();
                 printerAttrs.put("filename", orderPdfFilePath);
@@ -87,9 +87,9 @@ public class PrinterAsyncService {
                     printerAttrs.put(key, value);
                 }
                 boolean result = printerService.printPdf(printerCfg.getPrinterName(), printerAttrs);
-                System.out.println("Callable task, order: " + order.getID() + ", printed PDF for " + printerCfg.getReportTemplate().getName());
+                System.out.println("Callable task, order: " + order.getId() + ", printed PDF for " + printerCfg.getReportTemplate().getName());
 
-                return "Callable task, order: " + order.getID() + ", printed: " + result;
+                return "Callable task, order: " + order.getId() + ", printed: " + result;
             };
 
             Future<String> future = executorService.submit(printTask);

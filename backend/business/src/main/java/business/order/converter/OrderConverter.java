@@ -18,7 +18,8 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO> implement
         dto.setPlaceSettingNumber((int) entity.getPlaceSettingNumber());
         dto.setTableNumber((int) entity.getTableNumber());
         dto.setTotal(entity.getTotal());
-        dto.setDiscount(entity.getDiscount());
+        dto.setDiscountId(entity.getDiscountId());
+        dto.setPaid(entity.getPaid());
         return dto;
     }
 
@@ -28,6 +29,7 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO> implement
         DetailedOrderDTO detailedOrderDTO = new DetailedOrderDTO(dto);
         detailedOrderDTO.setNote(entity.getNote());
         detailedOrderDTO.setContent(entity.getContent());
+
         return detailedOrderDTO;
     }
 
@@ -45,7 +47,8 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO> implement
         entity.setPlaceSettingNumber(dto.getPlaceSettingNumber() != null ? dto.getPlaceSettingNumber().shortValue() : 0);
         entity.setTableNumber(dto.getTableNumber() != null ? dto.getTableNumber().shortValue() : 0);
         entity.setTotal(dto.getTotal());
-        entity.setDiscount(dto.getDiscount());
+        entity.setDiscountId(dto.getDiscountId());
+        entity.setPaid(dto.getPaid());
         return entity;
     }
 }

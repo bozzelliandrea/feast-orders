@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "APP_ORDER")
 public class Order extends BaseEntity {
 
+    private static final long serialVersionUID = 3981321551638562020L;
 
     @Id
     @Column(name = "ID")
@@ -46,6 +47,10 @@ public class Order extends BaseEntity {
     private Double total;
 
     @NotNull
+    @Column(name = "PAID")
+    private Double paid;
+
+    @NotNull
     @Column(name = "TABLE_NUMBER", nullable = false)
     private short tableNumber;
 
@@ -63,14 +68,14 @@ public class Order extends BaseEntity {
     private String client;
 
     @Column(name = "DISCOUNT")
-    private Integer discount;
+    private Long discountId;
 
-    public Long getID() {
+    public Long getId() {
         return id;
     }
 
-    public void setID(Long ID) {
-        this.id = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<OrderContent> getContent() {
@@ -161,11 +166,19 @@ public class Order extends BaseEntity {
         this.client = client;
     }
 
-    public Integer getDiscount() {
-        return discount;
+    public Long getDiscountId() {
+        return discountId;
     }
 
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
+    public void setDiscountId(Long discountId) {
+        this.discountId = discountId;
+    }
+
+    public Double getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Double paid) {
+        this.paid = paid;
     }
 }

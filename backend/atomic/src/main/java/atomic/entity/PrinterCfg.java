@@ -19,7 +19,7 @@ public class PrinterCfg extends BaseEntity {
     @Column(name = "ID")
     @SequenceGenerator(name = "PRINTER_CFG_GEN", sequenceName = "PRINTER_CFG_GEN_SQ", allocationSize = 1)
     @GeneratedValue(generator = "PRINTER_CFG_GEN", strategy = GenerationType.SEQUENCE)
-    private Long ID;
+    private Long id;
 
     @NotNull
     @Column(name = "NAME", nullable = false)
@@ -41,12 +41,12 @@ public class PrinterCfg extends BaseEntity {
     @OneToOne
     private ReportTemplate reportTemplate;
 
-    public Long getID() {
-        return this.ID;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

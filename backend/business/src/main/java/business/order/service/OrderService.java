@@ -7,10 +7,13 @@ import atomic.bean.OrderContent;
 import atomic.entity.Order;
 import atomic.entity.PrinterCfg;
 import atomic.enums.CategoryProcessingZone;
+import atomic.enums.DiscountType;
 import atomic.enums.OrderStatus;
 import atomic.repository.OrderRepository;
 import business.category.dto.CategoryDTO;
 import business.category.service.CategoryService;
+import business.discount.dto.DiscountDTO;
+import business.discount.service.DiscountService;
 import business.order.OrderSpecificationBuilder;
 import business.order.converter.OrderConverter;
 import business.order.dto.DetailedOrderDTO;
@@ -44,13 +47,15 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     private final CategoryService categoryService;
     private final PrinterAsyncService printerAsyncService;
     private final StockService stockService;
+    private final DiscountService discountService;
 
     public OrderService(OrderRepository repository,
                         OrderHistoryService orderHistoryService,
                         OrderConverter converter,
                         CategoryService categoryService,
                         PrinterAsyncService printerAsyncService,
-                        StockService stockService) {
+                        StockService stockService,
+                        DiscountService discountService) {
         super(repository);
         this.repository = repository;
         this.orderHistoryService = orderHistoryService;
@@ -58,6 +63,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         this.categoryService = categoryService;
         this.printerAsyncService = printerAsyncService;
         this.stockService = stockService;
+        this.discountService = discountService;
     }
 
     public DetailedOrderDTO getDetailedOrder(Long id) {
@@ -68,6 +74,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         Order entity = converter.convertDTO(request);
         _setOrderProcessingZone(request, entity);
         _manageStockOnOrder(request);
+        _evaluateDiscount(request);
         //TODO se flag print = true, mandare in stampa l'ordine
         Order result = super.create(entity);
         return converter.convertEntityDetailed(result);
@@ -77,13 +84,14 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         Order savedEntity = super.read(request.getId());
         _setOrderProcessingZone(request, savedEntity);
         _manageStockOnOrder(request);
+        _evaluateDiscount(request);
         savedEntity.setNote(request.getNote());
         savedEntity.setContent(request.getContent());
         savedEntity.setClient(request.getClient());
         savedEntity.setPlaceSettingNumber(request.getPlaceSettingNumber().shortValue());
         savedEntity.setTableNumber(request.getTableNumber().shortValue());
         savedEntity.setTotal(request.getTotal());
-        savedEntity.setDiscount(request.getDiscount());
+        savedEntity.setDiscountId(request.getDiscountId());
 
         Order result = super.update(savedEntity);
         return converter.convertEntityDetailed(result);
@@ -159,6 +167,30 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         for (OrderContent content : order.getContent()) {
             CategoryDTO category = categoryService.get(content.getCategoryId());
             _flagProcessingZone(entity, category.getProcessingZone());
+        }
+    }
+
+    private void _evaluateDiscount(DetailedOrderDTO order){
+        if(order.getDiscountId() == null) {
+            return;
+        }
+
+        DiscountDTO discount = discountService.get(order.getDiscountId());
+        switch (DiscountType.valueOf(discount.getType())) {
+            case EUR:
+                order.setPaid(order.getTotal() - discount.getValue());
+                break;
+            case PERCENTAGE:
+                Double p = (order.getTotal() * discount.getValue()) / 100;
+                order.setPaid(p);
+                break;
+            default:
+                break;
+        }
+
+        if(order.getPaid() < 0) {
+            _LOGGER.warn("The order cost is less than 0");
+            order.setPaid((double) 0);
         }
     }
 

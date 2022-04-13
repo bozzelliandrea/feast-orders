@@ -14,7 +14,8 @@ public class OrderDTO extends AbstractDTO {
     private Boolean takeAway = false;
     @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private Double total;
-    private Integer discount;
+    private Double paid;
+    private Long discountId;
 
     public OrderDTO() {
     }
@@ -26,7 +27,7 @@ public class OrderDTO extends AbstractDTO {
         this.client = dto.getClient();
         this.takeAway = dto.getTakeAway();
         this.total = dto.getTotal();
-        this.discount = dto.getDiscount();
+        this.discountId = dto.getDiscountId();
     }
 
     public Integer getTableNumber() {
@@ -69,11 +70,19 @@ public class OrderDTO extends AbstractDTO {
         this.total = total;
     }
 
-    public Integer getDiscount() {
-        return discount;
+    public Long getDiscountId() {
+        return discountId;
     }
 
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
+    public void setDiscountId(Long discountId) {
+        this.discountId = discountId;
+    }
+
+    public Double getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Double paid) {
+        this.paid = paid;
     }
 }
