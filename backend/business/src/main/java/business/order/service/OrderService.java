@@ -3,6 +3,7 @@ package business.order.service;
 import arch.component.PaginationUtils;
 import arch.search.QueryOperator;
 import arch.service.BaseCRUDService;
+import atomic.bean.KeyMap;
 import atomic.bean.OrderContent;
 import atomic.entity.Order;
 import atomic.entity.PrinterCfg;
@@ -30,6 +31,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -74,24 +77,25 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         Order entity = converter.convertDTO(request);
         _setOrderProcessingZone(request, entity);
         _manageStockOnOrder(request);
-        _evaluateDiscount(request);
+        _evaluateDiscount(request, entity);
         //TODO se flag print = true, mandare in stampa l'ordine
         Order result = super.create(entity);
         return converter.convertEntityDetailed(result);
     }
 
+    //TODO: capire come il client passa le info,
+    // se prevedere campi null da non aggiornare oppure la request contiene solo campi da aggiornare
     public DetailedOrderDTO updateOrder(DetailedOrderDTO request) {
         Order savedEntity = super.read(request.getId());
         _setOrderProcessingZone(request, savedEntity);
         _manageStockOnOrder(request);
-        _evaluateDiscount(request);
+        _evaluateDiscount(request, savedEntity);
         savedEntity.setNote(request.getNote());
         savedEntity.setContent(request.getContent());
         savedEntity.setClient(request.getClient());
         savedEntity.setPlaceSettingNumber(request.getPlaceSettingNumber().shortValue());
         savedEntity.setTableNumber(request.getTableNumber().shortValue());
         savedEntity.setTotal(request.getTotal());
-        savedEntity.setDiscountId(request.getDiscountId());
 
         Order result = super.update(savedEntity);
         return converter.convertEntityDetailed(result);
@@ -170,28 +174,62 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         }
     }
 
-    private void _evaluateDiscount(DetailedOrderDTO order){
-        if(order.getDiscountId() == null) {
+    private void _evaluateDiscount(DetailedOrderDTO order, Order entity) {
+        if (order.getDiscountIds() == null) {
             return;
         }
 
-        DiscountDTO discount = discountService.get(order.getDiscountId());
+        List<KeyMap> appliedDiscounts = new ArrayList<>();
+
+        for (Long discountId : order.getDiscountIds()) {
+            DiscountDTO discount = discountService.get(discountId);
+
+            if (discount.getCategoryIds() == null
+                    || discount.getCategoryIds().size() == 0) {
+
+                entity.setPaid(_priceDiscount(discount, order.getTotal()));
+                appliedDiscounts.add(new KeyMap(discount.getId(), discount.getValue()));
+            } else {
+                Double originalPrice = order.getTotal();
+                for (Long categoryId : discount.getCategoryIds()) {
+
+                    List<OrderContent> items = order.getContent()
+                            .stream()
+                            .filter(p -> p.getCategoryId().equals(categoryId))
+                            .collect(Collectors.toList());
+
+                    for (OrderContent item : items) {
+                        double singlePrice = _priceDiscount(discount, item.getPrice());
+                        originalPrice = originalPrice - singlePrice;
+                    }
+                }
+                entity.setPaid(originalPrice);
+                appliedDiscounts.add(new KeyMap(discount.getId(), discount.getValue()));
+            }
+        }
+
+        entity.setDiscount(appliedDiscounts);
+    }
+
+    private double _priceDiscount(DiscountDTO discount, Double price) {
+        double result = 0;
         switch (DiscountType.valueOf(discount.getType())) {
             case EUR:
-                order.setPaid(order.getTotal() - discount.getValue());
+                result = price - discount.getValue();
                 break;
             case PERCENTAGE:
-                Double p = (order.getTotal() * discount.getValue()) / 100;
-                order.setPaid(p);
+                result = (price * discount.getValue()) / 100;
                 break;
             default:
                 break;
         }
 
-        if(order.getPaid() < 0) {
-            _LOGGER.warn("The order cost is less than 0");
-            order.setPaid((double) 0);
+        if (result < 0) {
+            _LOGGER.warn("The item cost is less than 0");
+            result = 0;
         }
+
+        return result;
     }
 
     private void _flagProcessingZone(Order entity, String zone) {

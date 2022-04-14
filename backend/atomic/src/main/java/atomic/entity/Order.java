@@ -2,8 +2,10 @@ package atomic.entity;
 
 
 import arch.entity.BaseEntity;
+import atomic.bean.KeyMap;
 import atomic.bean.OrderContent;
 import atomic.enums.OrderStatus;
+import atomic.type.JsonMapConverter;
 import atomic.type.JsonOrderContentConverter;
 
 import javax.persistence.*;
@@ -24,7 +26,7 @@ public class Order extends BaseEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "content", columnDefinition = "jsonb")
+    @Column(name = "CONTENT", columnDefinition = "jsonb", nullable = false)
     @Convert(converter = JsonOrderContentConverter.class)
     private List<OrderContent> content;
 
@@ -67,8 +69,9 @@ public class Order extends BaseEntity {
     @Column(name = "CLIENT")
     private String client;
 
-    @Column(name = "DISCOUNT")
-    private Long discountId;
+    @Column(name = "DISCOUNT", columnDefinition = "jsonb", nullable = false)
+    @Convert(converter = JsonMapConverter.class)
+    private List<KeyMap> discount;
 
     public Long getId() {
         return id;
@@ -166,12 +169,20 @@ public class Order extends BaseEntity {
         this.client = client;
     }
 
-    public Long getDiscountId() {
-        return discountId;
+    public List<KeyMap> getDiscount() {
+        return discount;
     }
 
-    public void setDiscountId(Long discountId) {
-        this.discountId = discountId;
+    public void addDiscount(KeyMap discount) {
+        if (this.discount == null) {
+            this.discount = new ArrayList<>();
+        }
+
+        this.discount.add(discount);
+    }
+
+    public void setDiscount(List<KeyMap> discount) {
+        this.discount = discount;
     }
 
     public Double getPaid() {

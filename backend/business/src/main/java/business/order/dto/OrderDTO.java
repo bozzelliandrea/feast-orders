@@ -4,6 +4,8 @@ import arch.dto.AbstractDTO;
 import arch.validation.Required;
 import arch.validation.RequiredMethod;
 
+import java.util.List;
+
 public class OrderDTO extends AbstractDTO {
 
     private static final long serialVersionUID = 4189036589187538080L;
@@ -15,7 +17,7 @@ public class OrderDTO extends AbstractDTO {
     @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private Double total;
     private Double paid;
-    private Long discountId;
+    private List<Long> discountIds;
 
     public OrderDTO() {
     }
@@ -27,7 +29,8 @@ public class OrderDTO extends AbstractDTO {
         this.client = dto.getClient();
         this.takeAway = dto.getTakeAway();
         this.total = dto.getTotal();
-        this.discountId = dto.getDiscountId();
+        this.paid = dto.getPaid();
+        this.discountIds = dto.getDiscountIds();
     }
 
     public Integer getTableNumber() {
@@ -70,12 +73,12 @@ public class OrderDTO extends AbstractDTO {
         this.total = total;
     }
 
-    public Long getDiscountId() {
-        return discountId;
+    public List<Long> getDiscountIds() {
+        return discountIds;
     }
 
-    public void setDiscountId(Long discountId) {
-        this.discountId = discountId;
+    public void setDiscountIds(List<Long> discountIds) {
+        this.discountIds = discountIds;
     }
 
     public Double getPaid() {

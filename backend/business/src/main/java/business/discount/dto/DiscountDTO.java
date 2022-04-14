@@ -4,6 +4,8 @@ import arch.dto.AbstractDTO;
 import arch.validation.Required;
 import arch.validation.RequiredMethod;
 
+import java.util.List;
+
 public class DiscountDTO extends AbstractDTO {
 
     private static final long serialVersionUID = 6580290710448822761L;
@@ -15,6 +17,7 @@ public class DiscountDTO extends AbstractDTO {
     private String type;
     @Required({RequiredMethod.CREATE, RequiredMethod.UPDATE})
     private Double value;
+    private List<Long> categoryIds;
 
     public String getName() {
         return name;
@@ -46,5 +49,13 @@ public class DiscountDTO extends AbstractDTO {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public List<Long> getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 }
