@@ -33,7 +33,7 @@ public abstract class AbstractDTO implements Serializable {
     }
 
     public AbstractDTO(BaseEntity entity) {
-        this.id = entity.getID();
+        this.id = entity.getId();
         this.creationTimestamp = entity.getCreationTimestamp();
         this.creationUser = entity.getCreationUser();
         this.updateTimestamp = entity.getUpdateTimestamp();
@@ -48,8 +48,8 @@ public abstract class AbstractDTO implements Serializable {
         return id;
     }
 
-    public void setId(Long ID) {
-        this.id = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getCreationTimestamp() {

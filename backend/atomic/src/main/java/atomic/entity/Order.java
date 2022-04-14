@@ -2,8 +2,10 @@ package atomic.entity;
 
 
 import arch.entity.BaseEntity;
+import atomic.bean.KeyMap;
 import atomic.bean.OrderContent;
 import atomic.enums.OrderStatus;
+import atomic.type.JsonMapConverter;
 import atomic.type.JsonOrderContentConverter;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @Table(name = "APP_ORDER")
 public class Order extends BaseEntity {
 
+    private static final long serialVersionUID = 3981321551638562020L;
 
     @Id
     @Column(name = "ID")
@@ -23,7 +26,7 @@ public class Order extends BaseEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "content", columnDefinition = "jsonb")
+    @Column(name = "CONTENT", columnDefinition = "jsonb", nullable = false)
     @Convert(converter = JsonOrderContentConverter.class)
     private List<OrderContent> content;
 
@@ -46,6 +49,10 @@ public class Order extends BaseEntity {
     private Double total;
 
     @NotNull
+    @Column(name = "PAID")
+    private Double paid;
+
+    @NotNull
     @Column(name = "TABLE_NUMBER", nullable = false)
     private short tableNumber;
 
@@ -62,15 +69,16 @@ public class Order extends BaseEntity {
     @Column(name = "CLIENT")
     private String client;
 
-    @Column(name = "DISCOUNT")
-    private Integer discount;
+    @Column(name = "DISCOUNT", columnDefinition = "jsonb", nullable = false)
+    @Convert(converter = JsonMapConverter.class)
+    private List<KeyMap> discount;
 
-    public Long getID() {
+    public Long getId() {
         return id;
     }
 
-    public void setID(Long ID) {
-        this.id = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<OrderContent> getContent() {
@@ -161,11 +169,27 @@ public class Order extends BaseEntity {
         this.client = client;
     }
 
-    public Integer getDiscount() {
+    public List<KeyMap> getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void addDiscount(KeyMap discount) {
+        if (this.discount == null) {
+            this.discount = new ArrayList<>();
+        }
+
+        this.discount.add(discount);
+    }
+
+    public void setDiscount(List<KeyMap> discount) {
         this.discount = discount;
+    }
+
+    public Double getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Double paid) {
+        this.paid = paid;
     }
 }

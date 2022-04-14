@@ -36,7 +36,7 @@ public class ReportService {
 
     public String createPdf(Order order, PrinterCfg printerCfg) throws DocumentException, IOException {
         String template = parseThymeleafTemplate(order, printerCfg);
-        String orderFileName = printerCfg.getReportTemplate().getName() + "_" + order.getID() + ".pdf";
+        String orderFileName = printerCfg.getReportTemplate().getName() + "_" + order.getId() + ".pdf";
         return generatePdfFromTemplate(template, REPORT_TEMPLATE_FOLDER, orderFileName);
     }
 

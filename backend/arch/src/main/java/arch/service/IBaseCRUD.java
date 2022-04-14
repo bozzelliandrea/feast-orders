@@ -10,9 +10,9 @@ public interface IBaseCRUD<E extends BaseEntity, ID> {
 
     E update(E entity);
 
-    E read(ID ID);
+    E read(ID id);
 
-    boolean delete(ID ID);
+    boolean delete(ID id);
 
     List<E> findAll();
 }

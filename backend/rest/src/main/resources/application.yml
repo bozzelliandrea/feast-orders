@@ -27,4 +27,4 @@ application:
       cron: 0 0 * * * *
       size: 500
       export: true
-      path:
+      path: ${HOME}/Desktop

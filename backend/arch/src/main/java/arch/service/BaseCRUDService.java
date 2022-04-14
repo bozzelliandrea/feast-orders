@@ -35,12 +35,12 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
     public E update(E entity) {
         Objects.requireNonNull(entity, "Entity cannot be null!");
 
-        if (Objects.isNull(entity.getID())) {
+        if (Objects.isNull(entity.getId())) {
             throw new IllegalArgumentException("Cannot update entity with null ID");
         }
 
         if (Objects.isNull(entity.getVersion())) {
-            throw new IllegalArgumentException(String.format("Version is required for entity with ID: %s", entity.getID()));
+            throw new IllegalArgumentException(String.format("Version is required for entity with ID: %s", entity.getId()));
         }
 
         return repository.saveAndFlush(entity);
@@ -48,30 +48,30 @@ public class BaseCRUDService<E extends BaseEntity, ID> implements IBaseCRUD<E, I
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public E read(ID ID) {
+    public E read(ID id) {
 
-        Objects.requireNonNull(ID, "Entity ID cannot be null!");
+        Objects.requireNonNull(id, "Entity ID cannot be null!");
 
-        Optional<E> entity = repository.findById(ID);
+        Optional<E> entity = repository.findById(id);
 
         if (entity.isPresent()) {
             return entity.get();
         } else {
-            throw new EntityNotFoundException(String.format("Entity not found on read for ID: %s", ID));
+            throw new EntityNotFoundException(String.format("Entity not found on read for ID: %s", id));
         }
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public boolean delete(ID ID) {
+    public boolean delete(ID id) {
 
-        Objects.requireNonNull(ID, "Entity ID cannot be null!");
+        Objects.requireNonNull(id, "Entity ID cannot be null!");
 
         try {
-            repository.deleteById(ID);
+            repository.deleteById(id);
             return true;
         } catch (Exception e) {
-            throw new EntityNotFoundException(String.format("Entity not found on delete for ID: %s", ID));
+            throw new EntityNotFoundException(String.format("Entity not found on delete for ID: %s", id));
         }
     }
 

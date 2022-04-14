@@ -9,11 +9,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "STOCK")
 public class Stock extends BaseEntity {
 
+    private static final long serialVersionUID = -4762068878983435687L;
+
     @Id
     @Column(name = "ID")
     @SequenceGenerator(name = "STOCK_GEN", sequenceName = "STOCK_GEN_SQ", allocationSize = 1)
     @GeneratedValue(generator = "STOCK_GEN", strategy = GenerationType.SEQUENCE)
-    private Long ID;
+    private Long id;
 
     @NotNull
     @Column(name = "QUANTITY")
@@ -23,13 +25,13 @@ public class Stock extends BaseEntity {
     private MenuItem item;
 
     @Override
-    public Long getID() {
-        return ID;
+    public Long getId() {
+        return id;
     }
 
     @Override
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getQuantity() {

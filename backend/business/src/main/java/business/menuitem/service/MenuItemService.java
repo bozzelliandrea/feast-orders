@@ -47,7 +47,7 @@ public class MenuItemService extends BaseCRUDService<MenuItem, Long> {
 
         Objects.requireNonNull(categoryID, "Category ID param cannot be null!");
 
-        List<MenuItem> entityList = repository.findByCategoryID(categoryID);
+        List<MenuItem> entityList = repository.findByCategoryId(categoryID);
 
         if (Objects.isNull(entityList) || CollectionUtils.isEmpty(entityList)) {
             return new ArrayList<>();

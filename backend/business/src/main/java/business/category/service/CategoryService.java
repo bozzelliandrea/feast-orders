@@ -87,7 +87,7 @@ public class CategoryService extends BaseCRUDService<Category, Long> {
                 for (PrinterCfgDTO printerCfgDTO : dto.getPrinterCfgList()) {
                     Optional<PrinterCfg> printerCfgOptional = savedCategory.getPrinterCfgs()
                             .stream()
-                            .filter(printerCfg -> printerCfg.getID().equals(printerCfgDTO.getId()))
+                            .filter(printerCfg -> printerCfg.getId().equals(printerCfgDTO.getId()))
                             .findFirst();
 
                     printerCfgList.add(printerCfgOptional.orElseGet(() -> printerCfgService.read(printerCfgDTO.getId())));

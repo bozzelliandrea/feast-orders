@@ -17,7 +17,7 @@ public class MenuItemConverter extends AbstractConverter<MenuItem, MenuItemDTO> 
         dto.setDescription(entity.getDescription());
         dto.setColor(entity.getColor());
         dto.setPrice(entity.getPrice());
-        dto.setCategoryId(entity.getCategory().getID());
+        dto.setCategoryId(entity.getCategory().getId());
         return dto;
     }
 

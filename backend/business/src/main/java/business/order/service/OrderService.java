@@ -3,14 +3,18 @@ package business.order.service;
 import arch.component.PaginationUtils;
 import arch.search.QueryOperator;
 import arch.service.BaseCRUDService;
+import atomic.bean.KeyMap;
 import atomic.bean.OrderContent;
 import atomic.entity.Order;
 import atomic.entity.PrinterCfg;
 import atomic.enums.CategoryProcessingZone;
+import atomic.enums.DiscountType;
 import atomic.enums.OrderStatus;
 import atomic.repository.OrderRepository;
 import business.category.dto.CategoryDTO;
 import business.category.service.CategoryService;
+import business.discount.dto.DiscountDTO;
+import business.discount.service.DiscountService;
 import business.order.OrderSpecificationBuilder;
 import business.order.converter.OrderConverter;
 import business.order.dto.DetailedOrderDTO;
@@ -27,6 +31,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -44,13 +50,15 @@ public class OrderService extends BaseCRUDService<Order, Long> {
     private final CategoryService categoryService;
     private final PrinterAsyncService printerAsyncService;
     private final StockService stockService;
+    private final DiscountService discountService;
 
     public OrderService(OrderRepository repository,
                         OrderHistoryService orderHistoryService,
                         OrderConverter converter,
                         CategoryService categoryService,
                         PrinterAsyncService printerAsyncService,
-                        StockService stockService) {
+                        StockService stockService,
+                        DiscountService discountService) {
         super(repository);
         this.repository = repository;
         this.orderHistoryService = orderHistoryService;
@@ -58,6 +66,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         this.categoryService = categoryService;
         this.printerAsyncService = printerAsyncService;
         this.stockService = stockService;
+        this.discountService = discountService;
     }
 
     public DetailedOrderDTO getDetailedOrder(Long id) {
@@ -68,22 +77,25 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         Order entity = converter.convertDTO(request);
         _setOrderProcessingZone(request, entity);
         _manageStockOnOrder(request);
+        _evaluateDiscount(request, entity);
         //TODO se flag print = true, mandare in stampa l'ordine
         Order result = super.create(entity);
         return converter.convertEntityDetailed(result);
     }
 
+    //TODO: capire come il client passa le info,
+    // se prevedere campi null da non aggiornare oppure la request contiene solo campi da aggiornare
     public DetailedOrderDTO updateOrder(DetailedOrderDTO request) {
         Order savedEntity = super.read(request.getId());
         _setOrderProcessingZone(request, savedEntity);
         _manageStockOnOrder(request);
+        _evaluateDiscount(request, savedEntity);
         savedEntity.setNote(request.getNote());
         savedEntity.setContent(request.getContent());
         savedEntity.setClient(request.getClient());
         savedEntity.setPlaceSettingNumber(request.getPlaceSettingNumber().shortValue());
         savedEntity.setTableNumber(request.getTableNumber().shortValue());
         savedEntity.setTotal(request.getTotal());
-        savedEntity.setDiscount(request.getDiscount());
 
         Order result = super.update(savedEntity);
         return converter.convertEntityDetailed(result);
@@ -160,6 +172,64 @@ public class OrderService extends BaseCRUDService<Order, Long> {
             CategoryDTO category = categoryService.get(content.getCategoryId());
             _flagProcessingZone(entity, category.getProcessingZone());
         }
+    }
+
+    private void _evaluateDiscount(DetailedOrderDTO order, Order entity) {
+        if (order.getDiscountIds() == null) {
+            return;
+        }
+
+        List<KeyMap> appliedDiscounts = new ArrayList<>();
+
+        for (Long discountId : order.getDiscountIds()) {
+            DiscountDTO discount = discountService.get(discountId);
+
+            if (discount.getCategoryIds() == null
+                    || discount.getCategoryIds().size() == 0) {
+
+                entity.setPaid(_priceDiscount(discount, order.getTotal()));
+                appliedDiscounts.add(new KeyMap(discount.getId(), discount.getValue()));
+            } else {
+                Double originalPrice = order.getTotal();
+                for (Long categoryId : discount.getCategoryIds()) {
+
+                    List<OrderContent> items = order.getContent()
+                            .stream()
+                            .filter(p -> p.getCategoryId().equals(categoryId))
+                            .collect(Collectors.toList());
+
+                    for (OrderContent item : items) {
+                        double singlePrice = _priceDiscount(discount, item.getPrice());
+                        originalPrice = originalPrice - singlePrice;
+                    }
+                }
+                entity.setPaid(originalPrice);
+                appliedDiscounts.add(new KeyMap(discount.getId(), discount.getValue()));
+            }
+        }
+
+        entity.setDiscount(appliedDiscounts);
+    }
+
+    private double _priceDiscount(DiscountDTO discount, Double price) {
+        double result = 0;
+        switch (DiscountType.valueOf(discount.getType())) {
+            case EUR:
+                result = price - discount.getValue();
+                break;
+            case PERCENTAGE:
+                result = (price * discount.getValue()) / 100;
+                break;
+            default:
+                break;
+        }
+
+        if (result < 0) {
+            _LOGGER.warn("The item cost is less than 0");
+            result = 0;
+        }
+
+        return result;
     }
 
     private void _flagProcessingZone(Order entity, String zone) {
