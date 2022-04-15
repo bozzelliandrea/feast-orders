@@ -69,9 +69,15 @@ public class Order extends BaseEntity {
     @Column(name = "CLIENT")
     private String client;
 
-    @Column(name = "DISCOUNT", columnDefinition = "jsonb", nullable = false)
+    @Column(name = "DISCOUNT", columnDefinition = "jsonb")
     @Convert(converter = JsonMapConverter.class)
     private List<KeyMap> discount;
+
+    @Column(name = "STATS_ID")
+    private Long statsId;
+
+    @Basic
+    private boolean loaded;
 
     public Long getId() {
         return id;
@@ -191,5 +197,21 @@ public class Order extends BaseEntity {
 
     public void setPaid(Double paid) {
         this.paid = paid;
+    }
+
+    public Long getStatsId() {
+        return statsId;
+    }
+
+    public void setStatsId(Long statsId) {
+        this.statsId = statsId;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 }
