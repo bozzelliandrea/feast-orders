@@ -22,7 +22,7 @@ import business.order.dto.PagedOrderDTO;
 import business.order.exception.OrderNotFoundException;
 import business.order.exception.OrderUpdateException;
 import business.printer.service.PrinterAsyncService;
-import business.stats.StatsService;
+import business.stats.service.StatsService;
 import business.stock.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

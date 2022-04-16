@@ -6,6 +6,7 @@ import arch.repository.ErrorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +19,7 @@ import java.util.Date;
 
 @EnableScheduling
 @Configuration
+@Primary
 public class SchedulerConfig {
 
     private static final Logger _LOGGER = LoggerFactory.getLogger(SchedulerConfig.class);
