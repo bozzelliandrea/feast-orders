@@ -6,22 +6,22 @@ public class KeyMap implements Serializable {
 
     private static final long serialVersionUID = -7729583320581876280L;
 
-    private Long key;
+    private Object key;
     private Object value;
 
     public KeyMap() {
     }
 
-    public KeyMap(Long key, Object value) {
+    public KeyMap(Object key, Object value) {
         this.key = key;
         this.value = value;
     }
 
-    public Long getKey() {
+    public Object getKey() {
         return key;
     }
 
-    public void setKey(Long key) {
+    public void setKey(Object key) {
         this.key = key;
     }
 

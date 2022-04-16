@@ -35,7 +35,9 @@ public class OrderHistoryService {
         orderHistory.setContent(order.getContent());
         orderHistory.setTotal(order.getTotal());
         orderHistory.setDate(order.getCreationTimestamp());
-
+        orderHistory.setStatsId(order.getStatsId());
+        orderHistory.setLoaded(order.isLoaded());
+        orderHistory.setCreationUser(order.getCreationUser());
         return create(orderHistory);
 
     }

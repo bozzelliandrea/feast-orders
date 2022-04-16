@@ -2,12 +2,10 @@ package atomic.entity;
 
 import atomic.bean.OrderContent;
 import atomic.type.JsonOrderContentConverter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
 @Table(name = "ORDER_HISTORY")
 public class OrderHistory implements Serializable {
 
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private static final long serialVersionUID = 3748402610149829347L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +30,17 @@ public class OrderHistory implements Serializable {
 
     @NotNull
     @Basic
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date date;
+
+    @Column(name = "STATS_ID")
+    private Long statsId;
+
+    @Basic
+    private boolean loaded;
+
+    @Column(name = "CREATION_USER")
+    private String creationUser;
 
     public Long getId() {
         return id;
@@ -66,5 +72,29 @@ public class OrderHistory implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Long getStatsId() {
+        return statsId;
+    }
+
+    public void setStatsId(Long statsId) {
+        this.statsId = statsId;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
 }
