@@ -2,7 +2,6 @@ package business.order.converter;
 
 import arch.component.AbstractConverter;
 import arch.component.Converter;
-import atomic.bean.KeyMap;
 import atomic.entity.Order;
 import atomic.enums.CategoryProcessingZone;
 import business.order.dto.DetailedOrderDTO;
@@ -22,7 +21,7 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO> implement
         dto.setPlaceSettingNumber((int) entity.getPlaceSettingNumber());
         dto.setTableNumber((int) entity.getTableNumber());
         dto.setTotal(entity.getTotal());
-        dto.setDiscountIds(entity.getDiscount().stream().map(KeyMap::getKey).collect(Collectors.toList()));
+        dto.setDiscountIds(entity.getDiscount().stream().map(k -> (Long) k.getValue()).collect(Collectors.toList()));
         dto.setPaid(entity.getPaid());
         dto.setTakeAway(entity.getTakeAway());
         return dto;
