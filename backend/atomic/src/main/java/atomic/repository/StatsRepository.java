@@ -15,4 +15,6 @@ public interface StatsRepository extends JpaRepository<Stats, Long> {
     Integer countStatsForDate(Date date);
 
     List<Stats> findByDateGreaterThanEqualAndDateLessThanEqual(Date start, Date end);
+
+    Stats findByDate(Date date);
 }

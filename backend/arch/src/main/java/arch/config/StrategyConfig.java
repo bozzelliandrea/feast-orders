@@ -31,6 +31,7 @@ public class StrategyConfig {
         }
     }
 
+    // TODO: testare con salvataggio record, in caso valutare il @PreDestroy
     @Bean
     public void loadShutdownStrategy() throws Exception {
         Map<String, LifeCycleStrategy> beans = applicationContext.getBeansOfType(LifeCycleStrategy.class);

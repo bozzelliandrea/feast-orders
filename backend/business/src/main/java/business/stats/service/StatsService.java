@@ -51,6 +51,10 @@ public class StatsService implements LifeCycleStrategy {
         Integer count = statsRepository.countStatsForDate(new Date());
         if (count > 0) {
             _LOGGER.info("Stats record for the day already exist");
+            Stats stats = statsRepository.findByDate(new Date());
+            if (stats != null) {
+                statsId = stats.getId();
+            }
         } else {
             _createEmpty();
         }
