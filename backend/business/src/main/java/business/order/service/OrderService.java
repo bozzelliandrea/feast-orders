@@ -1,6 +1,7 @@
 package business.order.service;
 
 import arch.component.PaginationUtils;
+import arch.dto.AbstractPagination;
 import arch.search.QueryOperator;
 import arch.service.BaseCRUDService;
 import atomic.bean.KeyMap;
@@ -18,7 +19,7 @@ import business.discount.service.DiscountService;
 import business.order.OrderSpecificationBuilder;
 import business.order.converter.OrderConverter;
 import business.order.dto.DetailedOrderDTO;
-import business.order.dto.PagedOrderDTO;
+import business.order.dto.OrderDTO;
 import business.order.exception.OrderNotFoundException;
 import business.order.exception.OrderUpdateException;
 import business.printer.service.PrinterAsyncService;
@@ -130,7 +131,7 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         }
     }
 
-    public PagedOrderDTO findAllWithPaginationAndQuery(int page, int size, String query) {
+    public AbstractPagination<OrderDTO> findAllWithPaginationAndQuery(int page, int size, String query) {
         if (query != null) {
             Pageable paging = PageRequest.of(page, size);
 
@@ -253,8 +254,8 @@ public class OrderService extends BaseCRUDService<Order, Long> {
         }
     }
 
-    private PagedOrderDTO _buildPagedOrderDTO(Page<Order> orderPage) {
-        PagedOrderDTO response = new PagedOrderDTO();
+    private AbstractPagination<OrderDTO> _buildPagedOrderDTO(Page<Order> orderPage) {
+        AbstractPagination<OrderDTO> response = new AbstractPagination<>();
         PaginationUtils.setResponsePagination(orderPage, response);
         response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
 

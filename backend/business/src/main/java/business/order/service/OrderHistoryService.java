@@ -1,11 +1,13 @@
 package business.order.service;
 
 import arch.component.PaginationUtils;
+import arch.dto.AbstractPagination;
+import arch.security.dto.UserDTO;
 import atomic.entity.Order;
 import atomic.entity.OrderHistory;
 import atomic.repository.OrderHistoryRepository;
 import business.order.converter.OrderHistoryConverter;
-import business.order.dto.PagedOrderHistoryDTO;
+import business.order.dto.OrderHistoryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,12 +44,12 @@ public class OrderHistoryService {
 
     }
 
-    public PagedOrderHistoryDTO findAllWithPagination(int page, int size) {
+    public AbstractPagination<OrderHistoryDTO> findAllWithPagination(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
 
         Page<OrderHistory> orderPage = repository.findAll(paging);
 
-        PagedOrderHistoryDTO response = new PagedOrderHistoryDTO();
+        AbstractPagination<OrderHistoryDTO> response = new AbstractPagination<>();
         PaginationUtils.setResponsePagination(orderPage, response);
         response.setData(orderPage.getContent().stream().map(converter::convertEntity).collect(Collectors.toList()));
 

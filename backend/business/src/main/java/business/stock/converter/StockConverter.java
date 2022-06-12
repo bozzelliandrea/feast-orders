@@ -15,6 +15,7 @@ public class StockConverter extends AbstractConverter<Stock, StockDTO> implement
         StockDTO dto = new StockDTO();
         convertEntity2DTO(entity, dto);
         dto.setQty(entity.getQuantity());
+        dto.setItemId(entity.getId());
         return dto;
     }
 
