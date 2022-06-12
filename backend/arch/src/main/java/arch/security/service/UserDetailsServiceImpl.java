@@ -1,13 +1,13 @@
 package arch.security.service;
 
 import arch.component.PaginationUtils;
+import arch.dto.AbstractPagination;
 import arch.entity.ERole;
 import arch.entity.Role;
 import arch.entity.User;
 import arch.exception.errors.RoleNotFoundException;
 import arch.repository.RoleRepository;
 import arch.repository.UserRepository;
-import arch.security.dto.PagedUserDTO;
 import arch.security.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,12 +69,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UserDTO();
     }
 
-    public PagedUserDTO findAllWithPagination(int page, int size) {
+    public AbstractPagination<UserDTO> findAllWithPagination(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
 
         Page<User> userPage = userRepository.findAll(paging);
 
-        PagedUserDTO response = new PagedUserDTO();
+        AbstractPagination<UserDTO> response = new AbstractPagination<>();
         PaginationUtils.setResponsePagination(userPage, response);
         response.setData(userPage.getContent().stream().map(UserDTO::new).collect(Collectors.toList()));
 

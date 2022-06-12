@@ -12,6 +12,14 @@ public class StockDTO extends AbstractDTO {
     private Long itemId;
     private Long qty;
 
+    public StockDTO() {
+    }
+
+    public StockDTO(Long itemId, Long qty) {
+        this.itemId = itemId;
+        this.qty = qty;
+    }
+
     public Long getItemId() {
         return itemId;
     }

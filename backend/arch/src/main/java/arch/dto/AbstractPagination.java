@@ -2,7 +2,7 @@ package arch.dto;
 
 import java.util.List;
 
-public abstract class AbstractPagination<T> {
+public class AbstractPagination<T> {
 
     private Long totalElements;
     private Integer pageSize;
